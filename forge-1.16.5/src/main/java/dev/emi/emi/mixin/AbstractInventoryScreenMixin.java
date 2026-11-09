@@ -1,5 +1,7 @@
 package dev.emi.emi.mixin;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -68,7 +70,7 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
 		method = "drawStatusEffects", ordinal = 0)
 	private Collection<StatusEffectInstance> drawStatusEffects(Collection<StatusEffectInstance> original) {
 		if (EmiConfig.effectLocation == EffectLocation.TOP || EmiConfig.effectLocation == EffectLocation.HIDDEN) {
-			return List.of();
+			return ImmutableList.of();
 		}
 		return original;
 	}
@@ -103,7 +105,7 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
 			this.y = y;
 			for (StatusEffectInstance inst : effects) {
 				int ew = wide ? 120 : 32;
-				List<StatusEffectInstance> single = List.of(inst);
+				List<StatusEffectInstance> single = ImmutableList.of(inst);
 				this.drawStatusEffectBackgrounds(context.raw(), x, 32, single, wide);
 				this.drawStatusEffectSprites(context.raw(), x, 32, single, wide);
 				if (wide) {
@@ -118,7 +120,7 @@ public abstract class AbstractInventoryScreenMixin<T extends ScreenHandler> exte
 			this.y = restoreY;
 		}
 		if (hovered != null && size > 1) {
-			List<Text> list = List.of(this.getStatusEffectDescription(hovered),
+			List<Text> list = ImmutableList.of(this.getStatusEffectDescription(hovered),
 				EmiPort.literal(StatusEffectUtil.durationToString(hovered, 1.0f)));
 			this.renderTooltip(context.raw(), list, Optional.empty(), mouseX, Math.max(mouseY, 16));
 		}

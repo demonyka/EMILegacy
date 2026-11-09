@@ -1,5 +1,9 @@
 package dev.emi.emi.api.recipe.handler;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +60,7 @@ public interface StandardRecipeHandler<T extends ScreenHandler> extends EmiRecip
 
 	@Override
 	default EmiPlayerInventory getInventory(HandledScreen<T> screen) {
-		return new EmiPlayerInventory(getInputSources(screen.getScreenHandler()).stream().map(Slot::getStack).map(EmiStack::of).toList());
+		return new EmiPlayerInventory(getInputSources(screen.getScreenHandler()).stream().map(Slot::getStack).map(EmiStack::of).collect(Collectors.toList()));
 	}
 
 	@Override
@@ -115,7 +119,7 @@ public interface StandardRecipeHandler<T extends ScreenHandler> extends EmiRecip
 		List<Boolean> list = inventory.getCraftAvailability(recipe);
 		List<EmiIngredient> inputs = recipe.getInputs();
 		if (list.size() != inputs.size()) {
-			return Map.of();
+			return ImmutableMap.of();
 		}
 		for (int i = 0; i < list.size(); i++) {
 			availableForCrafting.put(inputs.get(i), list.get(i));

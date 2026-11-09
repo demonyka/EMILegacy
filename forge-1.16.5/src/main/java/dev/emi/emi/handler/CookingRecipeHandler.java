@@ -1,5 +1,7 @@
 package dev.emi.emi.handler;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -30,7 +32,7 @@ public class CookingRecipeHandler<T extends AbstractFurnaceScreenHandler> implem
 	
 	@Override
 	public List<Slot> getCraftingSlots(T handler) {
-		return List.of(handler.slots.get(0));
+		return ImmutableList.of(handler.slots.get(0));
 	}
 
 	@Override

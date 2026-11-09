@@ -1,5 +1,7 @@
 package dev.emi.emi.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.annotation.ElementType;
@@ -199,20 +201,20 @@ public class EmiConfig {
 	@ConfigGroup("ui.left-sidebar")
 	@Comment("The pages in the left sidebar")
 	@ConfigValue("ui.left-sidebar-pages")
-	public static SidebarPages leftSidebarPages = new SidebarPages(List.of(
+	public static SidebarPages leftSidebarPages = new SidebarPages(ImmutableList.of(
 		new SidebarPages.SidebarPage(SidebarType.FAVORITES)
 	), SidebarSettings.LEFT);
 
 	@Comment("The subpanels in the left sidebar")
 	@ConfigValue("ui.left-sidebar-subpanels")
-	public static SidebarSubpanels leftSidebarSubpanels = new SidebarSubpanels(List.of(
+	public static SidebarSubpanels leftSidebarSubpanels = new SidebarSubpanels(ImmutableList.of(
 	), SidebarSettings.LEFT);
 	
 	@Comment("How many columns and rows of ingredients to limit the left sidebar to")
 	@ConfigValue("ui.left-sidebar-size")
 	public static IntGroup leftSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
-		List.of("columns", "rows"),
+		ImmutableList.of("columns", "rows"),
 		IntList.of(12, 100)
 	);
 
@@ -239,21 +241,21 @@ public class EmiConfig {
 	@ConfigGroup("ui.right-sidebar")
 	@Comment("The pages in the right sidebar")
 	@ConfigValue("ui.right-sidebar-pages")
-	public static SidebarPages rightSidebarPages = new SidebarPages(List.of(
+	public static SidebarPages rightSidebarPages = new SidebarPages(ImmutableList.of(
 		new SidebarPages.SidebarPage(SidebarType.INDEX),
 		new SidebarPages.SidebarPage(SidebarType.CRAFTABLES)
 	), SidebarSettings.RIGHT);
 
 	@Comment("The subpanels in the right sidebar")
 	@ConfigValue("ui.right-sidebar-subpanels")
-	public static SidebarSubpanels rightSidebarSubpanels = new SidebarSubpanels(List.of(
+	public static SidebarSubpanels rightSidebarSubpanels = new SidebarSubpanels(ImmutableList.of(
 	), SidebarSettings.RIGHT);
 
 	@Comment("How many columns and rows of ingredients to limit the right sidebar to")
 	@ConfigValue("ui.right-sidebar-size")
 	public static IntGroup rightSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
-		List.of("columns", "rows"),
+		ImmutableList.of("columns", "rows"),
 		IntList.of(12, 100)
 	);
 
@@ -279,19 +281,19 @@ public class EmiConfig {
 	@ConfigGroup("ui.top-sidebar")
 	@Comment("The pages in the top sidebar")
 	@ConfigValue("ui.top-sidebar-pages")
-	public static SidebarPages topSidebarPages = new SidebarPages(List.of(
+	public static SidebarPages topSidebarPages = new SidebarPages(ImmutableList.of(
 	), SidebarSettings.TOP);
 
 	@Comment("The subpanels in the top sidebar")
 	@ConfigValue("ui.top-sidebar-subpanels")
-	public static SidebarSubpanels topSidebarSubpanels = new SidebarSubpanels(List.of(
+	public static SidebarSubpanels topSidebarSubpanels = new SidebarSubpanels(ImmutableList.of(
 	), SidebarSettings.TOP);
 
 	@Comment("How many columns and rows of ingredients to limit the top sidebar to")
 	@ConfigValue("ui.top-sidebar-size")
 	public static IntGroup topSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
-		List.of("columns", "rows"),
+		ImmutableList.of("columns", "rows"),
 		IntList.of(9, 9)
 	);
 
@@ -317,19 +319,19 @@ public class EmiConfig {
 	@ConfigGroup("ui.bottom-sidebar")
 	@Comment("The pages in the bottom sidebar")
 	@ConfigValue("ui.bottom-sidebar-pages")
-	public static SidebarPages bottomSidebarPages = new SidebarPages(List.of(
+	public static SidebarPages bottomSidebarPages = new SidebarPages(ImmutableList.of(
 	), SidebarSettings.BOTTOM);
 
 	@Comment("The subpanels in the bottom sidebar")
 	@ConfigValue("ui.bottom-sidebar-subpanels")
-	public static SidebarSubpanels bottomSidebarSubpanels = new SidebarSubpanels(List.of(
+	public static SidebarSubpanels bottomSidebarSubpanels = new SidebarSubpanels(ImmutableList.of(
 	), SidebarSettings.BOTTOM);
 
 	@Comment("How many columns and rows of ingredients to limit the bottom sidebar to")
 	@ConfigValue("ui.bottom-sidebar-size")
 	public static IntGroup bottomSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
-		List.of("columns", "rows"),
+		ImmutableList.of("columns", "rows"),
 		IntList.of(9, 9)
 	);
 
@@ -749,8 +751,8 @@ public class EmiConfig {
 			(css, annot, field) -> {
 				String[] parts = css.get(annot).get().split(",");
 				if (parts.length == 2) {
-					((ScreenAlign) field.get(null)).horizontal = ScreenAlign.Horizontal.fromName(parts[0].strip());
-					((ScreenAlign) field.get(null)).vertical = ScreenAlign.Vertical.fromName(parts[1].strip());
+					((ScreenAlign) field.get(null)).horizontal = ScreenAlign.Horizontal.fromName(parts[0].trim());
+					((ScreenAlign) field.get(null)).vertical = ScreenAlign.Vertical.fromName(parts[1].trim());
 				} else {
 					((ScreenAlign) field.get(null)).horizontal = ScreenAlign.Horizontal.CENTER;
 					((ScreenAlign) field.get(null)).vertical = ScreenAlign.Vertical.CENTER;

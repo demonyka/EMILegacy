@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -57,7 +59,7 @@ public class IntGroupWidget extends ConfigEntryWidget {
 		for (int i = 0; i < edits.size(); i++) {
 			IntEdit e = edits.get(i);
 			if (e.contains(mouseX, mouseY)) {
-				return List.of(TooltipComponent.of(EmiPort.ordered(group.getValueTranslation(i))));
+				return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(group.getValueTranslation(i))));
 			}
 		}
 		return super.getTooltip(mouseX, mouseY);

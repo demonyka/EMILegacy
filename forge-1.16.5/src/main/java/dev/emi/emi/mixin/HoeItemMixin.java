@@ -1,5 +1,7 @@
 package dev.emi.emi.mixin;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -19,12 +21,12 @@ public class HoeItemMixin {
 
 	@Inject(at = @At("RETURN"), method = "createTillAction")
 	private static void createTillAction(BlockState result, CallbackInfoReturnable<Consumer<ItemUsageContext>> info) {
-		EmiClient.HOE_ACTIONS.put(info.getReturnValue(), List.of(result.getBlock()));
+		EmiClient.HOE_ACTIONS.put(info.getReturnValue(), ImmutableList.of(result.getBlock()));
 	}
 
 	@Inject(at = @At("RETURN"), method = "createTillAndDropAction")
 	private static void createTillAndDropAction(BlockState result, ItemConvertible droppedItem,
 			CallbackInfoReturnable<Consumer<ItemUsageContext>> info) {
-		EmiClient.HOE_ACTIONS.put(info.getReturnValue(), List.of(droppedItem, result.getBlock()));
+		EmiClient.HOE_ACTIONS.put(info.getReturnValue(), ImmutableList.of(droppedItem, result.getBlock()));
 	}
 }

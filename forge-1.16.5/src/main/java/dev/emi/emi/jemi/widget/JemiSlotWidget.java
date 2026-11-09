@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi.widget;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -122,7 +124,7 @@ public class JemiSlotWidget extends SlotWidget {
 				slot.tooltipCallback.onTooltip(slot, event);
 				int index = Math.min(list.size(), 1);
 				if (!event.isEmpty()) {
-					list.addAll(index, event.stream().filter(t -> !toRemove.contains(t) && !JemiIngredientAcceptor.FLUID_END.matcher(t.getString()).find()).map(t -> TooltipComponent.of(t.asOrderedText())).toList());
+					list.addAll(index, event.stream().filter(t -> !toRemove.contains(t) && !JemiIngredientAcceptor.FLUID_END.matcher(t.getString()).find()).map(t -> TooltipComponent.of(t.asOrderedText())).collect(Collectors.toList()));
 				}
 			} catch (Exception e) {
 				EmiLog.error("Error initializing JEI tooltip", e);
@@ -134,7 +136,7 @@ public class JemiSlotWidget extends SlotWidget {
 	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
 		List<TooltipComponent> list = Lists.newArrayList();
 		if (getStack().isEmpty()) {
-			return List.of();
+			return ImmutableList.of();
 		}
 		addTooltip(list, slot, getStack(), getRenderer());
 		addSlotTooltip(list);

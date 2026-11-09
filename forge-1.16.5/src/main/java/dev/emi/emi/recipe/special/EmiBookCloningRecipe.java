@@ -1,5 +1,9 @@
 package dev.emi.emi.recipe.special;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -19,29 +23,29 @@ import net.minecraft.util.Identifier;
 
 public class EmiBookCloningRecipe extends EmiPatternCraftingRecipe {
 	// TODO more book stuff
-	private static final List<String> AUTHORS = List.of(
+	private static final List<String> AUTHORS = ImmutableList.of(
 		"Emi", "A Rabbit", "[REDACTED]", "Jeb", "The Multiversal Author's Guild", "Another Book", "A Collection of Branches",
 		"Unknown"
 	);
 	private static final List<String> MOD_AUTHORS = EmiAgnos.getAllModAuthors();
 	private static final List<String> MOD = EmiAgnos.getAllModNames();
-	private static final List<String> NOUN = List.of(
+	private static final List<String> NOUN = ImmutableList.of(
 		"Bunnies", "Apples", "Rocks", "Antimemetics", "a Rabbit", "Deers", "Mice", "a Dog", "Bnuuy", "Kitties",
 		"Reconstruction", "Dawn", "Time", "Night", "the Sky",
 		"Diamonds", "Pickaxes", "Planks", "Stone", "Slime", "Creepers", "Iron", "Redstone",
 		"Trinkets", "Fungiculture", "Floralisia", "Chime", "Yttr", "Mnemonics", "Quilt"
 	);
-	private static final List<String> OBJECT = Stream.concat(List.of(
+	private static final List<String> OBJECT = Stream.concat(ImmutableList.of(
 		"Fighting Monsters"
-	).stream(), NOUN.stream()).toList();
-	private static final List<String> ADJECTIVE = List.of(
+	).stream(), NOUN.stream()).collect(Collectors.toList());
+	private static final List<String> ADJECTIVE = ImmutableList.of(
 		"Cool", "Introductory", "Diffused", "Wooden", "Slimey", "Dark", "Antimemetic", "Fun", "Fuzzy", "Tall",
 		"Rotund", "Jovial", "" // Lol blank adjective, leaving it
 	);
-	private static final List<String> IMPERATIVE = List.of(
+	private static final List<String> IMPERATIVE = ImmutableList.of(
 		"A Guide to", "Introduction to", "Discussing", "The Making of"
 	);
-	private static final List<Template> TEMPLATES = List.of(
+	private static final List<Template> TEMPLATES = ImmutableList.of(
 		Template.of(IMPERATIVE, ADJECTIVE, OBJECT),
 		Template.of(ADJECTIVE, OBJECT, "101"),
 		Template.of(IMPERATIVE, OBJECT),
@@ -53,7 +57,7 @@ public class EmiBookCloningRecipe extends EmiPatternCraftingRecipe {
 	private static final EmiStack WRITTEN_BOOK = EmiStack.of(Items.WRITTEN_BOOK);
 
 	public EmiBookCloningRecipe(Identifier id) {
-		super(List.of(WRITTEN_BOOK, BOOK_AND_QUILL), WRITTEN_BOOK.copy().setAmount(2), id);
+		super(ImmutableList.of(WRITTEN_BOOK, BOOK_AND_QUILL), WRITTEN_BOOK.copy().setAmount(2), id);
 	}
 
 	@Override

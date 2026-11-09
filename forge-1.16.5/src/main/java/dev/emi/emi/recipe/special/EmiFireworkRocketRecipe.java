@@ -1,5 +1,9 @@
 package dev.emi.emi.recipe.special;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
@@ -20,10 +24,10 @@ import net.minecraft.util.Identifier;
 
 
 public class EmiFireworkRocketRecipe extends EmiPatternCraftingRecipe {
-	private static final List<DyeItem> DYES = Stream.of(DyeColor.values()).map(DyeItem::byColor).toList();
+	private static final List<DyeItem> DYES = Stream.of(DyeColor.values()).map(DyeItem::byColor).collect(Collectors.toList());
 
 	public EmiFireworkRocketRecipe(Identifier id) {
-		super(List.of(
+		super(ImmutableList.of(
 				EmiStack.of(Items.PAPER),
 						EmiStack.of(Items.FIREWORK_STAR),
 						EmiStack.of(Items.GUNPOWDER)),

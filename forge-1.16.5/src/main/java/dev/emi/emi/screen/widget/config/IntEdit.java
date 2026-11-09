@@ -22,7 +22,7 @@ public class IntEdit {
 		text.setText("" + getter.getAsInt());
 		text.setChangedListener(string -> {
 			try {
-				if (string.isBlank()) {
+				if (string.trim().isEmpty()) {
 					setter.accept(0);
 				} else {
 					setter.accept(Integer.parseInt(string));

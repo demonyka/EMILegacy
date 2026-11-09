@@ -1,9 +1,16 @@
 package dev.emi.emi.chess;
 
+
+
+import com.github.bsideup.jabel.Desugar;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
+@Desugar
+
+
 record ChessPiece(PieceType type, PieceColor color) {
-	private static final List<ChessPiece> PIECES = List.of(
+	private static final List<ChessPiece> PIECES = ImmutableList.of(
 		new ChessPiece(PieceType.PAWN, PieceColor.WHITE),
 		new ChessPiece(PieceType.ROOK, PieceColor.WHITE),
 		new ChessPiece(PieceType.KNIGHT, PieceColor.WHITE),

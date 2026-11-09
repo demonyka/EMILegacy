@@ -1,5 +1,9 @@
 package dev.emi.emi.registry;
 
+
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -69,7 +73,7 @@ public class EmiRecipes {
 
 	public static void bake() {
 		long start = System.currentTimeMillis();
-		recipes.addAll(EmiData.recipes.stream().map(r -> r.get()).toList());
+		recipes.addAll(EmiData.recipes.stream().map(r -> r.get()).collect(Collectors.toList()));
 		categories.sort((a, b) -> EmiRecipeCategoryProperties.getOrder(a) - EmiRecipeCategoryProperties.getOrder(b));
 		invalidators.addAll(EmiData.recipeFilters);
 
@@ -89,10 +93,10 @@ public class EmiRecipes {
 				}
 			}
 			return true;
-		}).toList();
+		}).collect(Collectors.toList());
 		Map<EmiRecipeCategory, List<EmiIngredient>> filteredWorkstations = Maps.newHashMap();
 		for (Map.Entry<EmiRecipeCategory, List<EmiIngredient>> entry : workstations.entrySet()) {
-			List<EmiIngredient> w = entry.getValue().stream().filter(s -> !EmiHidden.isDisabled(s)).toList();
+			List<EmiIngredient> w = entry.getValue().stream().filter(s -> !EmiHidden.isDisabled(s)).collect(Collectors.toList());
 			if (!w.isEmpty()) {
 				filteredWorkstations.put(entry.getKey(), w);
 			}
@@ -132,15 +136,15 @@ public class EmiRecipes {
 		private Map<Identifier, EmiRecipe> byId = Maps.newHashMap();
 
 		private Manager() {
-			this.categories = List.of();
-			this.workstations = Map.of();
-			this.recipes = List.of();
+			this.categories = ImmutableList.of();
+			this.workstations = ImmutableMap.of();
+			this.recipes = ImmutableList.of();
 		}
 
 		public Manager(List<EmiRecipeCategory> categories, Map<EmiRecipeCategory, List<EmiIngredient>> workstations, List<EmiRecipe> recipes, boolean doSort) {
-			this.categories = categories.stream().distinct().toList();
+			this.categories = categories.stream().distinct().collect(Collectors.toList());
 			this.workstations = workstations;
-			this.recipes = List.copyOf(recipes);
+			this.recipes = ImmutableList.copyOf(recipes);
 	
 			Object2IntMap<Identifier> duplicateIds = new Object2IntOpenHashMap<>();
 			Set<Identifier> incorrectIds = new ObjectArraySet<>();
@@ -193,7 +197,7 @@ public class EmiRecipes {
 				List<EmiRecipe> cRecipes = byCategory.get(category);
 				Comparator<EmiRecipe> sort = EmiRecipeCategoryProperties.getSort(category);
 				if (doSort && sort != EmiRecipeSorting.none()) {
-					cRecipes = cRecipes.stream().sorted(sort).collect(Collectors.toList());
+					cRecipes = cRecipes.stream().sorted(sort).collect(Collectors.collect(Collectors.toList()));
 					EmiRecipeSorter.clear();
 				}
 				byCategory.put(category, cRecipes);
@@ -212,7 +216,7 @@ public class EmiRecipes {
 			for (EmiStack key : byInput.keySet()) {
 				Set<EmiRecipe> r = byInput.getOrDefault(key, null);
 				if (r != null) {
-					this.byInput.put(key, r.stream().toList());
+					this.byInput.put(key, r.stream().collect(Collectors.toList()));
 				} else {
 					EmiReloadLog.warn("Stack illegally self-mutated during recipe bake, causing recipe loss: " + key);
 				}
@@ -220,7 +224,7 @@ public class EmiRecipes {
 			for (EmiStack key : byOutput.keySet()) {
 				Set<EmiRecipe> r = byOutput.getOrDefault(key, null);
 				if (r != null) {
-					this.byOutput.put(key, r.stream().toList());
+					this.byOutput.put(key, r.stream().collect(Collectors.toList()));
 				} else {
 					EmiReloadLog.warn("Stack illegally self-mutated during recipe bake, causing recipe loss: " + key);
 				}
@@ -228,13 +232,13 @@ public class EmiRecipes {
 			for (EmiRecipeCategory category : workstations.keySet()) {
 				List<EmiIngredient> w = workstations.getOrDefault(category, null);
 				if (w != null) {
-					workstations.put(category, w.stream().distinct().toList());
+					workstations.put(category, w.stream().distinct().collect(Collectors.toList()));
 				} else {
 					EmiReloadLog.warn("Recipe category illegally self-mutated during recipe bake, causing recipe loss: " + category);
 				}
 			}
 			for (Map.Entry<EmiRecipeCategory, List<EmiRecipe>> entry : byCategory.entrySet()) {
-				for (EmiIngredient ingredient : workstations.getOrDefault(entry.getKey(), List.of())) {
+				for (EmiIngredient ingredient : workstations.getOrDefault(entry.getKey(), ImmutableList.of())) {
 					for (EmiStack stack : ingredient.getEmiStacks()) {
 						byWorkstation.computeIfAbsent(stack, (s) -> Lists.newArrayList()).addAll(entry.getValue());
 					}
@@ -254,7 +258,7 @@ public class EmiRecipes {
 
 		@Override
 		public List<EmiIngredient> getWorkstations(EmiRecipeCategory category) {
-			return workstations.getOrDefault(category, List.of());
+			return workstations.getOrDefault(category, ImmutableList.of());
 		}
 
 		@Override
@@ -264,7 +268,7 @@ public class EmiRecipes {
 
 		@Override
 		public List<EmiRecipe> getRecipes(EmiRecipeCategory category) {
-			return byCategory.getOrDefault(category, List.of());
+			return byCategory.getOrDefault(category, ImmutableList.of());
 		}
 
 		@Override
@@ -274,12 +278,12 @@ public class EmiRecipes {
 
 		@Override
 		public List<EmiRecipe> getRecipesByInput(EmiStack stack) {
-			return byInput.getOrDefault(stack, List.of());
+			return byInput.getOrDefault(stack, ImmutableList.of());
 		}
 
 		@Override
 		public List<EmiRecipe> getRecipesByOutput(EmiStack stack) {
-			return byOutput.getOrDefault(stack, List.of());
+			return byOutput.getOrDefault(stack, ImmutableList.of());
 		}
 	}
 

@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.IntSupplier;
@@ -72,7 +74,7 @@ public class SizedButtonWidget extends ButtonWidget {
 			context.push();
 			context.disableDepthTest();
 			MinecraftClient client = MinecraftClient.getInstance();
-			EmiRenderHelper.drawTooltip(client.currentScreen, context, text.get().stream().map(EmiPort::ordered).map(TooltipComponent::of).toList(), mouseX, mouseY);
+			EmiRenderHelper.drawTooltip(client.currentScreen, context, text.get().stream().map(EmiPort::ordered).map(TooltipComponent::of).collect(Collectors.toList()), mouseX, mouseY);
 			context.pop();
 		}
 	}

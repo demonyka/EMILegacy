@@ -1,5 +1,7 @@
 package dev.emi.emi.network;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -26,8 +28,8 @@ public class FillRecipeC2SPacket implements EmiPacket {
 	public FillRecipeC2SPacket(ScreenHandler handler, int action, List<Slot> slots, List<Slot> crafting, @Nullable Slot output, List<ItemStack> stacks) {
 		this.syncId = handler.syncId;
 		this.action = action;
-		this.slots = slots.stream().map(s -> s == null ? -1 : s.id).toList();
-		this.crafting = crafting.stream().map(s -> s == null ? -1 : s.id).toList();
+		this.slots = slots.stream().map(s -> s == null ? -1 : s.id).collect(Collectors.toList());
+		this.crafting = crafting.stream().map(s -> s == null ? -1 : s.id).collect(Collectors.toList());
 		this.output = output == null ? -1 : output.id;
 		this.stacks = stacks;
 	}

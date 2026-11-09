@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,12 +41,12 @@ public class EmiAnvilRepairItemRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(EmiStack.of(tool), EmiStack.of(tool));
+		return ImmutableList.of(EmiStack.of(tool), EmiStack.of(tool));
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(EmiStack.of(tool));
+		return ImmutableList.of(EmiStack.of(tool));
 	}
 
 	@Override

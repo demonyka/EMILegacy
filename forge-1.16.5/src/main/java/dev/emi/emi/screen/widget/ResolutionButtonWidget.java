@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -35,7 +37,7 @@ public class ResolutionButtonWidget extends ButtonWidget {
 		super.render(raw, mouseX, mouseY, delta);
 		if (this.isHovered()) {
 			MinecraftClient client = MinecraftClient.getInstance();
-			client.currentScreen.renderTooltip(raw, List.of(
+			client.currentScreen.renderTooltip(raw, ImmutableList.of(
 				EmiPort.translatable("tooltip.emi.resolution"),
 				EmiPort.translatable("tooltip.emi.select_resolution"),
 				EmiPort.translatable("tooltip.emi.default_resolution"),

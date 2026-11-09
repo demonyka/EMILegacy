@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -20,12 +22,12 @@ import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
 public class EmiArmorDyeRecipe extends EmiPatternCraftingRecipe {
-	private static final List<DyeItem> DYES = Stream.of(DyeColor.values()).map(c -> DyeItem.byColor(c)).collect(Collectors.toList());
+	private static final List<DyeItem> DYES = Stream.of(DyeColor.values()).map(c -> DyeItem.byColor(c)).collect(Collectors.collect(Collectors.toList()));
 	private final Item armor;
 
 	public EmiArmorDyeRecipe(Item armor, Identifier id) {
-		super(List.of(
-			EmiIngredient.of(DYES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.toList())),
+		super(ImmutableList.of(
+			EmiIngredient.of(DYES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.collect(Collectors.toList()))),
 			EmiStack.of(armor)), EmiStack.of(armor), id);
 		this.armor = armor;
 	}

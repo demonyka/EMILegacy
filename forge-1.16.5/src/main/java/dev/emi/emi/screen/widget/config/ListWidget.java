@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -582,7 +584,7 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 		}
 
 		public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-			return List.of();
+			return ImmutableList.of();
 		}
 
 		public abstract int getHeight();

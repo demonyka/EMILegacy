@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.tooltip;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -44,7 +46,7 @@ public class RecipeCostTooltipComponent implements EmiTooltipComponent {
 		).sorted((a, b) -> Integer.compare(
 			EmiStackList.getIndex(a.ingredient.getEmiStacks().get(0)),
 			EmiStackList.getIndex(b.ingredient.getEmiStacks().get(0))
-		)).toList();
+		)).collect(Collectors.toList());
 		for (FlatMaterialCost cost : costs) {
 			if (cost instanceof ChanceMaterialCost cmc) {
 				nodes.add(new Node(cost.ingredient, cost.amount / batches * cmc.chance, true));

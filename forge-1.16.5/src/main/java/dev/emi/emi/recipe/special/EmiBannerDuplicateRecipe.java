@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 
@@ -20,7 +22,7 @@ import net.minecraft.util.Identifier;
 
 public class EmiBannerDuplicateRecipe extends EmiPatternCraftingRecipe {
 
-	public static final List<Item> BANNERS = List.of(
+	public static final List<Item> BANNERS = ImmutableList.of(
 			Items.WHITE_BANNER, Items.ORANGE_BANNER, Items.MAGENTA_BANNER, Items.LIGHT_BLUE_BANNER,
 			Items.YELLOW_BANNER, Items.LIME_BANNER, Items.PINK_BANNER, Items.GRAY_BANNER,
 			Items.LIGHT_GRAY_BANNER, Items.CYAN_BANNER, Items.PURPLE_BANNER, Items.BLUE_BANNER,
@@ -30,7 +32,7 @@ public class EmiBannerDuplicateRecipe extends EmiPatternCraftingRecipe {
 	private final Item banner;
 
 	public EmiBannerDuplicateRecipe(Item banner, Identifier id) {
-		super(List.of(
+		super(ImmutableList.of(
 				EmiStack.of(banner),
 				EmiStack.of(banner).setRemainder(EmiStack.of(banner))),
 				EmiStack.of(banner), id);

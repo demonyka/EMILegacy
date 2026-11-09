@@ -1,5 +1,7 @@
 package dev.emi.emi.widget;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import dev.emi.emi.EmiPort;
@@ -18,7 +20,7 @@ public class RecipeScreenshotButtonWidget extends RecipeButtonWidget {
 
 	@Override
 	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-		return List.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.recipe_screenshot"))));
+		return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.recipe_screenshot"))));
 	}
 
 	@Override

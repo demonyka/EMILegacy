@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi.runtime;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,6 +65,6 @@ public class JemiDragDropHandler implements EmiDragDropHandler<Screen> {
 			IGhostIngredientHandler<Screen> ghost = optGhost.get();
 			return ghost.getTargets(screen, typed.getIngredient(), false);
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 }

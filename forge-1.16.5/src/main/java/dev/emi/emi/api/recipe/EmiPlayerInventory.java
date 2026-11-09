@@ -1,5 +1,7 @@
 package dev.emi.emi.api.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -86,7 +88,7 @@ public class EmiPlayerInventory {
 			}
 		}
 		if (entity == null) {
-			return new EmiPlayerInventory(List.of());
+			return new EmiPlayerInventory(ImmutableList.of());
 		}
 		return new EmiPlayerInventory(entity);
 	}
@@ -123,7 +125,7 @@ public class EmiPlayerInventory {
 	public List<EmiIngredient> getCraftables() {
 		Predicate<EmiRecipe> predicate = getPredicate();
 		if (predicate == null) {
-			return List.of();
+			return ImmutableList.of();
 		}
 		Set<EmiRecipe> set = Sets.newHashSet();
 		for (EmiStack stack : inventory.keySet()) {
@@ -139,7 +141,7 @@ public class EmiPlayerInventory {
 					return i;
 				}
 				return Long.compare(a.getAmount(), b.getAmount());
-			}).collect(Collectors.toList());
+			}).collect(Collectors.collect(Collectors.toList()));
 	}
 
 	public List<Boolean> getCraftAvailability(EmiRecipe recipe) {

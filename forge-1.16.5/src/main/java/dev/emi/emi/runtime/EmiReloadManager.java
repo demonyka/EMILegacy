@@ -1,5 +1,7 @@
 package dev.emi.emi.runtime;
 
+
+import java.util.stream.Collectors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
@@ -155,7 +157,7 @@ public class EmiReloadManager {
 					}
 					List<EmiPluginContainer> plugins = Lists.newArrayList();
 					plugins.addAll(EmiAgnos.getPlugins().stream()
-						.sorted((a, b) -> Integer.compare(entrypointPriority(a), entrypointPriority(b))).toList());
+						.sorted((a, b) -> Integer.compare(entrypointPriority(a), entrypointPriority(b))).collect(Collectors.toList()));
 					
 					if (EmiAgnos.isModLoaded("jei")) {
 						plugins.add(new EmiPluginContainer(new JemiPlugin(), "jemi"));

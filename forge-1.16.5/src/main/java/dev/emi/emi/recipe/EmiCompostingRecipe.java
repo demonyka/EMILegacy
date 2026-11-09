@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -41,12 +43,12 @@ public class EmiCompostingRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(stack);
+		return ImmutableList.of(stack);
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(BONE_MEAL);
+		return ImmutableList.of(BONE_MEAL);
 	}
 
 	@Override

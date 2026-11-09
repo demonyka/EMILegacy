@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -22,18 +24,18 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 public class EmiBannerShieldRecipe extends EmiPatternCraftingRecipe {
-	public static final List<Item> BANNERS = List.of(
+	public static final List<Item> BANNERS = ImmutableList.of(
 		Items.WHITE_BANNER, Items.ORANGE_BANNER, Items.MAGENTA_BANNER, Items.LIGHT_BLUE_BANNER,
 		Items.YELLOW_BANNER, Items.LIME_BANNER, Items.PINK_BANNER, Items.GRAY_BANNER,
 		Items.LIGHT_GRAY_BANNER, Items.CYAN_BANNER, Items.PURPLE_BANNER, Items.BLUE_BANNER,
 		Items.BROWN_BANNER, Items.GREEN_BANNER, Items.RED_BANNER, Items.BLACK_BANNER
 	);
-	private static final List<EmiStack> EMI_BANNERS = BANNERS.stream().map(i -> EmiStack.of(i)).collect(Collectors.toList());
+	private static final List<EmiStack> EMI_BANNERS = BANNERS.stream().map(i -> EmiStack.of(i)).collect(Collectors.collect(Collectors.toList()));
 	public static final EmiStack SHIELD = EmiStack.of(Items.SHIELD);
 
 	@SuppressWarnings("unchecked")
 	public EmiBannerShieldRecipe(Identifier id) {
-		super((List<EmiIngredient>) (List<?>) Stream.concat(Stream.of(SHIELD), EMI_BANNERS.stream()).toList(), EmiStack.of(Items.SHIELD), id);
+		super((List<EmiIngredient>) (List<?>) Stream.concat(Stream.of(SHIELD), EMI_BANNERS.stream()).collect(Collectors.toList()), EmiStack.of(Items.SHIELD), id);
 	}
 
 	@Override

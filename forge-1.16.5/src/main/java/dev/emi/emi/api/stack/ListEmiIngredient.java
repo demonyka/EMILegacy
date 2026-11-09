@@ -1,5 +1,7 @@
 package dev.emi.emi.api.stack;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -23,7 +25,7 @@ public class ListEmiIngredient implements EmiIngredient {
 	@ApiStatus.Internal
 	public ListEmiIngredient(List<? extends EmiIngredient> ingredients, long amount) {
 		this.ingredients = ingredients;
-		this.fullList = ingredients.stream().flatMap(i -> i.getEmiStacks().stream()).toList();
+		this.fullList = ingredients.stream().flatMap(i -> i.getEmiStacks().stream()).collect(Collectors.toList());
 		if (fullList.isEmpty()) {
 			throw new IllegalArgumentException("ListEmiIngredient cannot be empty");
 		}

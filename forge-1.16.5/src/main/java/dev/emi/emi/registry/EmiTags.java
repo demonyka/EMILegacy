@@ -1,5 +1,9 @@
 package dev.emi.emi.registry;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -48,23 +52,23 @@ public class EmiTags {
 		if (TAG_VALUES.containsKey(key)) {
 			EmiRegistryAdapter adapter = ADAPTERS_BY_REGISTRY.get(key.registry());
 			if (adapter != null) {
-				List<T> values = (List<T>) TAG_VALUES.getOrDefault(key, List.of());
-				return values.stream().map(t -> adapter.of(t, EmiPort.emptyExtraData(), 1)).toList();
+				List<T> values = (List<T>) TAG_VALUES.getOrDefault(key, ImmutableList.of());
+				return values.stream().map(t -> adapter.of(t, EmiPort.emptyExtraData(), 1)).collect(Collectors.toList());
 			}
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static <T> List<EmiStack> getRawValues(EmiTagKey<T> key) {
 		if (key.isOf(EmiPort.getBlockRegistry())) {
-			return key.stream().map(e -> EmiStack.of((Block) e)).toList();
+			return key.stream().map(e -> EmiStack.of((Block) e)).collect(Collectors.toList());
 		}
 		EmiRegistryAdapter adapter = ADAPTERS_BY_REGISTRY.get(key.registry());
 		if (adapter != null) {
-			return key.stream().map(t -> adapter.of(t, EmiPort.emptyExtraData(), 1)).toList();
+			return key.stream().map(t -> adapter.of(t, EmiPort.emptyExtraData(), 1)).collect(Collectors.toList());
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
@@ -82,7 +86,7 @@ public class EmiTags {
 		if (map.size() == 0) {
 			return EmiStack.EMPTY;
 		} else if (map.size() == 1) {
-			return map.values().stream().toList().get(0).copy().setAmount(amount);
+			return map.values().stream().collect(Collectors.toList()).get(0).copy().setAmount(amount);
 		}
 		EmiRegistryAdapter<T> adapter = (EmiRegistryAdapter<T>) ADAPTERS_BY_CLASS.get(clazz);
 		if (adapter == null) {
@@ -116,17 +120,17 @@ public class EmiTags {
 		}
 
 		if (keys == null || keys.isEmpty()) {
-			return new ListEmiIngredient(stacks.stream().toList(), amount);
+			return new ListEmiIngredient(stacks.stream().collect(Collectors.toList()), amount);
 		} else if (map.isEmpty()) {
 			if (keys.size() == 1) {
 				return tagIngredient(keys.get(0), amount);
 			} else {
-				return new ListEmiIngredient(keys.stream().map(k -> tagIngredient(k, 1)).toList(), amount);
+				return new ListEmiIngredient(keys.stream().map(k -> tagIngredient(k, 1)).collect(Collectors.toList()), amount);
 			}
 		} else {
-			return new ListEmiIngredient(List.of(map.values().stream().map(i -> i.copy().setAmount(1)).toList(),
-					keys.stream().map(k -> tagIngredient(k, 1)).toList())
-				.stream().flatMap(a -> a.stream()).toList(), amount);
+			return new ListEmiIngredient(ImmutableList.of(map.values().stream().map(i -> i.copy().setAmount(1)).collect(Collectors.toList()),
+					keys.stream().map(k -> tagIngredient(k, 1)).collect(Collectors.toList()))
+				.stream().flatMap(a -> a.stream()).collect(Collectors.toList()), amount);
 		}
 	}
 
@@ -143,7 +147,7 @@ public class EmiTags {
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static <T> List<EmiTagKey<T>> getTags(Registry<T> registry) {
-		return (List<EmiTagKey<T>>) (List) SORTED_TAGS.getOrDefault(registry.getKey().getValue(), List.of());
+		return (List<EmiTagKey<T>>) (List) SORTED_TAGS.getOrDefault(registry.getKey().getValue(), ImmutableList.of());
 	}
 
 	public static void registerTagModels(ResourceManager manager, Consumer<Identifier> consumer) {
@@ -188,21 +192,21 @@ public class EmiTags {
 		Identifier rid = registry.getKey().getValue();
 		List<EmiTagKey<T>> tags = EmiTagKey.fromRegistry(registry)
 			.filter(key -> !exclusions.contains(rid, key.id()) && !hidden.containsAll(key.getList()))
-			.toList();
+			.collect(Collectors.toList());
 		logUntranslatedTags(tags);
 		tags = consolodateTags(tags);
 		for (EmiTagKey<T> key : tags) {
-			List<T> values = key.stream().filter(s -> !EmiHidden.isDisabled(stackFromKey(key, s))).toList();
+			List<T> values = key.stream().filter(s -> !EmiHidden.isDisabled(stackFromKey(key, s))).collect(Collectors.toList());
 			if (values.isEmpty()) {
 				TAG_VALUES.put(key, key.getList());
 			} else {
 				TAG_VALUES.put(key, values);
 			}
 		}
-		EmiTags.TAGS.addAll(tags.stream().sorted((a, b) -> a.id().toString().compareTo(b.id().toString())).toList());
+		EmiTags.TAGS.addAll(tags.stream().sorted((a, b) -> a.id().toString().compareTo(b.id().toString())).collect(Collectors.toList()));
 		tags = tags.stream()
 			.sorted((a, b) -> Long.compare(b.stream().count(), a.stream().count()))
-			.toList();
+			.collect(Collectors.toList());
 		EmiTags.SORTED_TAGS.put(registry.getKey().getValue(), (List) tags);
 	}
 
@@ -224,7 +228,7 @@ public class EmiTags {
 				}
 			}
 			if (!untranslated.isEmpty()) {
-				for (String tag : untranslated.stream().sorted().toList()) {
+				for (String tag : untranslated.stream().sorted().collect(Collectors.toList())) {
 					EmiReloadLog.warn("Untranslated tag #" + tag);
 				}
 				EmiReloadLog.info(" Tag warning can be disabled in the config, EMI docs describe how to add a translation or exclude tags.");
@@ -244,7 +248,7 @@ public class EmiTags {
 				map.put(values, key);
 			}
 		}
-		return map.values().stream().toList();
+		return map.values().stream().collect(Collectors.toList());
 	}
 
 	private static<T> EmiTagKey<T> betterTag(EmiTagKey<T> a, EmiTagKey<T> b) {

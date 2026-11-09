@@ -1,5 +1,7 @@
 package dev.emi.emi.registry;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.ListIterator;
 import java.util.List;
 import java.util.function.Consumer;
@@ -156,7 +158,7 @@ public class EmiRegistryImpl implements EmiRegistry {
 
 	@Override
 	public void addAlias(EmiIngredient stack, Text text) {
-		EmiStackList.registryAliases.add(new EmiAlias.Baked(List.of(stack), List.of(text)));
+		EmiStackList.registryAliases.add(new EmiAlias.Baked(ImmutableList.of(stack), ImmutableList.of(text)));
 	}
 
 	@Override

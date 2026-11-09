@@ -1,5 +1,9 @@
 package dev.emi.emi.screen;
 
+
+
+import com.github.bsideup.jabel.Desugar;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -81,6 +85,9 @@ public class ConfigEnumScreen<T> extends Screen {
 		return super.keyPressed(keyCode, scanCode, modifiers);
 	}
 
+	@Desugar
+
+
 	public static record Entry<T>(T value, Text name, List<TooltipComponent> tooltip) {
 	}
 
@@ -98,7 +105,7 @@ public class ConfigEnumScreen<T> extends Screen {
 
 		@Override
 		public List<? extends Element> children() {
-			return List.of(button);
+			return ImmutableList.of(button);
 		}
 
 		@Override

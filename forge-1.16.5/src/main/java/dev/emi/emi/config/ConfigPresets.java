@@ -1,5 +1,7 @@
 package dev.emi.emi.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.lwjgl.glfw.GLFW;
@@ -22,19 +24,19 @@ public class ConfigPresets {
 		+ " Ideal for getting the most out of EMI's features")
 	@ConfigValue("presets.productive")
 	public static Runnable productive = () -> {
-		setPages(EmiConfig.rightSidebarPages, List.of(
+		setPages(EmiConfig.rightSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.INDEX)
 		));
 
-		setPages(EmiConfig.leftSidebarPages, List.of(
+		setPages(EmiConfig.leftSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.CRAFTABLES)
 		));
 
-		setPages(EmiConfig.topSidebarPages, List.of(
+		setPages(EmiConfig.topSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.FAVORITES)
 		));
 
-		setPages(EmiConfig.bottomSidebarPages, List.of());
+		setPages(EmiConfig.bottomSidebarPages, ImmutableList.of());
 
 		EmiConfig.leftSidebarTheme = SidebarTheme.MODERN;
 		EmiConfig.leftSidebarHeader = HeaderType.VISIBLE;
@@ -80,18 +82,18 @@ public class ConfigPresets {
 		+ " and use a classic index on the right.")
 	@ConfigValue("presets.recipe-book-plus")
 	public static Runnable recipeBookPlus = () -> {
-		setPages(EmiConfig.rightSidebarPages, List.of(
+		setPages(EmiConfig.rightSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.INDEX)
 		));
 
-		setPages(EmiConfig.leftSidebarPages, List.of(
+		setPages(EmiConfig.leftSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.CRAFTABLES),
 			new SidebarPages.SidebarPage(SidebarType.FAVORITES)
 		));
 
-		setPages(EmiConfig.topSidebarPages, List.of());
+		setPages(EmiConfig.topSidebarPages, ImmutableList.of());
 
-		setPages(EmiConfig.bottomSidebarPages, List.of());
+		setPages(EmiConfig.bottomSidebarPages, ImmutableList.of());
 
 		EmiConfig.leftSidebarTheme = SidebarTheme.VANILLA;
 		EmiConfig.leftSidebarHeader = HeaderType.VISIBLE;
@@ -122,7 +124,7 @@ public class ConfigPresets {
 		EmiConfig.searchSidebarFocus = SidebarType.INDEX;
 		EmiConfig.emptySearchSidebarFocus = SidebarType.EMPTY;
 		
-		setPages(EmiConfig.rightSidebarPages, List.of(
+		setPages(EmiConfig.rightSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.INDEX),
 			new SidebarPages.SidebarPage(SidebarType.EMPTY)
 		));
@@ -134,18 +136,18 @@ public class ConfigPresets {
 		EmiConfig.searchSidebarFocus = SidebarType.INDEX;
 		EmiConfig.emptySearchSidebarFocus = SidebarType.CRAFTABLES;
 		
-		setPages(EmiConfig.rightSidebarPages, List.of(
+		setPages(EmiConfig.rightSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.INDEX),
 			new SidebarPages.SidebarPage(SidebarType.CRAFTABLES)
 		));
 		
-		setPages(EmiConfig.leftSidebarPages, List.of(
+		setPages(EmiConfig.leftSidebarPages, ImmutableList.of(
 			new SidebarPages.SidebarPage(SidebarType.FAVORITES)
 		));
 
-		setPages(EmiConfig.topSidebarPages, List.of());
+		setPages(EmiConfig.topSidebarPages, ImmutableList.of());
 
-		setPages(EmiConfig.bottomSidebarPages, List.of());
+		setPages(EmiConfig.bottomSidebarPages, ImmutableList.of());
 	};
 
 	// Binds

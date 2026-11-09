@@ -1,5 +1,9 @@
 package dev.emi.emi.screen.widget.config;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
@@ -27,7 +31,7 @@ public class EnumWidget extends ConfigEntryWidget {
 		button = EmiPort.newButton(0, 0, 150, 20, getText(), button -> {
 			page(mutator.get(), filter, mutator::set);
 		});
-		this.setChildren(List.of(button));
+		this.setChildren(ImmutableList.of(button));
 	}
 
 	public static void page(ConfigEnum original, Predicate<ConfigEnum> filter, Consumer<ConfigEnum> consumer) {
@@ -37,8 +41,8 @@ public class EnumWidget extends ConfigEntryWidget {
 		if (client.currentScreen instanceof ConfigScreen cs) {
 			client.openScreen(new ConfigEnumScreen<ConfigEnum>(cs, Stream.of(values).filter(f -> filter.test((ConfigEnum) f)).map(v -> {
 				ConfigEnum en = (ConfigEnum) v;
-				return new ConfigEnumScreen.Entry<ConfigEnum>(en, en.getText(), List.of());
-			}).toList(), consumer));
+				return new ConfigEnumScreen.Entry<ConfigEnum>(en, en.getText(), ImmutableList.of());
+			}).collect(Collectors.toList()), consumer));
 		}
 	}
 

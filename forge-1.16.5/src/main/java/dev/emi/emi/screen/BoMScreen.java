@@ -120,7 +120,7 @@ public class BoMScreen extends Screen {
 			).sorted((a, b) -> Integer.compare(
 				EmiStackList.getIndex(a.ingredient.getEmiStacks().get(0)),
 				EmiStackList.getIndex(b.ingredient.getEmiStacks().get(0))
-			)).toList();
+			)).collect(Collectors.toList());
 			int cy = nodeHeight * NODE_VERTICAL_SPACING * 2;
 			int costX = 0;
 			for (FlatMaterialCost node : treeCosts) {
@@ -161,7 +161,7 @@ public class BoMScreen extends Screen {
 			).sorted((a, b) -> Integer.compare(
 				EmiStackList.getIndex(a.ingredient.getEmiStacks().get(0)),
 				EmiStackList.getIndex(b.ingredient.getEmiStacks().get(0))
-			)).toList();
+			)).collect(Collectors.toList());
 			cy += 40;
 			int remainderX = 0;
 			for (FlatMaterialCost node : remainderCosts) {

@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -13,7 +15,7 @@ public class IntWidget extends ConfigEntryWidget {
 	public IntWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<Integer> mutator) {
 		super(name, tooltip, search, 20);
 		this.edit = new IntEdit(150, () -> mutator.get(), i -> mutator.set(i));
-		this.setChildren(List.of(edit.text, edit.up, edit.down));
+		this.setChildren(ImmutableList.of(edit.text, edit.up, edit.down));
 	}
 
 	@Override

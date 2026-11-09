@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -20,14 +22,14 @@ import net.minecraft.util.Identifier;
 
 public class EmiSuspiciousStewRecipe extends EmiPatternCraftingRecipe {
 	private static final List<Item> FLOWERS = EmiPort.getItemRegistry().stream()
-		.filter(i -> i instanceof BlockItem bi && bi.getBlock() instanceof FlowerBlock).collect(Collectors.toList());
+		.filter(i -> i instanceof BlockItem bi && bi.getBlock() instanceof FlowerBlock).collect(Collectors.collect(Collectors.toList()));
 
 	public EmiSuspiciousStewRecipe(Identifier id) {
-		super(List.of(
+		super(ImmutableList.of(
 				EmiStack.of(Items.BOWL),
 				EmiStack.of(Items.RED_MUSHROOM),
 				EmiStack.of(Items.BROWN_MUSHROOM),
-				EmiIngredient.of(FLOWERS.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.toList()))),
+				EmiIngredient.of(FLOWERS.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.collect(Collectors.toList())))),
 			EmiStack.of(Items.SUSPICIOUS_STEW), id);
 	}
 

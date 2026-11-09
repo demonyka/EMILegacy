@@ -1,5 +1,9 @@
 package dev.emi.emi.recipe.special;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 
@@ -41,12 +45,12 @@ public class EmiGrindstoneDisenchantingRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(EmiStack.of(tool));
+		return ImmutableList.of(EmiStack.of(tool));
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(EmiStack.of(tool));
+		return ImmutableList.of(EmiStack.of(tool));
 	}
 
 	@Override
@@ -108,7 +112,7 @@ public class EmiGrindstoneDisenchantingRecipe implements EmiRecipe {
 	}
 
 	private Enchantment getEnchantment(Random random){
-		List<Enchantment> enchantments = EmiPort.getEnchantmentRegistry().stream().filter(i -> i.isAcceptableItem(tool.getDefaultStack())).toList();
+		List<Enchantment> enchantments = EmiPort.getEnchantmentRegistry().stream().filter(i -> i.isAcceptableItem(tool.getDefaultStack())).collect(Collectors.toList());
 		int enchantment = random.nextInt(enchantments.size());
 		return enchantments.get(enchantment);
 	}

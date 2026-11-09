@@ -1,5 +1,9 @@
 package dev.emi.emi.screen;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +69,7 @@ public class RecipeScreen extends Screen {
 	public RecipeScreen(HandledScreen<?> old, Map<EmiRecipeCategory, List<EmiRecipe>> recipes) {
 		super(EmiPort.translatable("screen.emi.recipe"));
 		this.old = old;
-		arrows = List.of(
+		arrows = ImmutableList.of(
 			new SizedButtonWidget(x + 2, y - 18, 12, 12, 0, 0,
 				() -> tabs.size() > tabPageSize, w -> setPage(tabPage - 1, tab, page)),
 			new SizedButtonWidget(x + backgroundWidth - 14, y - 18, 12, 12, 12, 0,
@@ -119,7 +123,7 @@ public class RecipeScreen extends Screen {
 								bi = Integer.MAX_VALUE;
 							}
 							return ai - bi;
-						}).toList()) {
+						}).collect(Collectors.toList())) {
 					List<EmiRecipe> set = entry.getValue();
 					if (!set.isEmpty()) {
 						RecipeTab tab = new RecipeTab(entry.getKey(), set);
@@ -251,7 +255,7 @@ public class RecipeScreen extends Screen {
 		EmiScreenManager.drawForeground(context, mouseX, mouseY, delta);
 		super.render(context.raw(), mouseX, mouseY, delta);
 		if (categoryHovered) {
-			this.renderTooltip(context.raw(), List.of(
+			this.renderTooltip(context.raw(), ImmutableList.of(
 				tab.category.getName(),
 				EmiPort.translatable("emi.view_all_recipes")
 			), mouseX, mouseY);

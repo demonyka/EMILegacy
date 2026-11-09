@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,7 +135,7 @@ public class JemiRecipe<T> implements EmiRecipe {
 			widgets.add(new JemiWidget(0, 0, getDisplayWidth(), getDisplayHeight(), opt.get()));
 			for (JemiRecipeSlotBuilder sb : builder.slots) {
 				JemiRecipeSlot slot = new JemiRecipeSlot(sb);
-				if (slot.tankInfo != null && !slot.getIngredients(JemiUtil.getFluidType()).toList().isEmpty()) {
+				if (slot.tankInfo != null && !slot.getIngredients(JemiUtil.getFluidType()).collect(Collectors.toList()).isEmpty()) {
 					widgets.add(new JemiTankWidget(slot, this));
 				} else {
 					widgets.add(new JemiSlotWidget(slot, this));
@@ -179,7 +181,7 @@ public class JemiRecipe<T> implements EmiRecipe {
 			return category.getTooltipStrings(recipe, recipeLayoutDrawable.getRecipeSlotsView(), mouseX, mouseY)
 				.stream()
 				.map(t -> TooltipComponent.of(t.asOrderedText()))
-				.toList();
+				.collect(Collectors.toList());
 		}
 
 		@Override

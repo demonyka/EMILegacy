@@ -1,5 +1,7 @@
 package dev.emi.emi.api.widget;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -81,7 +83,7 @@ public interface WidgetHolder {
 	}
 
 	default TooltipWidget addTooltipText(List<Text> tooltip, int x, int y, int width, int height) {
-		return addTooltip(tooltip.stream().map(Text::asOrderedText).map(TooltipComponent::of).toList(), x, y, width, height);
+		return addTooltip(tooltip.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList()), x, y, width, height);
 	}
 
 	/**

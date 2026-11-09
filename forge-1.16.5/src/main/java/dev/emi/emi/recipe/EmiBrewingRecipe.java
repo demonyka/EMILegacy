@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -43,12 +45,12 @@ public class EmiBrewingRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(input3, ingredient);
+		return ImmutableList.of(input3, ingredient);
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(output3);
+		return ImmutableList.of(output3);
 	}
 
 	@Override
@@ -65,7 +67,7 @@ public class EmiBrewingRecipe implements EmiRecipe {
 	public void addWidgets(WidgetHolder widgets) {
 		widgets.addTexture(BACKGROUND, 0, 0, 103, 61, 16, 14);
 		widgets.addAnimatedTexture(BACKGROUND, 81, 2, 9, 28, 176, 0, 1000 * 20, false, false, false).tooltip((mx, my) -> {
-			return List.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.cooking.time", 20))));
+			return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.cooking.time", 20))));
 		});
 		widgets.addAnimatedTexture(BACKGROUND, 47, 0, 12, 29, 185, 0, 700, false, true, false);
 		widgets.addTexture(BACKGROUND, 44, 30, 18, 4, 176, 29);

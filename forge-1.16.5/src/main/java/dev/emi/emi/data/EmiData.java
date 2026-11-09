@@ -1,5 +1,11 @@
 package dev.emi.emi.data;
 
+
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.gson.JsonArray;
@@ -29,11 +35,11 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class EmiData {
-	public static Map<String, EmiRecipeCategoryProperties> categoryPriorities = Map.of();
-	public static List<Predicate<EmiRecipe>> recipeFilters = List.of();
-	public static List<PrioritySupplier<IndexStackData>> stackData = List.of();
-	public static List<Supplier<EmiAlias>> aliases = List.of();
-	public static List<Supplier<EmiRecipe>> recipes = List.of();
+	public static Map<String, EmiRecipeCategoryProperties> categoryPriorities = ImmutableMap.of();
+	public static List<Predicate<EmiRecipe>> recipeFilters = ImmutableList.of();
+	public static List<PrioritySupplier<IndexStackData>> stackData = ImmutableList.of();
+	public static List<Supplier<EmiAlias>> aliases = ImmutableList.of();
+	public static List<Supplier<EmiRecipe>> recipes = ImmutableList.of();
 	
 	public static void init(Consumer<EmiResourceReloadListener> register) {
 		register.accept(new RecipeDefaultLoader());
@@ -191,8 +197,8 @@ public class EmiData {
 							if (el.isJsonObject()) {
 								JsonObject obj = el.getAsJsonObject();
 								list.add(() -> new EmiAlias(
-									getArrayOrSingleton(obj, "stacks").map(e -> EmiIngredientSerializer.getDeserialized(e)).toList(),
-									getArrayOrSingleton(obj, "text").map(e -> e.getAsString()).toList()));
+									getArrayOrSingleton(obj, "stacks").map(e -> EmiIngredientSerializer.getDeserialized(e)).collect(Collectors.toList()),
+									getArrayOrSingleton(obj, "text").map(e -> e.getAsString()).collect(Collectors.toList())));
 							}
 						}
 					}
@@ -204,8 +210,8 @@ public class EmiData {
 					String s = JsonHelper.getString(json, "type", "");
 					Identifier id = EmiPort.id("emi:/generated/" + oid.getPath());
 					if (s.equals("emi:info")) {
-						list.add(() -> new EmiInfoRecipe(getArrayOrSingleton(json, "stacks").map(EmiIngredientSerializer::getDeserialized).toList(),
-							getArrayOrSingleton(json, "text").map(t -> (Text) EmiPort.translatable(t.getAsString())).toList(),
+						list.add(() -> new EmiInfoRecipe(getArrayOrSingleton(json, "stacks").map(EmiIngredientSerializer::getDeserialized).collect(Collectors.toList()),
+							getArrayOrSingleton(json, "text").map(t -> (Text) EmiPort.translatable(t.getAsString())).collect(Collectors.toList()),
 							id));
 					} else if (s.equals("emi:world_interaction")) {
 						list.add(() -> {

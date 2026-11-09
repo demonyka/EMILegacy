@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi.runtime;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,7 +51,7 @@ public class JemiRecipesGui implements IRecipesGui {
 
 	@Override
 	public <T> void showRecipes(IRecipeCategory<T> recipeCategory, List<T> recipes, List<IFocus<?>> focuses) {
-		showTypes(List.of(recipeCategory.getRecipeType()));
+		showTypes(ImmutableList.of(recipeCategory.getRecipeType()));
 	}
 
 	@Override

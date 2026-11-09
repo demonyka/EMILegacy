@@ -1,5 +1,7 @@
 package dev.emi.emi;
 
+
+import java.util.stream.Collectors;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Arrays;
@@ -110,7 +112,7 @@ public class EmiUtil {
 				@SuppressWarnings("rawtypes")
 				EmiRecipeHandler handler = EmiRecipeFiller.getFirstValidHandler(r, hs);
 				return handler != null && handler.supportsRecipe(r);
-			}).toList(), inventory, requireCraftable);
+			}).collect(Collectors.toList()), inventory, requireCraftable);
 		}
 		return null;
 	}
@@ -158,7 +160,7 @@ public class EmiUtil {
 			EmiStack stack = ingredient.getEmiStacks().get(0);
 			return getPreferredRecipe(EmiApi.getRecipeManager().getRecipesByOutput(stack).stream().filter(r -> {
 					return r.getOutputs().stream().anyMatch(i -> i.isEqual(stack));
-				}).toList(), inventory, false);
+				}).collect(Collectors.toList()), inventory, false);
 		}
 		return null;
 	}

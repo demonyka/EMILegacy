@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -153,7 +155,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 		EmiReloadManager.step(EmiPort.literal("Loading information from JEI..."), 5_000);
 		registry.addGenericExclusionArea((screen, consumer) -> {
 			if (runtime != null && runtime.getScreenHelper() != null) {
-				List<Rect2i> areas = runtime.getScreenHelper().getGuiExclusionAreas(screen).toList();
+				List<Rect2i> areas = runtime.getScreenHelper().getGuiExclusionAreas(screen).collect(Collectors.toList());
 				for (Rect2i r : areas) {
 					if (r != null) {
 						consumer.accept(new Bounds(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
@@ -216,14 +218,14 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 		CATEGORY_MAP.clear();
 		EmiRecipeFiller.extraHandlers = JemiPlugin::getRecipeHandler;
 
-		List<IRecipeCategory<?>> categories = runtime.getRecipeManager().createRecipeCategoryLookup().includeHidden().get().toList();
+		List<IRecipeCategory<?>> categories = runtime.getRecipeManager().createRecipeCategoryLookup().includeHidden().get().collect(Collectors.toList());
 		for (IRecipeCategory<?> c : categories) {
 			EmiLog.info("[JEMI] Collecting data for " + c.getTitle().getString());
 			EmiReloadManager.step(EmiPort.literal("Loading JEI data for ").append(c.getTitle()), 5_000);
 			try {
 				RecipeType type = c.getRecipeType();
 				Identifier id = type.getUid();
-				List<EmiStack> catalysts = runtime.getRecipeManager().createRecipeCatalystLookup(type).includeHidden().get().map(JemiUtil::getStack).toList();
+				List<EmiStack> catalysts = runtime.getRecipeManager().createRecipeCatalystLookup(type).includeHidden().get().map(JemiUtil::getStack).collect(Collectors.toList());
 				if (categoryMap.containsKey(type)) {
 					EmiRecipeCategory category = categoryMap.get(type);
 					CATEGORY_MAP.put(category, c);
@@ -255,7 +257,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 						registry.addWorkstation(category, catalyst);
 					}
 				}
-				List<?> recipes = runtime.getRecipeManager().createRecipeLookup(type).includeHidden().get().toList();
+				List<?> recipes = runtime.getRecipeManager().createRecipeLookup(type).includeHidden().get().collect(Collectors.toList());
 				for (Object r : recipes) {
 					try {
 						registry.addRecipe(new JemiRecipe(category, c, r));
@@ -270,10 +272,10 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 	}
 
 	private void addInfoRecipes(EmiRegistry registry, IRecipeCategory<IJeiIngredientInfoRecipe> category) {
-		List<IJeiIngredientInfoRecipe> recipes = runtime.getRecipeManager().createRecipeLookup(RecipeTypes.INFORMATION).includeHidden().get().toList();
+		List<IJeiIngredientInfoRecipe> recipes = runtime.getRecipeManager().createRecipeLookup(RecipeTypes.INFORMATION).includeHidden().get().collect(Collectors.toList());
 		Map<List<EmiStack>, List<IJeiIngredientInfoRecipe>> grouped = Maps.newHashMap();
 		for (IJeiIngredientInfoRecipe recipe : recipes) {
-			grouped.computeIfAbsent(recipe.getIngredients().stream().map(JemiUtil::getStack).toList(), k -> Lists.newArrayList()).add(recipe);
+			grouped.computeIfAbsent(recipe.getIngredients().stream().map(JemiUtil::getStack).collect(Collectors.toList()), k -> Lists.newArrayList()).add(recipe);
 		}
 		Map<Text, List<EmiStack>> identical = Maps.newHashMap();
 		for (Map.Entry<List<EmiStack>, List<IJeiIngredientInfoRecipe>> group : grouped.entrySet()) {
@@ -285,7 +287,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 						current.append(EmiPort.literal(string, style));
 						return Optional.empty();
 					}, Style.EMPTY);
-					if (!current.getString().isBlank()) {
+					if (!current.getString().trim().isEmpty()) {
 						if (!text.getString().isEmpty()) {
 							text.append(" ");
 						}
@@ -297,7 +299,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 		}
 		
 		for (Text text : identical.keySet()) {
-			registry.addRecipe(new EmiInfoRecipe(identical.get(text).stream().map(s -> (EmiIngredient) s).toList(), List.of(text), null));
+			registry.addRecipe(new EmiInfoRecipe(identical.get(text).stream().map(s -> (EmiIngredient) s).collect(Collectors.toList()), ImmutableList.of(text), null));
 		}
 	}
 
@@ -308,7 +310,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 			runtime.getRecipeManager().createRecipeLookup(category.getRecipeType()).includeHidden().get(),
 			registry.getRecipeManager().listAllOfType(net.minecraft.recipe.RecipeType.CRAFTING).stream()
 				.filter(r -> r instanceof SpecialCraftingRecipe)
-		).distinct().toList();
+		).distinct().collect(Collectors.toList());
 		for (CraftingRecipe recipe : recipes) {
 			try {
 				if (category.isHandled(recipe)) {

@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,7 +24,7 @@ public class BooleanWidget extends ConfigEntryWidget {
 			mutator.set(!mutator.get());
 			button.setMessage(getText());
 		});
-		this.setChildren(List.of(button));
+		this.setChildren(ImmutableList.of(button));
 	}
 
 	public Text getText() {

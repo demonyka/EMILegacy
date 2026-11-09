@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import dev.emi.emi.api.recipe.EmiPatternCraftingRecipe;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
@@ -15,7 +17,7 @@ import java.util.Random;
 public class EmiMapCloningRecipe extends EmiPatternCraftingRecipe {
 
 	public EmiMapCloningRecipe(Identifier id) {
-		super(List.of(
+		super(ImmutableList.of(
 						EmiStack.of(Items.FILLED_MAP),
 						EmiStack.of(Items.MAP)),
 				EmiStack.of(Items.FILLED_MAP), id);

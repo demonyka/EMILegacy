@@ -1,5 +1,9 @@
 package dev.emi.emi.chess;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -134,7 +138,7 @@ class ChessBoard {
 			ChessBoard copy = this.copy();
 			copy.move(m);
 			return !copy.isChecked(color);
-		}).toList();
+		}).collect(Collectors.toList());
 	}
 
 	public List<ChessMove> getAllMoves(PieceColor color) {
@@ -252,7 +256,7 @@ class ChessBoard {
 			}
 			return list;
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	private void addRookMoves(List<ChessMove> list, ChessPiece self, int position, int x, int y) {

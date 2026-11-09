@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -61,6 +63,6 @@ public class GroupNameWidget extends Entry {
 
 	@Override
 	public List<? extends Element> children() {
-		return List.of();
+		return ImmutableList.of();
 	}
 }

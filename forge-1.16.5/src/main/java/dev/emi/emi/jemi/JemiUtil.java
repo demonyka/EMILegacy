@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -28,7 +30,7 @@ public class JemiUtil {
 		if (ingredients.isEmpty()) {
 			return EmiStack.EMPTY;
 		}
-		return EmiIngredient.of(ingredients.stream().map(JemiUtil::getStack).filter(i -> !i.isEmpty()).toList());
+		return EmiIngredient.of(ingredients.stream().map(JemiUtil::getStack).filter(i -> !i.isEmpty()).collect(Collectors.toList()));
 	}
 
 	public static EmiStack getStack(Object ingredient) {

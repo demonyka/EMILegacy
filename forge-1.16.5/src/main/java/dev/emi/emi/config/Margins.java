@@ -1,5 +1,7 @@
 package dev.emi.emi.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import it.unimi.dsi.fastutil.ints.IntList;
@@ -7,7 +9,7 @@ import it.unimi.dsi.fastutil.ints.IntList;
 public class Margins extends IntGroup {
 
 	public Margins(int top, int right, int bottom, int left) {
-		super("emi.sidebar.margins.", List.of("top", "right", "bottom", "left"), IntList.of(top, right, bottom, left));
+		super("emi.sidebar.margins.", ImmutableList.of("top", "right", "bottom", "left"), IntList.of(top, right, bottom, left));
 	}
 	
 	public int top() {

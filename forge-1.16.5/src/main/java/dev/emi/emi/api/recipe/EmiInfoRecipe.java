@@ -1,5 +1,7 @@
 package dev.emi.emi.api.recipe;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +25,7 @@ public class EmiInfoRecipe implements EmiRecipe {
 
 	public EmiInfoRecipe(List<EmiIngredient> stacks, List<Text> text, @Nullable Identifier id) {
 		this.stacks = stacks;
-		this.text = text.stream().flatMap(t -> CLIENT.textRenderer.wrapLines(t, getDisplayWidth() - 4).stream()).toList();
+		this.text = text.stream().flatMap(t -> CLIENT.textRenderer.wrapLines(t, getDisplayWidth() - 4).stream()).collect(Collectors.toList());
 		this.id = id;
 	}
 
@@ -44,7 +46,7 @@ public class EmiInfoRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return stacks.stream().flatMap(ing -> ing.getEmiStacks().stream()).toList();
+		return stacks.stream().flatMap(ing -> ing.getEmiStacks().stream()).collect(Collectors.toList());
 	}
 
 	@Override

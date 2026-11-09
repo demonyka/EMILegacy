@@ -1,5 +1,7 @@
 package dev.emi.emi.api.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import dev.emi.emi.EmiRenderHelper;
@@ -25,12 +27,12 @@ public abstract class EmiIngredientRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(new ListEmiIngredient(getStacks(), 1));
+		return ImmutableList.of(new ListEmiIngredient(getStacks(), 1));
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@Override

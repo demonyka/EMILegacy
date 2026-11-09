@@ -1,5 +1,7 @@
 package dev.emi.emi.runtime;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -54,7 +56,7 @@ public class ProxyRecipeManager {
 	}
 
 	public static <I extends Inventory, T extends Recipe<I>> List<T> getMatches(RecipeType<T> type, I inventory) {
-		return streamMatches(type, inventory).toList();
+		return streamMatches(type, inventory).collect(Collectors.toList());
 	}
 
 	public static <I extends Inventory, T extends Recipe<I>> @Nullable T getFirst(RecipeType<T> type, I inventory) {

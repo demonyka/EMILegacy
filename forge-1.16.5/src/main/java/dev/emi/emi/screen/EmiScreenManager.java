@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -91,11 +93,11 @@ public class EmiScreenManager {
 	private static final int ENTRY_SIZE = 16 + PADDING_SIZE * 2;
 	private static final int SUBPANEL_SEPARATOR_SIZE = 3;
 	private static MinecraftClient client = MinecraftClient.getInstance();
-	private static List<? extends EmiIngredient> searchedStacks = List.of();
+	private static List<? extends EmiIngredient> searchedStacks = ImmutableList.of();
 	private static int lastWidth, lastHeight;
 	private static List<Bounds> lastExclusion;
 	private static StackBatcher.ClaimedCollection batchers = new StackBatcher.ClaimedCollection();
-	private static List<SidebarPanel> panels = List.of(
+	private static List<SidebarPanel> panels = ImmutableList.of(
 			new SidebarPanel(SidebarSide.LEFT, EmiConfig.leftSidebarPages),
 			new SidebarPanel(SidebarSide.RIGHT, EmiConfig.rightSidebarPages),
 			new SidebarPanel(SidebarSide.TOP, EmiConfig.topSidebarPages),
@@ -121,10 +123,10 @@ public class EmiScreenManager {
 	public static EmiSearchWidget search = new EmiSearchWidget(client.textRenderer, 0, 0, 160, 18);
 	public static SizedButtonWidget emi = new SizedButtonWidget(0, 0, 20, 20, 204, 0,
 			() -> true, (w) -> client.openScreen(new ConfigScreen(client.currentScreen)),
-			List.of(EmiPort.translatable("tooltip.emi.config", EmiRenderHelper.getEmiText())));
+			ImmutableList.of(EmiPort.translatable("tooltip.emi.config", EmiRenderHelper.getEmiText())));
 	public static SizedButtonWidget tree = new SizedButtonWidget(0, 0, 20, 20, 184, 0,
 			() -> true, (w) -> EmiApi.viewRecipeTree(),
-			List.of(EmiPort.translatable("tooltip.emi.recipe_tree")));
+			ImmutableList.of(EmiPort.translatable("tooltip.emi.recipe_tree")));
 
 	public static boolean isDisabled() {
 		return !EmiReloadManager.isLoaded() || !EmiConfig.enabled;
@@ -512,7 +514,7 @@ public class EmiScreenManager {
 	public static List<? extends EmiIngredient> getSearchSource() {
 		SidebarPanel search = getSearchPanel();
 		if (search == null) {
-			return List.of();
+			return ImmutableList.of();
 		}
 		return EmiSidebars.getStacks(search.getType());
 	}
@@ -746,7 +748,7 @@ public class EmiScreenManager {
 			}
 			ScreenSpace space = getHoveredSpace(mouseX, mouseY);
 			if (EmiApi.isCheatMode() && !cursor.isEmpty() && space != null && space.getType() == SidebarType.INDEX && EmiConfig.deleteCursorStack.isBound()) {
-				List<TooltipComponent> list = List.of(
+				List<TooltipComponent> list = ImmutableList.of(
 					TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.delete_stack"))),
 					TooltipComponent.of(EmiPort.ordered(EmiConfig.deleteCursorStack.getBindText()))
 				);
@@ -789,7 +791,7 @@ public class EmiScreenManager {
 		} catch (Exception e) {
 			try {
 				EmiLog.error("Error rendering tooltip", e);
-				List<TooltipComponent> list = List.of(
+				List<TooltipComponent> list = ImmutableList.of(
 					EmiTooltipComponents.of(EmiPort.literal("Error rendering tooltip", Formatting.RED)),
 					EmiTooltipComponents.of(EmiPort.literal("See log", Formatting.GRAY))
 				);
@@ -824,7 +826,7 @@ public class EmiScreenManager {
 								}
 								return EmiPort.literal(a);
 							})
-							.collect(Collectors.toList()), 0, 20);
+							.collect(Collectors.collect(Collectors.toList())), 0, 20);
 				}
 			}
 			context.drawTextWithShadow(title, devTextX, screen.height + off, color);
@@ -1406,12 +1408,12 @@ public class EmiScreenManager {
 
 		public void setSpaces(ScreenSpace main, List<ScreenSpace> subpanels) {
 			space = main;
-			spaces = Stream.concat(Stream.of(main), subpanels.stream()).toList();
+			spaces = Stream.concat(Stream.of(main), subpanels.stream()).collect(Collectors.toList());
 		}
 
 		public List<ScreenSpace> getSpaces() {
 			if (spaces == null) {
-				return List.of();
+				return ImmutableList.of();
 			}
 			return spaces;
 		}
@@ -1744,7 +1746,7 @@ public class EmiScreenManager {
 			if (end > start) {
 				return stacks.subList(start, end);
 			}
-			return List.of();
+			return ImmutableList.of();
 		}
 
 		public SidebarType getType() {

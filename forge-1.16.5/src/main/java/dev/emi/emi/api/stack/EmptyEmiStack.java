@@ -1,5 +1,7 @@
 package dev.emi.emi.api.stack;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -24,7 +26,7 @@ public class EmptyEmiStack extends EmiStack {
 
 	@Override
 	public List<EmiStack> getEmiStacks() {
-		return List.of(EMPTY);
+		return ImmutableList.of(EMPTY);
 	}
 
 	@Override
@@ -81,12 +83,12 @@ public class EmptyEmiStack extends EmiStack {
 
 	@Override
 	public List<Text> getTooltipText() {
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@Override
 	public List<TooltipComponent> getTooltip() {
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@Override

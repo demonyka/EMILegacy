@@ -1,5 +1,7 @@
 package dev.emi.emi.api.widget;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -15,7 +17,7 @@ public class TextureWidget extends Widget implements WidgetTooltipHolder<Texture
 	protected final int u, v;
 	protected final int regionWidth, regionHeight;
 	protected final int textureWidth, textureHeight;
-	private BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier = (mouseX, mouseY) -> List.of();
+	private BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier = (mouseX, mouseY) -> ImmutableList.of();
 
 	public TextureWidget(Identifier texture, int x, int y, int width, int height, int u, int v,
 			int regionWidth, int regionHeight, int textureWidth, int textureHeight) {

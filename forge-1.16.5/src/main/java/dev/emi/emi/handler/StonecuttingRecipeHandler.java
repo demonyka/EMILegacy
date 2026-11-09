@@ -1,5 +1,7 @@
 package dev.emi.emi.handler;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +39,7 @@ public class StonecuttingRecipeHandler implements StandardRecipeHandler<Stonecut
 
 	@Override
 	public List<Slot> getCraftingSlots(StonecutterScreenHandler handler) {
-		return List.of(handler.slots.get(0));
+		return ImmutableList.of(handler.slots.get(0));
 	}
 
 	@Override

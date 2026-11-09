@@ -1,5 +1,9 @@
 package dev.emi.emi.jemi;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +50,7 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 		type = handler.getRecipeType();
 		/*
 		if (type != null) {
-			List<IRecipeCategory<R>> categories = (List<IRecipeCategory<R>>) (Object) JemiPlugin.runtime.getRecipeManager().createRecipeCategoryLookup().includeHidden().limitTypes(List.of(type)).get().toList();
+			List<IRecipeCategory<R>> categories = (List<IRecipeCategory<R>>) (Object) JemiPlugin.runtime.getRecipeManager().createRecipeCategoryLookup().includeHidden().limitTypes(ImmutableList.of(type)).get().collect(Collectors.toList());
 			if (!categories.isEmpty()) {
 				category = categories.get(0);
 			}
@@ -60,7 +64,7 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 
 	@Override
 	public EmiPlayerInventory getInventory(HandledScreen<T> screen) {
-		return new EmiPlayerInventory(List.of());
+		return new EmiPlayerInventory(ImmutableList.of());
 	}
 
 	@Override
@@ -125,7 +129,7 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 			R rawRecipe = getRawRecipe(recipe);
 			
 			if (view == null) {
-				view = createSlotsView(recipe, rawRecipe, List.of());
+				view = createSlotsView(recipe, rawRecipe, ImmutableList.of());
 			}
 
 			if (view == null) {
@@ -152,7 +156,7 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 		}
 
 		if (builder == null) {
-			List<SlotWidget> slotWidgets = widgets.stream().filter(w -> w instanceof SlotWidget).map(w -> (SlotWidget) w).toList();
+			List<SlotWidget> slotWidgets = widgets.stream().filter(w -> w instanceof SlotWidget).map(w -> (SlotWidget) w).collect(Collectors.toList());
 			builder = new JemiRecipeLayoutBuilder();
 			addIngredients(builder, slotWidgets, recipe.getOutputs(), RecipeIngredientRole.OUTPUT);
 			int blankedSlots = 0;
@@ -167,7 +171,7 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 					} else if (inputSize < 5) {
 						int wrap = 0;
 						for (EmiIngredient i : recipe.getInputs()) {
-							addIngredients(builder, slotWidgets, List.of(i), RecipeIngredientRole.INPUT);
+							addIngredients(builder, slotWidgets, ImmutableList.of(i), RecipeIngredientRole.INPUT);
 							wrap++;
 							if (wrap >= 2) {
 								wrap = 0;
@@ -193,13 +197,13 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 			}
 			if (recipe.getCategory() == VanillaEmiRecipeCategories.CRAFTING) {
 				for (int i = recipe.getInputs().size() + blankedSlots; i < 9; i++) {
-					addIngredients(builder, slotWidgets, List.of(EmiStack.EMPTY), RecipeIngredientRole.INPUT);
+					addIngredients(builder, slotWidgets, ImmutableList.of(EmiStack.EMPTY), RecipeIngredientRole.INPUT);
 				}
 			}
 			addIngredients(builder, slotWidgets, recipe.getCatalysts(), RecipeIngredientRole.CATALYST);
 		}
 
-		return new JemiRecipeSlotsView(builder.slots.stream().map(JemiRecipeSlot::new).toList());
+		return new JemiRecipeSlotsView(builder.slots.stream().map(JemiRecipeSlot::new).collect(Collectors.toList()));
 	}
 
 	@SuppressWarnings("unchecked")
@@ -225,7 +229,7 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 
 	private void addBlankIngredients(JemiRecipeLayoutBuilder builder, List<SlotWidget> widgets, int amount, RecipeIngredientRole role) {
 		for (int i = 0; i < amount; i++) {
-			addIngredients(builder, widgets, List.of(EmiStack.EMPTY), RecipeIngredientRole.INPUT);
+			addIngredients(builder, widgets, ImmutableList.of(EmiStack.EMPTY), RecipeIngredientRole.INPUT);
 		}
 	}
 

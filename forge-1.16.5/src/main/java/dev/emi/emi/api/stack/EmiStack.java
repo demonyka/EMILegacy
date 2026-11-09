@@ -1,5 +1,7 @@
 package dev.emi.emi.api.stack;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -33,7 +35,7 @@ public abstract class EmiStack implements EmiIngredient {
 
 	@Override
 	public List<EmiStack> getEmiStacks() {
-		return List.of(this);
+		return ImmutableList.of(this);
 	}
 
 	public EmiStack getRemainder() {

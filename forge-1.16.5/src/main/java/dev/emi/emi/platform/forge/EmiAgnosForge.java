@@ -1,5 +1,9 @@
 package dev.emi.emi.platform.forge;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -108,7 +112,7 @@ public class EmiAgnosForge extends EmiAgnos {
 
 	@Override
 	protected List<String> getAllModNamesAgnos() {
-		return ModList.get().getMods().stream().map(m -> m.getDisplayName()).toList();
+		return ModList.get().getMods().stream().map(m -> m.getDisplayName()).collect(Collectors.toList());
 	}
 
 	@Override
@@ -246,7 +250,7 @@ public class EmiAgnosForge extends EmiAgnos {
 				}
 			}
 			return Stream.empty();
-		}).distinct().toList();
+		}).distinct().collect(Collectors.toList());
 	}
 
 	@Override
@@ -263,7 +267,7 @@ public class EmiAgnosForge extends EmiAgnos {
 
 	@Override
 	protected List<Text> getFluidTooltipAgnos(Fluid fluid, NbtCompound nbt) {
-		return List.of(getFluidName(fluid, nbt));
+		return ImmutableList.of(getFluidName(fluid, nbt));
 	}
 
 	@Override

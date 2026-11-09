@@ -1,5 +1,7 @@
 package dev.emi.emi.data;
 
+
+import com.github.bsideup.jabel.Desugar;
 import java.util.List;
 import java.util.Map;
 
@@ -81,8 +83,14 @@ public class RecipeDefaults {
 		return map;
 	}
 
+	@Desugar
+
+
 	public static record Resolution(Identifier recipe, List<JsonElement> stacks) {
 	}
+
+	@Desugar
+
 
 	public static record Tag(JsonElement tag, JsonElement stack) {
 	}

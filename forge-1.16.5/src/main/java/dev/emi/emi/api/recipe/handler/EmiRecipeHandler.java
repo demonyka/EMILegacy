@@ -1,5 +1,7 @@
 package dev.emi.emi.api.recipe.handler;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import dev.emi.emi.EmiPort;
@@ -55,9 +57,9 @@ public interface EmiRecipeHandler<T extends ScreenHandler> {
 	 */
 	default List<TooltipComponent> getTooltip(EmiRecipe recipe, EmiCraftContext<T> context) {
 		if (canCraft(recipe, context)) {
-			return List.of();
+			return ImmutableList.of();
 		} else {
-			return List.of(TooltipComponent.of(EmiPort.ordered(NOT_ENOUGH_INGREDIENTS)));
+			return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(NOT_ENOUGH_INGREDIENTS)));
 		}
 	}
 

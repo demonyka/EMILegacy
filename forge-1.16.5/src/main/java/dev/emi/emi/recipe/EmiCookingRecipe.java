@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import dev.emi.emi.EmiPort;
@@ -51,12 +53,12 @@ public class EmiCookingRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(input);
+		return ImmutableList.of(input);
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(output);
+		return ImmutableList.of(output);
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class EmiCookingRecipe implements EmiRecipe {
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
 		widgets.addFillingArrow(24, 5, 50 * recipe.getCookTime()).tooltip((mx, my) -> {
-			return List.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.cooking.time", recipe.getCookTime() / 20f))));
+			return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.cooking.time", recipe.getCookTime() / 20f))));
 		});
 		if (infiniBurn) {
 			widgets.addTexture(EmiTexture.FULL_FLAME, 1, 24);

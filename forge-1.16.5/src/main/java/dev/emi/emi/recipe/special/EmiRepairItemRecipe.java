@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -17,11 +19,11 @@ import net.minecraft.util.Identifier;
 
 public class EmiRepairItemRecipe extends EmiPatternCraftingRecipe {
 	public static final List<Item> TOOLS = EmiPort.getItemRegistry().stream()
-			.filter(Item::isDamageable).collect(Collectors.toList());
+			.filter(Item::isDamageable).collect(Collectors.collect(Collectors.toList()));
 	private final Item tool;
 
 	public EmiRepairItemRecipe(Item tool, Identifier id) {
-		super(List.of(
+		super(ImmutableList.of(
 				EmiStack.of(tool),
 				EmiStack.of(tool)),
 				EmiStack.of(tool), id);

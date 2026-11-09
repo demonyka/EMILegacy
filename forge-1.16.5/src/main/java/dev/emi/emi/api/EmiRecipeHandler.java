@@ -1,5 +1,7 @@
 package dev.emi.emi.api;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -57,7 +59,7 @@ public interface EmiRecipeHandler<T extends ScreenHandler> extends StandardRecip
 		if (hs != null && hs.getScreenHandler() == handler) {
 			return getCraftingSlots(recipe, (HandledScreen<T>) hs);
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	/**

@@ -1,5 +1,7 @@
 package dev.emi.emi.handler;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -99,7 +101,7 @@ public class InventoryRecipeHandler implements StandardRecipeHandler<PlayerScree
 			if (sh instanceof AbstractRecipeScreenHandler<?> arsh) {
 				if (recipe instanceof EmiCraftingRecipe crafting) {
 					if (!crafting.canFit(arsh.getCraftingWidth(), arsh.getCraftingHeight())) {
-						return List.of(TooltipComponent.of(EmiPort.ordered(TOO_SMALL)));
+						return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(TOO_SMALL)));
 					}
 				}
 			}

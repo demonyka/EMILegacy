@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -21,7 +23,7 @@ public abstract class ConfigEntryWidget extends Entry {
 	private final int height;
 	public ConfigGroup group;
 	public boolean endGroup = false;
-	private List<? extends Element> children = List.of();
+	private List<? extends Element> children = ImmutableList.of();
 	public List<GroupNameWidget> parentGroups = Lists.newArrayList();
 	
 	public ConfigEntryWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, int height) {

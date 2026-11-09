@@ -1,12 +1,14 @@
 package dev.emi.emi.runtime;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
 
 public class EmiReloadLog {
 	private static List<String> pendingWarnings = Lists.newArrayList();
-	public static List<String> warnings = List.of();
+	public static List<String> warnings = ImmutableList.of();
 	private static int pendingWarningCount;
 	public static int warningCount;
 

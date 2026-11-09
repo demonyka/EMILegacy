@@ -1,5 +1,9 @@
 package dev.emi.emi.api;
 
+
+
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -121,7 +125,7 @@ public class EmiApi {
 	}
 
 	public static void displayRecipeCategory(EmiRecipeCategory category) {
-		setPages(Map.of(category, getRecipeManager().getRecipes(category)), EmiStack.EMPTY);
+		setPages(ImmutableMap.of(category, getRecipeManager().getRecipes(category)), EmiStack.EMPTY);
 	}
 	
 	public static void displayRecipesForWorkstation(EmiIngredient workstation) {
@@ -136,7 +140,7 @@ public class EmiApi {
 	}
 
 	public static void displayRecipe(EmiRecipe recipe) {
-		setPages(Map.of(recipe.getCategory(), List.of(recipe)), EmiStack.EMPTY);
+		setPages(ImmutableMap.of(recipe.getCategory(), ImmutableList.of(recipe)), EmiStack.EMPTY);
 	}
 	
 	public static void displayRecipes(EmiIngredient stack) {
@@ -146,12 +150,12 @@ public class EmiApi {
 		if (stack instanceof TagEmiIngredient tag) {
 			for (EmiRecipe recipe : getRecipeManager().getRecipes(VanillaPlugin.TAG)) {
 				if (recipe instanceof EmiTagRecipe tr && tr.key.equals(tag.key)) {
-					setPages(Map.of(VanillaPlugin.TAG, List.of(recipe)), stack);
+					setPages(ImmutableMap.of(VanillaPlugin.TAG, ImmutableList.of(recipe)), stack);
 					break;
 				}
 			}
 		} else if (stack instanceof ListEmiIngredient list) {
-			setPages(Map.of(VanillaPlugin.INGREDIENT, List.of(new EmiSyntheticIngredientRecipe(stack))), stack);
+			setPages(ImmutableMap.of(VanillaPlugin.INGREDIENT, ImmutableList.of(new EmiSyntheticIngredientRecipe(stack))), stack);
 		} else if (stack.getEmiStacks().size() == 1) {
 			EmiStack es = stack.getEmiStacks().get(0);
 			setPages(mapRecipes(pruneSources(EmiApi.getRecipeManager().getRecipesByOutput(es), es)), stack);
@@ -165,7 +169,7 @@ public class EmiApi {
 			Map<EmiRecipeCategory, List<EmiRecipe>> map
 				= mapRecipes(Stream.concat(
 						pruneUses(getRecipeManager().getRecipesByInput(zero), stack).stream(),
-						EmiRecipes.byWorkstation.getOrDefault(zero, List.of()).stream()).distinct().toList());
+						EmiRecipes.byWorkstation.getOrDefault(zero, ImmutableList.of()).stream()).distinct().collect(Collectors.toList()));
 			setPages(map, stack);
 		}
 	}
@@ -204,14 +208,14 @@ public class EmiApi {
 	private static List<EmiRecipe> pruneSources(List<EmiRecipe> list, EmiStack context) {
 		return list.stream().filter(r -> {
 			return r.getOutputs().stream().anyMatch(i -> i.isEqual(context));
-		}).toList();
+		}).collect(Collectors.toList());
 	}
 
 	private static List<EmiRecipe> pruneUses(List<EmiRecipe> list, EmiIngredient context) {
 		return list.stream().filter(r -> {
 			return r.getInputs().stream().anyMatch(i -> containsAll(i, context))
 				|| r.getCatalysts().stream().anyMatch(i -> containsAll(i, context));
-		}).sorted((a, b) -> getSmallestPresence(a, context) - getSmallestPresence(b, context)).toList();
+		}).sorted((a, b) -> getSmallestPresence(a, context) - getSmallestPresence(b, context)).collect(Collectors.toList());
 	}
 
 	private static int getSmallestPresence(EmiRecipe recipe, EmiIngredient context) {

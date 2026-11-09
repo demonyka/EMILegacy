@@ -1,5 +1,9 @@
 package dev.emi.emi.search;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
@@ -205,8 +209,8 @@ public class EmiSearch {
 					// TODO add config
 					constructors.add(AliasQuery::new);
 					if (constructors.size() > 1) {
-						constructor = name -> new LogicalOrQuery(constructors.stream().map(c -> c.apply(name)).toList());
-						regexConstructor = name -> new LogicalOrQuery(regexConstructors.stream().map(c -> c.apply(name)).toList());
+						constructor = name -> new LogicalOrQuery(constructors.stream().map(c -> c.apply(name)).collect(Collectors.toList()));
+						regexConstructor = name -> new LogicalOrQuery(regexConstructors.stream().map(c -> c.apply(name)).collect(Collectors.toList()));
 					}
 				}
 				addQuery(q.substring(type.prefix.length()), negated, queries, constructor, regexConstructor);
@@ -285,7 +289,7 @@ public class EmiSearch {
 						}
 					}
 				}
-				apply(this, List.copyOf(stacks));
+				apply(this, ImmutableList.copyOf(stacks));
 			} catch (Exception e) {
 				EmiLog.error("Error when attempting to search:", e);
 			}

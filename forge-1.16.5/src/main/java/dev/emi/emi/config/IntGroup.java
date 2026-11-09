@@ -34,7 +34,7 @@ public class IntGroup {
 		String[] parts = text.split(",");
 		if (parts.length == size) {
 			for (int i = 0; i < size; i++) {
-				values.set(i, Integer.parseInt(parts[i].strip()));
+				values.set(i, Integer.parseInt(parts[i].trim()));
 			}
 		}
 	}

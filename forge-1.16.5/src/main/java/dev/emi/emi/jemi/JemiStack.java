@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -92,7 +94,7 @@ public class JemiStack<T> extends EmiStack {
 		List<TooltipComponent> list = Lists.newArrayList();
 		MinecraftClient client = MinecraftClient.getInstance();
 		list.addAll(renderer.getTooltip(ingredient, client.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL)
-			.stream().map(EmiPort::ordered).map(TooltipComponent::of).toList());
+			.stream().map(EmiPort::ordered).map(TooltipComponent::of).collect(Collectors.toList()));
 
 		Identifier id = getId();
 		if (EmiConfig.appendModId && id != null) {

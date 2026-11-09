@@ -1,5 +1,9 @@
 package dev.emi.emi.jemi.runtime;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,9 +57,9 @@ public class JemiIngredientListOverlay implements IIngredientListOverlay {
 				.filter(Optional::isPresent).map(Optional::get)
 				.map(i -> i.getIngredient(ingredientType))
 				.filter(Optional::isPresent).map(Optional::get)
-				.toList();
+				.collect(Collectors.toList());
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 	
 }

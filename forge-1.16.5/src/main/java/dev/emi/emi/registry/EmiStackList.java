@@ -1,5 +1,9 @@
 package dev.emi.emi.registry;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,15 +51,15 @@ public class EmiStackList {
 	private static final TagKey<Fluid> FLUID_HIDDEN = TagKey.of(EmiPort.getFluidRegistry().getKey(), EmiTags.HIDDEN_FROM_RECIPE_VIEWERS);
 	public static List<EmiAlias.Baked> registryAliases = Lists.newArrayList();
 	public static List<Predicate<EmiStack>> invalidators = Lists.newArrayList();
-	public static List<EmiStack> stacks = List.of();
-	public static List<EmiStack> filteredStacks = List.of();
+	public static List<EmiStack> stacks = ImmutableList.of();
+	public static List<EmiStack> filteredStacks = ImmutableList.of();
 	private static Object2IntMap<EmiStack> strictIndices = new Object2IntOpenCustomHashMap<>(new StrictHashStrategy());
 	private static Object2IntMap<Object> keyIndices = new Object2IntOpenHashMap<>();
 
 	public static void clear() {
 		invalidators.clear();
 		registryAliases.clear();
-		stacks = List.of();
+		stacks = ImmutableList.of();
 		strictIndices.clear();
 		keyIndices.clear();
 	}
@@ -80,7 +84,7 @@ public class EmiStackList {
 				itemName = item.toString();
 				DefaultedList<ItemStack> itemStacks = DefaultedList.of();
 				item.appendStacks(ItemGroup.SEARCH, itemStacks);
-				List<EmiStack> stacks = itemStacks.stream().filter(s -> !s.isEmpty()).map(EmiStack::of).toList();
+				List<EmiStack> stacks = itemStacks.stream().filter(s -> !s.isEmpty()).map(EmiStack::of).collect(Collectors.toList());
 				if (!stacks.isEmpty()) {
 					creativeGroups.computeIfAbsent(stacks.get(0).getId().getNamespace(), (k) -> new IndexGroup()).stacks.addAll(stacks);
 				}
@@ -224,7 +228,7 @@ public class EmiStackList {
 				EmiLog.error("Hiding stack " + name + " with id " + id + " from index due to throwing errors", t);
 				return false;
 			}
-		}).toList();
+		}).collect(Collectors.toList());
 		for (int i = 0; i < stacks.size(); i++) {
 			EmiStack stack = stacks.get(i);
 			strictIndices.put(stack, i);
@@ -234,7 +238,7 @@ public class EmiStackList {
 	}
 
 	public static void bakeFiltered() {
-		filteredStacks = stacks.stream().filter(s -> !EmiHidden.isDisabled(s) && !EmiHidden.isHidden(s)).toList();
+		filteredStacks = stacks.stream().filter(s -> !EmiHidden.isDisabled(s) && !EmiHidden.isHidden(s)).collect(Collectors.toList());
 	}
 
 	public static int getIndex(EmiIngredient ingredient) {

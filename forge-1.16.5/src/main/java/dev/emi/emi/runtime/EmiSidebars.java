@@ -1,5 +1,7 @@
 package dev.emi.emi.runtime;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -21,7 +23,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 
 public class EmiSidebars {
-	public static List<EmiIngredient> craftables = List.of();
+	public static List<EmiIngredient> craftables = ImmutableList.of();
 	public static List<EmiIngredient> lookupHistory = Lists.newArrayList();
 	public static List<EmiIngredient> craftHistory = Lists.newArrayList();
 
@@ -32,9 +34,9 @@ public class EmiSidebars {
 			case FAVORITES -> EmiFavorites.favoriteSidebar;
 			case LOOKUP_HISTORY -> lookupHistory;
 			case CRAFT_HISTORY -> craftHistory;
-			case EMPTY -> List.of();
+			case EMPTY -> ImmutableList.of();
 			case CHESS -> EmiChess.SIDEBAR;
-			default -> List.of();
+			default -> ImmutableList.of();
 		};
 	}
 

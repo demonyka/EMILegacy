@@ -1,5 +1,7 @@
 package dev.emi.emi.api.widget;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -11,7 +13,7 @@ public class DrawableWidget extends Widget implements WidgetTooltipHolder<Drawab
 	protected final DrawableWidgetConsumer consumer;
 	protected final Bounds bounds;
 	protected final int x, y;
-	protected BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier = (mouseX, mouseY) -> List.of();
+	protected BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier = (mouseX, mouseY) -> ImmutableList.of();
 
 	public DrawableWidget(int x, int y, int w, int h, DrawableWidgetConsumer consumer) {
 		this.x = x;

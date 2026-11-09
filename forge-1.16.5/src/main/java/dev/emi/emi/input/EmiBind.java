@@ -1,5 +1,7 @@
 package dev.emi.emi.input;
 
+
+import com.github.bsideup.jabel.Desugar;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -154,6 +156,9 @@ public class EmiBind {
 		this.boundKeys = modifiedKeys;
 		updateBinds();
 	}
+
+	@Desugar
+
 
 	public static record ModifiedKey(InputUtil.Key key, int modifiers) {
 

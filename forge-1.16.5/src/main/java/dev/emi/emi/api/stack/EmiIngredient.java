@@ -1,5 +1,7 @@
 package dev.emi.emi.api.stack;
 
+
+import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.List;
 
@@ -98,7 +100,7 @@ public interface EmiIngredient extends EmiRenderable {
 		if (ingredient == null || ingredient.isEmpty()) {
 			return EmiStack.EMPTY;
 		}
-		return EmiTags.getIngredient(Item.class, Arrays.stream(ingredient.getMatchingStacksClient()).map(EmiStack::of).toList(), amount);
+		return EmiTags.getIngredient(Item.class, Arrays.stream(ingredient.getMatchingStacksClient()).map(EmiStack::of).collect(Collectors.toList()), amount);
 	}
 
 	public static EmiIngredient of(List<? extends EmiIngredient> list) {
@@ -124,7 +126,7 @@ public interface EmiIngredient extends EmiRenderable {
 			}
 			if (internalAmount > 1) {
 				amount = internalAmount;
-				list = list.stream().map(st -> st.copy().setAmount(1)).toList();
+				list = list.stream().map(st -> st.copy().setAmount(1)).collect(Collectors.toList());
 			}
 			Class<?> tagType = null;
 			for (EmiIngredient i : list) {
@@ -139,7 +141,7 @@ public interface EmiIngredient extends EmiRenderable {
 					}
 				}
 			}
-			return EmiTags.getIngredient(tagType, list.stream().flatMap(i -> i.getEmiStacks().stream()).toList(), amount);
+			return EmiTags.getIngredient(tagType, list.stream().flatMap(i -> i.getEmiStacks().stream()).collect(Collectors.toList()), amount);
 		}
 	}
 }

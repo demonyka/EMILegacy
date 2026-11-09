@@ -1,5 +1,9 @@
 package dev.emi.emi.jemi.runtime;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,13 +30,13 @@ public class JemiIngredientFilter implements IIngredientFilter {
 	public <T> List<T> getFilteredIngredients(IIngredientType<T> ingredientType) {
 		SidebarPanel search = EmiScreenManager.getSearchPanel();
 		if (search == null || search.space == null) {
-			return List.of();
+			return ImmutableList.of();
 		}
 		return search.space.getStacks().stream()
 			.map(i -> JemiUtil.getTyped(i.getEmiStacks().get(0)))
 			.filter(Optional::isPresent).map(Optional::get)
 			.map(i -> i.getIngredient(ingredientType))
 			.filter(Optional::isPresent).map(Optional::get)
-			.toList();
+			.collect(Collectors.toList());
 	}
 }

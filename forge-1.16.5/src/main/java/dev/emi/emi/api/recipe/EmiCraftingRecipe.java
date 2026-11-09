@@ -1,5 +1,7 @@
 package dev.emi.emi.api.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import dev.emi.emi.api.render.EmiTexture;
@@ -43,7 +45,7 @@ public class EmiCraftingRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(output);
+		return ImmutableList.of(output);
 	}
 
 	@Override

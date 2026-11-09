@@ -1,5 +1,7 @@
 package dev.emi.emi.api.widget;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -28,7 +30,7 @@ public class RecipeFillButtonWidget extends RecipeButtonWidget {
 		super(x, y, 24, 0, recipe);
 		HandledScreen hs = EmiApi.getHandledScreen();
 		EmiRecipeHandler handler = EmiRecipeFiller.getFirstValidHandler(recipe, hs);
-		tooltip = List.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.inapplicable"))));
+		tooltip = ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.inapplicable"))));
 		if (handler == null) {
 			canFill = false;
 		} else {
@@ -42,7 +44,7 @@ public class RecipeFillButtonWidget extends RecipeButtonWidget {
 				}
 			} catch (Exception e) {
 				canFill = false;
-				tooltip = List.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.error.recipe.initialize"))));
+				tooltip = ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.error.recipe.initialize"))));
 			}
 		}
 	}

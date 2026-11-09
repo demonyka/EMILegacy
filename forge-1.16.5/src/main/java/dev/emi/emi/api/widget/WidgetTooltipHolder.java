@@ -1,5 +1,7 @@
 package dev.emi.emi.api.widget;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.function.BiFunction;
 
@@ -15,10 +17,10 @@ public interface WidgetTooltipHolder<T> {
 	}
 
 	default T tooltipText(BiFunction<Integer, Integer, List<Text>> tooltipSupplier) {
-		return tooltip((x, y) -> tooltipSupplier.apply(x, y).stream().map(Text::asOrderedText).map(TooltipComponent::of).toList());
+		return tooltip((x, y) -> tooltipSupplier.apply(x, y).stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList()));
 	}
 
 	default T tooltipText(List<Text> tooltip) {
-		return tooltip(tooltip.stream().map(Text::asOrderedText).map(TooltipComponent::of).toList());
+		return tooltip(tooltip.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList()));
 	}
 }

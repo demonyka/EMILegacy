@@ -1,5 +1,7 @@
 package dev.emi.emi.runtime;
 
+
+import java.util.stream.Collectors;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class EmiHidden {
 	}
 
 	public static void reload() {
-		List<IndexStackData> isds = EmiData.stackData.stream().map(i -> i.get()).filter(i -> i.disable() && (!i.filters().isEmpty() || !i.removed().isEmpty())).toList();
+		List<IndexStackData> isds = EmiData.stackData.stream().map(i -> i.get()).filter(i -> i.disable() && (!i.filters().isEmpty() || !i.removed().isEmpty())).collect(Collectors.toList());
 		for (IndexStackData data : isds) {
 			for (EmiIngredient stack : data.removed()) {
 				disabledStacks.add(stack);

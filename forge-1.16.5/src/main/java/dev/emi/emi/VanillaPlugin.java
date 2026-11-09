@@ -1,5 +1,7 @@
 package dev.emi.emi;
 
+
+import com.google.common.collect.ImmutableList;
 import static dev.emi.emi.api.recipe.VanillaEmiRecipeCategories.ANVIL_REPAIRING;
 import static dev.emi.emi.api.recipe.VanillaEmiRecipeCategories.BLASTING;
 import static dev.emi.emi.api.recipe.VanillaEmiRecipeCategories.BREWING;
@@ -333,13 +335,13 @@ public class VanillaPlugin implements EmiPlugin {
 			EmiPort.getDisabledItems()
 		).collect(Collectors.toSet());
 
-		List<Item> dyeableItems = EmiPort.getItemRegistry().stream().filter(i -> i instanceof DyeableItem).collect(Collectors.toList());
+		List<Item> dyeableItems = EmiPort.getItemRegistry().stream().filter(i -> i instanceof DyeableItem).collect(Collectors.collect(Collectors.toList()));
 
 		for (CraftingRecipe recipe : getRecipes(registry, RecipeType.CRAFTING)) {
 			Identifier id = ProxyRecipeManager.getId(recipe);
 			if (recipe instanceof MapExtendingRecipe map) {
 				EmiStack paper = EmiStack.of(Items.PAPER);
-				addRecipeSafe(registry, () -> new EmiCraftingRecipe(List.of(
+				addRecipeSafe(registry, () -> new EmiCraftingRecipe(ImmutableList.of(
 						paper, paper, paper, paper,
 						EmiStack.of(Items.FILLED_MAP),
 						paper, paper, paper, paper
@@ -363,7 +365,7 @@ public class VanillaPlugin implements EmiPlugin {
 					DyeItem dyeItem = DyeItem.byColor(dye);
 					Identifier sid = synthetic("crafting/shulker_box_dying", EmiUtil.subId(dyeItem));
 					addRecipeSafe(registry, () -> new EmiCraftingRecipe(
-						List.of(EmiStack.of(Items.SHULKER_BOX), EmiStack.of(dyeItem)),
+						ImmutableList.of(EmiStack.of(Items.SHULKER_BOX), EmiStack.of(dyeItem)),
 						EmiStack.of(ShulkerBoxBlock.getItemStack(dye)), sid), recipe);
 				}
 			} else if (recipe instanceof ShieldDecorationRecipe shield) {
@@ -376,7 +378,7 @@ public class VanillaPlugin implements EmiPlugin {
 						return;
 					}
 					EmiStack arrow = EmiStack.of(Items.ARROW);
-					addRecipeSafe(registry, () -> new EmiCraftingRecipe(List.of(
+					addRecipeSafe(registry, () -> new EmiCraftingRecipe(ImmutableList.of(
 							arrow, arrow, arrow, arrow,
 							EmiStack.of(EmiPort.setPotion(new ItemStack(Items.LINGERING_POTION), entry.value())),
 							arrow, arrow, arrow, arrow
@@ -411,7 +413,7 @@ public class VanillaPlugin implements EmiPlugin {
 						boolean shapeless = recipe.fits(1, recipe.getIngredients().size()) && recipe.fits(recipe.getIngredients().size(), 1);
 						List<EmiIngredient> input;
 						if (shapeless) {
-							input = recipe.getIngredients().stream().map(EmiIngredient::of).toList();
+							input = recipe.getIngredients().stream().map(EmiIngredient::of).collect(Collectors.toList());
 						} else {
 							int width = recipe.fits(2, 3) ? recipe.fits(1, 3) ? 1 : 2 : 3;
 							input = Lists.newArrayList();
@@ -468,7 +470,7 @@ public class VanillaPlugin implements EmiPlugin {
 	private static void addRepair(EmiRegistry registry, Set<Item> hiddenItems) {
 		List<Enchantment> targetedEnchantments = Lists.newArrayList();
 		List<Enchantment> universalEnchantments = Lists.newArrayList();
-		for (Enchantment enchantment : EmiPort.getEnchantmentRegistry().stream().toList()) {
+		for (Enchantment enchantment : EmiPort.getEnchantmentRegistry().stream().collect(Collectors.toList())) {
 			try {
 				if (enchantment.isAcceptableItem(ItemStack.EMPTY)) {
 					universalEnchantments.add(enchantment);
@@ -539,7 +541,7 @@ public class VanillaPlugin implements EmiPlugin {
 		addRecipeSafe(registry, () -> new EmiAnvilRecipe(EmiStack.of(Items.SHIELD), EmiIngredient.of(ItemTags.PLANKS),
 			synthetic("anvil/repairing/material", EmiUtil.subId(Items.SHIELD) + "/" + EmiUtil.subId(Items.OAK_PLANKS))));
 
-		for (Enchantment e : EmiPort.getEnchantmentRegistry().stream().toList()) {
+		for (Enchantment e : EmiPort.getEnchantmentRegistry().stream().collect(Collectors.toList())) {
 			if (!e.isCursed()) {
 				int max = Math.min(10, e.getMaxLevel());
 				int min = e.getMinLevel();
@@ -573,7 +575,7 @@ public class VanillaPlugin implements EmiPlugin {
 		addConcreteRecipe(registry, Blocks.RED_CONCRETE_POWDER, concreteWater, Blocks.RED_CONCRETE);
 		addConcreteRecipe(registry, Blocks.BLACK_CONCRETE_POWDER, concreteWater, Blocks.BLACK_CONCRETE);
 
-		EmiIngredient axes = damagedTool(getPreferredTag(List.of(
+		EmiIngredient axes = damagedTool(getPreferredTag(ImmutableList.of(
 				"minecraft:axes", "c:axes", "c:tools/axes", "fabric:axes", "forge:tools/axes"
 			), EmiStack.of(Items.IRON_AXE)), 1);
 		for (Map.Entry<Block, Block> entry : AxeItemAccessor.getStrippedBlocks().entrySet()) {
@@ -597,7 +599,7 @@ public class VanillaPlugin implements EmiPlugin {
 			.output(EmiStack.of(Items.PUMPKIN_SEEDS, 4))
 			.output(EmiStack.of(Items.CARVED_PUMPKIN))
 			.build());
-		EmiIngredient hoes = damagedTool(getPreferredTag(List.of(
+		EmiIngredient hoes = damagedTool(getPreferredTag(ImmutableList.of(
 				"minecraft:hoes", "c:hoes", "c:tools/hoes", "fabric:hoes", "forge:tools/hoes"
 			), EmiStack.of(Items.IRON_HOE)), 1);
 		for (Map.Entry<Block, Pair<Predicate<ItemUsageContext>, Consumer<ItemUsageContext>>> entry
@@ -606,7 +608,7 @@ public class VanillaPlugin implements EmiPlugin {
 			if (EmiClient.HOE_ACTIONS.containsKey(consumer)) {
 				Block b = entry.getKey();
 				Identifier id = synthetic("world/tilling", EmiUtil.subId(b));
-				List<EmiStack> list = EmiClient.HOE_ACTIONS.get(consumer).stream().map(EmiStack::of).toList();
+				List<EmiStack> list = EmiClient.HOE_ACTIONS.get(consumer).stream().map(EmiStack::of).collect(Collectors.toList());
 				if (list.size() == 1) {
 					addRecipeSafe(registry, () -> basicWorld(EmiStack.of(b), hoes, list.get(0), id));
 				} else if (list.size() == 2) {
@@ -623,7 +625,7 @@ public class VanillaPlugin implements EmiPlugin {
 			}
 		}
 
-		EmiIngredient shovels = damagedTool(getPreferredTag(List.of(
+		EmiIngredient shovels = damagedTool(getPreferredTag(ImmutableList.of(
 				"minecraft:shovels", "c:shovels", "c:tools/shovels", "fabric:shovels", "forge:tools/shovels"
 			), EmiStack.of(Items.IRON_SHOVEL)), 1);
 		for (Map.Entry<Block, BlockState> entry : ShovelItemAccessor.getPathStates().entrySet()) {

@@ -1,5 +1,9 @@
 package dev.emi.emi.api.recipe;
 
+
+
+import com.github.bsideup.jabel.Desugar;
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -31,11 +35,11 @@ public class EmiWorldInteractionRecipe implements EmiRecipe {
 		this.left = builder.left;
 		this.right = builder.right;
 		this.inputs = Stream.concat(left.stream(), right.stream())
-			.filter(i -> !i.catalyst).map(i -> i.stack).toList();
+			.filter(i -> !i.catalyst).map(i -> i.stack).collect(Collectors.toList());
 		this.catalysts = Stream.concat(left.stream(), right.stream())
-			.filter(i -> i.catalyst).map(i -> i.stack).toList();
+			.filter(i -> i.catalyst).map(i -> i.stack).collect(Collectors.toList());
 		this.outputIngredients = builder.output;
-		this.outputs = builder.output.stream().map(i -> (EmiStack) i.stack).toList();
+		this.outputs = builder.output.stream().map(i -> (EmiStack) i.stack).collect(Collectors.toList());
 		this.supportsRecipeTree = builder.supportsRecipeTree;
 		for (EmiIngredient catalyst : catalysts) {
 			for (EmiStack stack : catalyst.getEmiStacks()) {
@@ -252,6 +256,9 @@ public class EmiWorldInteractionRecipe implements EmiRecipe {
 			return this;
 		}
 	}
+
+	@Desugar
+
 
 	private static record WorldIngredient(EmiIngredient stack, boolean catalyst, Function<SlotWidget, SlotWidget> mutator) {
 	}

@@ -151,7 +151,7 @@ public class EmiSearchWidget extends TextFieldWidget {
 		if (!focused) {
 			searchHistoryIndex = 0;
 			String currentSearch = getText();
-			if (!currentSearch.isBlank() && !currentSearch.isEmpty()) {
+			if (!currentSearch.trim().isEmpty() && !currentSearch.isEmpty()) {
 				searchHistory.removeIf(String::isBlank);
 				searchHistory.remove(currentSearch);
 				searchHistory.add(0, currentSearch);

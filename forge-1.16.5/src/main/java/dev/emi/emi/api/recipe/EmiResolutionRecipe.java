@@ -1,5 +1,7 @@
 package dev.emi.emi.api.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -32,12 +34,12 @@ public class EmiResolutionRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(stack);
+		return ImmutableList.of(stack);
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(stack);
+		return ImmutableList.of(stack);
 	}
 
 	@Override

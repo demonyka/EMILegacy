@@ -36,7 +36,7 @@ public class EmiTagKey<T> {
 	}
 
 	public void recalculate() {
-		cached = stream().toList();
+		cached = stream().collect(Collectors.toList());
 	}
 
 	public TagKey<T> raw() {

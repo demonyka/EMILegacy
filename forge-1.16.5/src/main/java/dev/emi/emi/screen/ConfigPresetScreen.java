@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+
+import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Field;
 import java.util.List;
 
@@ -134,7 +136,7 @@ public class ConfigPresetScreen extends Screen {
 
 		@Override
 		public List<? extends Element> children() {
-			return List.of(button);
+			return ImmutableList.of(button);
 		}
 
 		@Override
@@ -160,7 +162,7 @@ public class ConfigPresetScreen extends Screen {
 
 		@Override
 		public List<? extends Element> children() {
-			return List.of();
+			return ImmutableList.of();
 		}
 
 		@Override

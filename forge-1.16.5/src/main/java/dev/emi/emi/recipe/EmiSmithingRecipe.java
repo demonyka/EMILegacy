@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import dev.emi.emi.EmiPort;
@@ -39,12 +41,12 @@ public class EmiSmithingRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(input, addition);
+		return ImmutableList.of(input, addition);
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(output);
+		return ImmutableList.of(output);
 	}
 
 	@Override

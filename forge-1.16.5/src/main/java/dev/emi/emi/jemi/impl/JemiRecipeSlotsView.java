@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi.impl;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,7 +26,7 @@ public class JemiRecipeSlotsView implements IRecipeSlotsView {
 
 	@Override
 	public List<IRecipeSlotView> getSlotViews(RecipeIngredientRole role) {
-		return slots.stream().filter(s -> Objects.equals(s.getRole(), role)).toList();
+		return slots.stream().filter(s -> Objects.equals(s.getRole(), role)).collect(Collectors.toList());
 	}
 
 	@Override

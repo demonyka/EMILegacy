@@ -1,5 +1,7 @@
 package dev.emi.emi.chess;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -102,7 +104,7 @@ class ChessEmiStack extends EmiStack {
 
 	@Override
 	public List<Text> getTooltipText() {
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@Override
@@ -137,7 +139,7 @@ class ChessEmiStack extends EmiStack {
 			}
 			return list;
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@Override

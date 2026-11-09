@@ -1,5 +1,7 @@
 package dev.emi.emi.search;
 
+
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.item.BlockItem;
 
 import java.util.Set;
@@ -22,7 +24,7 @@ public class RegexTagQuery extends Query {
 		} catch (Exception e) {
 		}
 		if (p == null) {
-			valid = Set.of();
+			valid = ImmutableSet.of();
 		} else {
 			final Pattern pat = p;
 			valid = Stream.<EmiTagKey<?>>concat(

@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
@@ -43,12 +45,12 @@ public class EmiGrindstoneDisenchantingBookRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(getBook());
+		return ImmutableList.of(getBook());
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(EmiStack.of(Items.BOOK));
+		return ImmutableList.of(EmiStack.of(Items.BOOK));
 	}
 
 	@Override

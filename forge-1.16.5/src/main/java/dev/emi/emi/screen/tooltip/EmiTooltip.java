@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.tooltip;
 
+
+import java.util.stream.Collectors;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
@@ -21,11 +23,11 @@ public class EmiTooltip {
 
 	public static List<TooltipComponent> splitTranslate(String key) {
 		return Arrays.stream(I18n.translate(key).split("\n"))
-			.map(s -> TooltipComponent.of(EmiPort.ordered(EmiPort.literal(s)))).toList();
+			.map(s -> TooltipComponent.of(EmiPort.ordered(EmiPort.literal(s)))).collect(Collectors.toList());
 	}
 
 	public static List<TooltipComponent> splitTranslate(String key, Object... objects) {
 		return Arrays.stream(I18n.translate(key, objects).split("\n"))
-			.map(s -> TooltipComponent.of(EmiPort.ordered(EmiPort.literal(s)))).toList();
+			.map(s -> TooltipComponent.of(EmiPort.ordered(EmiPort.literal(s)))).collect(Collectors.toList());
 	}
 }

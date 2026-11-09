@@ -1,5 +1,7 @@
 package dev.emi.emi.recipe.special;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import dev.emi.emi.EmiPort;
@@ -44,12 +46,12 @@ public class EmiAnvilEnchantRecipe implements EmiRecipe {
 
 	@Override
 	public List<EmiIngredient> getInputs() {
-		return List.of(EmiStack.of(tool), getBook());
+		return ImmutableList.of(EmiStack.of(tool), getBook());
 	}
 
 	@Override
 	public List<EmiStack> getOutputs() {
-		return List.of(EmiStack.of(tool));
+		return ImmutableList.of(EmiStack.of(tool));
 	}
 
 	@Override

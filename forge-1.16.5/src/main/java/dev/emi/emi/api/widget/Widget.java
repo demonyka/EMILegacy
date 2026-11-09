@@ -1,5 +1,7 @@
 package dev.emi.emi.api.widget;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import net.minecraft.client.gui.Drawable;
@@ -13,7 +15,7 @@ public abstract class Widget implements Drawable {
 	public abstract void render(MatrixStack matrices, int mouseX, int mouseY, float delta);
 
 	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-		return List.of();
+		return ImmutableList.of();
 	}
 	
 	public boolean mouseClicked(int mouseX, int mouseY, int button) {

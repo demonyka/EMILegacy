@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -59,7 +61,7 @@ public class SidebarSubpanelsWidget extends ConfigEntryWidget {
 	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
 		for (IntEdit edit : rows) {
 			if (edit.contains(mouseX, mouseY)) {
-				return List.of(TooltipComponent.of(EmiPort.ordered(
+				return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(
 					EmiPort.translatable("emi.sidebar.size.rows"))));
 			}
 		}

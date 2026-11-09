@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+
+import java.util.stream.Collectors;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,7 +53,7 @@ public class WidgetGroup implements WidgetHolder {
 			width / 2, height / 2 - 5, Formatting.RED.getColorValue(), true).horizontalAlign(Alignment.CENTER));
 		widgets.add(new DrawableWidget(0, 0, width, height, (raw, mouseX, mouseY, delta) -> {})
 			.tooltip((i, j) -> EmiUtil.getStackTrace(e).stream()
-				.map(EmiPort::literal).map(EmiPort::ordered).map(TooltipComponent::of).toList()));
+				.map(EmiPort::literal).map(EmiPort::ordered).map(TooltipComponent::of).collect(Collectors.toList())));
 	}
 
 	public void decorateDevMode() {

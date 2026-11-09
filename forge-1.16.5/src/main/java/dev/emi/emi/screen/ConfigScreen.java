@@ -1,5 +1,9 @@
 package dev.emi.emi.screen;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
@@ -100,15 +104,15 @@ public class ConfigScreen extends Screen {
 		Comment comment = field.getAnnotation(Comment.class);
 		if (I18n.hasTranslation(key)) {
 			text = (List<TooltipComponent>) (Object) Arrays.stream(I18n.translate(key).split("\n"))
-				.map(EmiPort::literal).map(EmiTooltipComponents::of).toList();
+				.map(EmiPort::literal).map(EmiTooltipComponents::of).collect(Collectors.toList());
 		} else if (comment != null) {
 			text = (List<TooltipComponent>) (Object) Arrays.stream(comment.value().split("\n"))
-				.map(EmiPort::literal).map(EmiTooltipComponents::of).toList();
+				.map(EmiPort::literal).map(EmiTooltipComponents::of).collect(Collectors.toList());
 		} else {
 			text = null;
 		}
 		if (text == null) {
-			return List.of();
+			return ImmutableList.of();
 		}
 		return text;
 	}
@@ -158,7 +162,7 @@ public class ConfigScreen extends Screen {
 		}, () -> (EmiConfig.useGlobalConfig ? 40 : 0), () -> {
 			return (List<Text>) (Object) Arrays.stream(I18n.translate("tooltip.emi.config.global").split("\n"))
 				.map(s -> client.textRenderer.getTextHandler().wrapLines(StringVisitable.plain(s), maxWidth, Style.EMPTY))
-				.flatMap(l -> l.stream()).map(v -> EmiPort.literal(v.getString())).toList();
+				.flatMap(l -> l.stream()).map(v -> EmiPort.literal(v.getString())).collect(Collectors.toList());
 		}));
 		this.addDrawableChild(resetButton);
 		this.addChild(search.field);
@@ -282,12 +286,12 @@ public class ConfigScreen extends Screen {
 			"binds", "binds.crafts", "binds.cheats",
 			"dev"
 		);
-		List<List<String>> removes = List.of(
-			List.of("binds.cheats"),
-			List.of("general.search"),
-			List.of("ui.top-sidebar", "ui.bottom-sidebar"),
-			List.of("binds.crafts"),
-			List.of("ui.left-sidebar", "ui.right-sidebar")
+		List<List<String>> removes = ImmutableList.of(
+			ImmutableList.of("binds.cheats"),
+			ImmutableList.of("general.search"),
+			ImmutableList.of("ui.top-sidebar", "ui.bottom-sidebar"),
+			ImmutableList.of("binds.crafts"),
+			ImmutableList.of("ui.left-sidebar", "ui.right-sidebar")
 		);
 		int space = list.getLogicalHeight() - 10;
 		for (List<String> r : removes) {
@@ -307,7 +311,7 @@ public class ConfigScreen extends Screen {
 			}
 			this.addDrawableChild(new ConfigJumpButton(
 				2 + (newGroup ? 0 : 8), y, u, v, w -> jump(s),
-				List.of(EmiPort.translatable("config.emi.group." + s.replace('-', '_')))));
+				ImmutableList.of(EmiPort.translatable("config.emi.group." + s.replace('-', '_')))));
 			y += 16;
 		}
 	}

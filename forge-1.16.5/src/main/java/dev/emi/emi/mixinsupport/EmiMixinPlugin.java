@@ -1,5 +1,7 @@
 package dev.emi.emi.mixinsupport;
 
+
+import com.github.bsideup.jabel.Desugar;
 import java.lang.annotation.Annotation;
 import java.util.Iterator;
 import java.util.List;
@@ -177,6 +179,9 @@ public class EmiMixinPlugin implements IMixinConfigPlugin {
 			}
 		}
 	}
+
+	@Desugar
+
 
 	private static record InvokeTargetInfo(String owner, String name, int type, String desc) {
 	}

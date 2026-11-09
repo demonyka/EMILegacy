@@ -1,5 +1,7 @@
 package dev.emi.emi.api.recipe;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -42,7 +44,7 @@ public interface EmiRecipe {
 	 * 	However, catalysts will consider this recipe a use when exploring recipes.
 	 */
 	default List<EmiIngredient> getCatalysts() {
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	/**

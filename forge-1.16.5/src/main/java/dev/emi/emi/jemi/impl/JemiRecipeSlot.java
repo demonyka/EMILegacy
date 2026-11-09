@@ -1,5 +1,7 @@
 package dev.emi.emi.jemi.impl;
 
+
+import com.github.bsideup.jabel.Desugar;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -103,11 +105,20 @@ public class JemiRecipeSlot implements IRecipeSlotView {
 		this.highlight = color;
 	}
 
+	@Desugar
+
+
 	public static record OffsetDrawable(IDrawable drawable, int xOff, int yOff){
 	}
 
+	@Desugar
+
+
 	public static record IngredientRenderer<T>(IIngredientType<T> type, IIngredientRenderer<T> renderer){
 	}
+
+	@Desugar
+
 
 	public static record TankInfo(int width, int height, long capacity, boolean showCapacity) {
 	}

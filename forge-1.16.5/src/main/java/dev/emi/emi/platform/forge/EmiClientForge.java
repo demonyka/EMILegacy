@@ -1,5 +1,7 @@
 package dev.emi.emi.platform.forge;
 
+
+import java.util.stream.Collectors;
 import java.util.Arrays;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -39,7 +41,7 @@ public class EmiClientForge {
 	
 	@SubscribeEvent
 	public static void clientInit(FMLClientSetupEvent event) {
-		StackBatcher.EXTRA_RENDER_LAYERS.addAll(Arrays.stream(ForgeRenderTypes.values()).map(f -> f.get()).toList());
+		StackBatcher.EXTRA_RENDER_LAYERS.addAll(Arrays.stream(ForgeRenderTypes.values()).map(f -> f.get()).collect(Collectors.toList()));
 		EmiClient.init();
 		EmiNetwork.initClient(packet -> EmiPacketHandler.CHANNEL.sendToServer(packet));
 		MinecraftForge.EVENT_BUS.addListener(EmiClientForge::recipesReloaded);

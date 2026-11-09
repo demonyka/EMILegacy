@@ -1,5 +1,7 @@
 package dev.emi.emi.registry;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -87,12 +89,12 @@ public class EmiRecipeFiller {
 				if (slot instanceof CraftingResultSlot crs) {
 					CraftingInventory inv = ((CraftingResultSlotAccessor) crs).getInput();
 					if (inv != null && inv.getWidth() > 0 && inv.getHeight() > 0) {
-						return List.of(new CoercedRecipeHandler<T>(crs));
+						return ImmutableList.of(new CoercedRecipeHandler<T>(crs));
 					}
 				}
 			}
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 
 	@SuppressWarnings("unchecked")

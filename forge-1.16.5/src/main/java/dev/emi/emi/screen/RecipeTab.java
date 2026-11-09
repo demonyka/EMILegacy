@@ -1,5 +1,9 @@
 package dev.emi.emi.screen;
 
+
+
+import java.util.stream.Collectors;
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import com.google.common.collect.Lists;
@@ -25,7 +29,7 @@ public class RecipeTab {
 			} catch (Throwable t) {
 				return new RecipeDisplay(t);
 			}
-		}).toList();
+		}).collect(Collectors.toList());
 		width = displays.stream().map(RecipeDisplay::getWidth).max(Integer::compareTo).orElse(0);
 	}
 
@@ -85,6 +89,6 @@ public class RecipeTab {
 		if (page >= 0 && page < getPageCount()) {
 			return pages.get(page);
 		}
-		return List.of();
+		return ImmutableList.of();
 	}
 }

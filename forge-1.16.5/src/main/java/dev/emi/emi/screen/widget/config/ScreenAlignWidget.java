@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget.config;
 
+
+import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -30,7 +32,7 @@ public class ScreenAlignWidget extends ConfigEntryWidget {
 				mutator.set(mutator.get());
 			});
 		});
-		this.setChildren(List.of(horizontal, vertical));
+		this.setChildren(ImmutableList.of(horizontal, vertical));
 	}
 
 	public Text getHorizontalText() {
