@@ -12,3 +12,24 @@ description = '''
 A featureful and accessible item and recipe viewer
 '''
 logoFile = "icon.png"
+
+[[dependencies.emi]]
+modId = "forge"
+mandatory = true
+versionRange = "[36.2,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.emi]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,1.17)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.emi]]
+modId = "jei"
+mandatory = false
+versionRange = "[7.7,)"
+ordering = "NONE"
+side = "CLIENT"

@@ -1,14 +1,10 @@
 package dev.emi.emi.platform.forge;
 
-
-
-import dev.emi.emi.backport.ModelViewStack;
-import java.util.stream.Collectors;
 import java.util.Arrays;
-
-import com.mojang.blaze3d.systems.RenderSystem;
+import java.util.stream.Collectors;
 
 import dev.emi.emi.EmiPort;
+import dev.emi.emi.backport.ModelViewStack;
 import dev.emi.emi.data.EmiData;
 import dev.emi.emi.network.EmiNetwork;
 import dev.emi.emi.platform.EmiClient;
@@ -22,25 +18,39 @@ import dev.emi.emi.screen.StackBatcher;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.resource.ReloadableResourceManager;
+import net.minecraft.resource.ResourceManager;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.ForgeRenderTypes;
-import net.minecraftforge.client.event.ContainerScreenEvent;
-import net.minecraftforge.client.event.ModelEvent;
+import net.minecraftforge.client.event.GuiContainerEvent;
+import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.RecipesUpdatedEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.ScreenEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TagsUpdatedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = "emi", bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class EmiClientForge {
-	
+
+	/**
+	 * Called from the mod constructor on the physical client. 1.16 has no RegisterClientReloadListenersEvent,
+	 * the client resource manager already exists at mod construction and its first reload happens afterwards.
+	 */
+	public static void construct() {
+		ResourceManager manager = MinecraftClient.getInstance().getResourceManager();
+		if (manager instanceof ReloadableResourceManager reloadable) {
+			EmiData.init(reloader -> reloadable.registerReloader(reloader));
+		}
+		ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY,
+			() -> (client, parent) -> new ConfigScreen(parent));
+	}
+
 	@SubscribeEvent
 	public static void clientInit(FMLClientSetupEvent event) {
 		StackBatcher.EXTRA_RENDER_LAYERS.addAll(Arrays.stream(ForgeRenderTypes.values()).map(f -> f.get()).collect(Collectors.toList()));
@@ -50,19 +60,12 @@ public class EmiClientForge {
 		MinecraftForge.EVENT_BUS.addListener(EmiClientForge::tagsReloaded);
 		MinecraftForge.EVENT_BUS.addListener(EmiClientForge::renderScreenForeground);
 		MinecraftForge.EVENT_BUS.addListener(EmiClientForge::postRenderScreen);
-		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
-			() -> new ConfigScreenHandler.ConfigScreenFactory((client, last) -> new ConfigScreen(last)));
 	}
 
 	@SubscribeEvent
-	public static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
+	public static void registerAdditionalModels(ModelRegistryEvent event) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		EmiTags.registerTagModels(client.getResourceManager(), event::register);
-	}
-
-	@SubscribeEvent
-	public static void registerResourceReloaders(RegisterClientReloadListenersEvent event) {
-		EmiData.init(reloader -> event.registerReloadListener(reloader));
+		EmiTags.registerTagModels(client.getResourceManager(), ModelLoader::addSpecialModel);
 	}
 
 	public static void recipesReloaded(RecipesUpdatedEvent event) {
@@ -73,26 +76,27 @@ public class EmiClientForge {
 		EmiReloadManager.reloadTags();
 	}
 
-	public static void renderScreenForeground(ContainerScreenEvent.Render.Foreground event) {
-		EmiDrawContext context = EmiDrawContext.wrap(event.getPoseStack());
-		HandledScreen<?> screen = event.getContainerScreen();
+	public static void renderScreenForeground(GuiContainerEvent.DrawForeground event) {
+		EmiDrawContext context = EmiDrawContext.wrap(event.getMatrixStack());
+		HandledScreen<?> screen = event.getGuiContainer();
 		EmiScreenBase base = EmiScreenBase.of(screen);
 		if (base != null) {
 			MinecraftClient client = MinecraftClient.getInstance();
+			// The container screen translates the GL model-view matrix by (guiLeft, guiTop) before this event
 			ModelViewStack viewStack = ModelViewStack.INSTANCE;
 			viewStack.push();
 			viewStack.translate(-screen.getGuiLeft(), -screen.getGuiTop(), 0.0);
-			RenderSystem.applyModelViewMatrix();
+			EmiPort.applyModelViewMatrix();
 			EmiPort.setPositionTexShader();
 			EmiScreenManager.render(context, event.getMouseX(), event.getMouseY(), client.getTickDelta());
 			viewStack.pop();
-			RenderSystem.applyModelViewMatrix();
+			EmiPort.applyModelViewMatrix();
 		}
 	}
 
-	public static void postRenderScreen(ScreenEvent.Render.Post event) {
-		EmiDrawContext context = EmiDrawContext.wrap(event.getPoseStack());
-		Screen screen = event.getScreen();
+	public static void postRenderScreen(GuiScreenEvent.DrawScreenEvent.Post event) {
+		EmiDrawContext context = EmiDrawContext.wrap(event.getMatrixStack());
+		Screen screen = event.getGui();
 		if (!(screen instanceof HandledScreen<?>)) {
 			return;
 		}

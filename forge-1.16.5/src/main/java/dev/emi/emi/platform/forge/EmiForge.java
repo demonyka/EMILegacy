@@ -5,11 +5,13 @@ import dev.emi.emi.network.PingS2CPacket;
 import dev.emi.emi.platform.EmiMain;
 import dev.emi.emi.registry.EmiCommands;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.fml.network.PacketDistributor;
 
 @Mod("emi")
 public class EmiForge {
@@ -22,6 +24,7 @@ public class EmiForge {
 		});
 		MinecraftForge.EVENT_BUS.addListener(this::registerCommands);
 		MinecraftForge.EVENT_BUS.addListener(this::playerConnect);
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> EmiClientForge::construct);
 	}
 
 	public void registerCommands(RegisterCommandsEvent event) {
@@ -29,7 +32,7 @@ public class EmiForge {
 	}
 
 	public void playerConnect(PlayerEvent.PlayerLoggedInEvent event) {
-		if (event.getEntity() instanceof ServerPlayerEntity spe) {
+		if (event.getPlayer() instanceof ServerPlayerEntity spe) {
 			EmiNetwork.sendToClient(spe, new PingS2CPacket());
 		}
 	}

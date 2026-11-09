@@ -4,6 +4,7 @@ import dev.emi.emi.runtime.EmiLog;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class CreateItemC2SPacket implements EmiPacket {
@@ -29,17 +30,22 @@ public class CreateItemC2SPacket implements EmiPacket {
 	public void apply(PlayerEntity player) {
 		if ((player.hasPermissionLevel(2) || player.isCreative()) && player.currentScreenHandler != null) {
 			if (stack.isEmpty()) {
-				if (mode == 1 && !player.currentScreenHandler.getCursorStack().isEmpty()) {
-					EmiLog.info(player.getEntityName() + " deleted " + player.currentScreenHandler.getCursorStack());
-					player.currentScreenHandler.setCursorStack(stack);
+				if (mode == 1 && !player.inventory.getCursorStack().isEmpty()) {
+					EmiLog.info(player.getEntityName() + " deleted " + player.inventory.getCursorStack());
+					player.inventory.setCursorStack(stack);
 				}
 			} else {
 				EmiLog.info(player.getEntityName() + " cheated in " + stack);
 				if (mode == 0) {
-					player.getInventory().offerOrDrop(stack);
+					player.inventory.offerOrDrop(player.world, stack);
 				} else if (mode == 1) {
-					player.currentScreenHandler.setCursorStack(stack);
+					player.inventory.setCursorStack(stack);
 				}
+			}
+			// 1.16 does not sync the cursor stack on its own
+			player.currentScreenHandler.sendContentUpdates();
+			if (player instanceof ServerPlayerEntity spe) {
+				spe.updateCursorStack();
 			}
 		}
 	}

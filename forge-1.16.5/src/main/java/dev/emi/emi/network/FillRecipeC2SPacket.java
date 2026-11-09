@@ -16,6 +16,7 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 
 public class FillRecipeC2SPacket implements EmiPacket {
@@ -131,7 +132,7 @@ public class FillRecipeC2SPacket implements EmiPacket {
 					if (gotten != stack.getCount()) {
 						if (gotten > 0) {
 							stack.setCount(gotten);
-							player.getInventory().offerOrDrop(stack);
+							player.inventory.offerOrDrop(player.world, stack);
 						}
 						return;
 					} else {
@@ -144,26 +145,31 @@ public class FillRecipeC2SPacket implements EmiPacket {
 									s.setStack(ItemStack.EMPTY);
 									s.onTakeItem(player, taken);
 								} else {
-									player.getInventory().offerOrDrop(stack);
+									player.inventory.offerOrDrop(player.world, stack);
 									continue;
 								}
 							}
 							s.setStack(stack);
 						} else {
-							player.getInventory().offerOrDrop(stack);
+							player.inventory.offerOrDrop(player.world, stack);
 						}
 					}
 				}
 				if (output != null) {
 					if (action == 1) {
-						handler.onSlotClick(output.getIndex(), 0, SlotActionType.PICKUP, player);
+						handler.onSlotClick(output.id, 0, SlotActionType.PICKUP, player);
 					} else if (action == 2) {
-						handler.onSlotClick(output.getIndex(), 0, SlotActionType.QUICK_MOVE, player);
+						handler.onSlotClick(output.id, 0, SlotActionType.QUICK_MOVE, player);
 					}
 				}
 			} finally {
 				for (ItemStack stack : rubble) {
-					player.getInventory().offerOrDrop(stack);
+					player.inventory.offerOrDrop(player.world, stack);
+				}
+				// 1.16 does not sync the cursor stack on its own
+				handler.sendContentUpdates();
+				if (player instanceof ServerPlayerEntity spe) {
+					spe.updateCursorStack();
 				}
 			}
 		}
@@ -208,6 +214,10 @@ public class FillRecipeC2SPacket implements EmiPacket {
 		}
 	}
 
+	private static boolean canCombine(ItemStack a, ItemStack b) {
+		return a.getItem() == b.getItem() && ItemStack.areTagsEqual(a, b);
+	}
+
 	private static int grabMatching(PlayerEntity player, List<Slot> slots, List<ItemStack> rubble, List<Slot> crafting, ItemStack stack) {
 		int amount = stack.getCount();
 		int grabbed = 0;
@@ -216,7 +226,7 @@ public class FillRecipeC2SPacket implements EmiPacket {
 				return grabbed;
 			}
 			ItemStack r = rubble.get(i);
-			if (ItemStack.canCombine(stack, r)) {
+			if (canCombine(stack, r)) {
 				int wanted = amount - grabbed;
 				if (r.getCount() <= wanted) {
 					grabbed += r.getCount();
@@ -236,7 +246,7 @@ public class FillRecipeC2SPacket implements EmiPacket {
 				continue;
 			}
 			ItemStack st = s.getStack();
-			if (ItemStack.canCombine(stack, st)) {
+			if (canCombine(stack, st)) {
 				int wanted = amount - grabbed;
 				ItemStack taken = st.copy();
 				if (st.getCount() <= wanted) {

@@ -54,12 +54,11 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraftforge.client.ForgeHooksClient;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraft.util.registry.Registry;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.brewing.BrewingRecipe;
 import net.minecraftforge.common.brewing.IBrewingRecipe;
+import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
@@ -122,7 +121,7 @@ public class EmiAgnosForge extends EmiAgnos {
 		for (ModFileScanData data : ModList.get().getAllScanData()) {
 			for (ModFileScanData.AnnotationData annot : data.getAnnotations()) {
 				try {
-					if (entrypointType.equals(annot.annotationType())) {
+					if (entrypointType.equals(annot.getAnnotationType())) {
 						mods.add(data.getIModInfoData().get(0).getMods().get(0).getModId());
 					}
 				} catch (Throwable t) {
@@ -141,15 +140,15 @@ public class EmiAgnosForge extends EmiAgnos {
 		for (ModFileScanData data : ModList.get().getAllScanData()) {
 			for (ModFileScanData.AnnotationData annot : data.getAnnotations()) {
 				try {
-					if (entrypointType.equals(annot.annotationType())) {
-						Class<?> clazz = Class.forName(annot.memberName());
+					if (entrypointType.equals(annot.getAnnotationType())) {
+						Class<?> clazz = Class.forName(annot.getMemberName());
 						if (EmiPlugin.class.isAssignableFrom(clazz)) {
 							Class<? extends EmiPlugin> pluginClass = clazz.asSubclass(EmiPlugin.class);
 							EmiPlugin plugin = pluginClass.getConstructor().newInstance();
 							String id = data.getIModInfoData().get(0).getMods().get(0).getModId();
 							containers.add(new EmiPluginContainer(plugin, id));
 						} else {
-							EmiLog.error("EmiEntrypoint " + annot.memberName() + " does not implement EmiPlugin");
+							EmiLog.error("EmiEntrypoint " + annot.getMemberName() + " does not implement EmiPlugin");
 						}
 					}
 				} catch (Throwable t) {
@@ -189,23 +188,24 @@ public class EmiAgnosForge extends EmiAgnos {
 					String gid = EmiUtil.subId(recipe.ingredient.getMatchingStacksClient()[0].getItem());
 					String iid = EmiUtil.subId(recipe.input.get());
 					String oid = EmiUtil.subId(recipe.output.get());
-					Consumer<RegistryEntry<Potion>> potionRecipeGen = entry -> {
-						Potion potion = entry.value();
+					Consumer<Potion> potionRecipeGen = potion -> {
 						if (potion == Potions.EMPTY) {
 							return;
 						}
 						if (BrewingRecipeRegistry.isBrewable(potion)) {
 							Identifier id = EmiPort.id("emi", "brewing/item/"
-								+ EmiUtil.subId(entry.getKey().get().getValue()) + "/" + gid + "/" + iid + "/" + oid);
+								+ EmiUtil.subId(Registry.POTION.getId(potion)) + "/" + gid + "/" + iid + "/" + oid);
 							registry.addRecipe(new EmiBrewingRecipe(
 								EmiStack.of(EmiPort.setPotion(new ItemStack(recipe.input.get()), potion)), EmiIngredient.of(recipe.ingredient),
 								EmiStack.of(EmiPort.setPotion(new ItemStack(recipe.output.get()), potion)), id));
 						}
 					};
 					if ((recipe.input.get() instanceof PotionItem)) {
-						EmiPort.getPotionRegistry().streamEntries().forEach(potionRecipeGen);
+						for (Potion potion : EmiPort.getPotionRegistry()) {
+							potionRecipeGen.accept(potion);
+						}
 					} else {
-						potionRecipeGen.accept(EmiPort.getPotionRegistry().getEntry(EmiPort.getPotionRegistry().getRawId(Potions.AWKWARD)).get());
+						potionRecipeGen.accept(Potions.AWKWARD);
 					}
 
 				}
@@ -237,7 +237,7 @@ public class EmiAgnosForge extends EmiAgnos {
 	@SuppressWarnings("unchecked")
 	protected List<String> getAllModAuthorsAgnos() {
 		return ModList.get().getMods().stream().flatMap(m -> {
-			Optional<Object> opt = m.getConfig().getConfigElement("authors");
+			Optional<Object> opt = m.getConfigElement("authors");
 			if (opt.isPresent()) {
 				Object obj = opt.get();
 				if (obj instanceof String authors) {
@@ -256,8 +256,9 @@ public class EmiAgnosForge extends EmiAgnos {
 	@Override
 	protected List<TooltipComponent> getItemTooltipAgnos(ItemStack stack) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		List<Text> text = stack.getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);;
-		return ForgeHooksClient.gatherTooltipComponents(stack, text, stack.getTooltipData(), 0, Integer.MAX_VALUE, Integer.MAX_VALUE, null, client.textRenderer);
+		List<Text> text = stack.getTooltip(client.player, client.options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
+		// 1.16 has no tooltip data/components: tooltips are text only (ItemTooltipEvent is fired by getTooltip)
+		return text.stream().map(EmiPort::ordered).map(TooltipComponent::of).collect(Collectors.toList());
 	}
 
 	@Override
@@ -273,15 +274,15 @@ public class EmiAgnosForge extends EmiAgnos {
 	@Override
 	protected boolean isFloatyFluidAgnos(FluidEmiStack stack) {
 		FluidStack fs = new FluidStack(stack.getKeyOfType(Fluid.class), 1000, stack.getNbt());
-		return fs.getFluid().getFluidType().isLighterThanAir();
+		return fs.getFluid().getAttributes().isLighterThanAir();
 	}
 
 	@Override
 	protected void renderFluidAgnos(FluidEmiStack stack, MatrixStack matrices, int x, int y, float delta, int xOff, int yOff, int width, int height) {
 		FluidStack fs = new FluidStack(stack.getKeyOfType(Fluid.class), 1000, stack.getNbt());
-		IClientFluidTypeExtensions ext = IClientFluidTypeExtensions.of(fs.getFluid());
-		Identifier texture = ext.getStillTexture(fs);
-		int color = ext.getTintColor(fs);
+		FluidAttributes attributes = fs.getFluid().getAttributes();
+		Identifier texture = attributes.getStillTexture(fs);
+		int color = attributes.getColor(fs);
 		MinecraftClient client = MinecraftClient.getInstance();
 		Sprite sprite = client.getSpriteAtlas(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).apply(texture);
 		EmiRenderHelper.drawTintedSprite(matrices, sprite, color, x, y, xOff, yOff, width, height);
@@ -299,7 +300,7 @@ public class EmiAgnosForge extends EmiAgnos {
 	protected boolean canBatchAgnos(ItemStack stack) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		ItemRenderer ir = client.getItemRenderer();
-		BakedModel model = ir.getHeldItemModel(stack, client.world, null, 0);
+		BakedModel model = ir.getHeldItemModel(stack, client.world, null);
 		return model != null && model.getClass() == BasicBakedModel.class;
 	}
 
@@ -307,7 +308,7 @@ public class EmiAgnosForge extends EmiAgnos {
 	protected Map<Item, Integer> getFuelMapAgnos() {
 		Object2IntMap<Item> fuelMap = new Object2IntOpenHashMap<>();
 		for (Item item : EmiPort.getItemRegistry()) {
-			int time = ForgeHooks.getBurnTime(item.getDefaultStack(), null);
+			int time = ForgeHooks.getBurnTime(item.getDefaultStack());
 			if (time > 0) {
 				fuelMap.put(item, time);
 			}
