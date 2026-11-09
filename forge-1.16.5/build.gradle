@@ -148,9 +148,24 @@ tasks.register('generateClassLists') {
 
 sourceSets.main.output.dir(synthMixinDir, builtBy: generateClassLists)
 
-// Porting aid: compile without the JEI bridge and Forge platform layer (-PcoreOnly)
+// Porting aid: compile without the JEI bridge (-PcoreOnly)
 if (project.hasProperty("coreOnly")) {
 	sourceSets.main.java {
-		exclude 'dev/emi/emi/jemi/**', 'dev/emi/emi/mixin/jei/**', 'dev/emi/emi/platform/forge/**', 'dev/emi/emi/api/forge/**'
+		exclude 'dev/emi/emi/jemi/**', 'dev/emi/emi/mixin/jei/**'
 	}
+	processResources {
+		filesMatching("emi.mixins.json") {
+			filter { line -> line.contains('"jei.') ? null : line }
+		}
+	}
+}
+
+// Forge 1.16.5 runs on Java 8; compile with 17 (+Jabel), launch the game with 8
+tasks.withType(net.fabricmc.loom.task.AbstractRunTask).configureEach {
+	javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(8) }
+}
+
+// Porting aid: -PdevAutoWorld makes runClient enter a creative test world and open the inventory
+if (project.hasProperty("devAutoWorld")) {
+	loom.runs.client.vmArg "-Demi.devAutoWorld=true"
 }

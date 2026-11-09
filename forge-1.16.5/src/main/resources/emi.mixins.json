@@ -13,8 +13,6 @@
     "accessor.ItemRendererAccessor",
     "accessor.ShovelItemAccessor",
     "accessor.SmithingRecipeAccessor",
-    "jei.PluginCallerMixin",
-    "AbstractInventoryScreenMixin",
     "CraftingResultSlotMixin",
     "GlobalMixin",
     "HandledScreenMixin",

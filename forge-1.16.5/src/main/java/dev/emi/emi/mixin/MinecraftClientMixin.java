@@ -22,8 +22,8 @@ public class MinecraftClientMixin {
 	@Shadow
 	public ClientWorld world;
 
-	@Inject(at = @At("RETURN"), method = "reloadResources(Z)Ljava/util/concurrent/CompletableFuture;")
-	private void reloadResources(boolean force, CallbackInfoReturnable<CompletableFuture<Void>> info) {
+	@Inject(at = @At("RETURN"), method = "reloadResources()Ljava/util/concurrent/CompletableFuture;")
+	private void reloadResources(CallbackInfoReturnable<CompletableFuture<Void>> info) {
 		CompletableFuture<Void> future = info.getReturnValue();
 		if (future != null) {
 			future.thenRunAsync(() -> {

@@ -161,8 +161,13 @@ public class EmiReloadManager {
 						.sorted((a, b) -> Integer.compare(entrypointPriority(a), entrypointPriority(b))).collect(Collectors.toList()));
 					
 					if (EmiAgnos.isModLoaded("jei")) {
-						// Loaded reflectively so JEI classes are only touched when JEI is installed
-						plugins.add(new EmiPluginContainer((EmiPlugin) Class.forName("dev.emi.emi.jemi.JemiPlugin").getConstructor().newInstance(), "jemi"));
+						// Loaded reflectively so JEI classes are only touched when JEI is installed.
+						// A broken JEI bridge must not take down the whole reload.
+						try {
+							plugins.add(new EmiPluginContainer((EmiPlugin) Class.forName("dev.emi.emi.jemi.JemiPlugin").getConstructor().newInstance(), "jemi"));
+						} catch (Throwable t) {
+							EmiLog.error("Could not load the JEI bridge (JEMI), continuing without it", t);
+						}
 					}
 					EmiInitRegistry initRegistry = new EmiInitRegistryImpl();
 					for (EmiPluginContainer container : plugins) {
