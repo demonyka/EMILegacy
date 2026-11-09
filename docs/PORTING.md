@@ -73,9 +73,38 @@ EMI сам **не знает** про машины модов. Рецепты м
 ## 3. План работ 1.16.5
 
 1. [x] Сборка (Loom + Forge 1.16.5 + Jabel), перемаппинг, Java 8 API.
-2. [ ] Бэкпорты: `TooltipComponent`, `TagKey`, `RegistryEntry`, рендер-примитивы (`EmiDrawContext`, `EmiPort`).
-3. [ ] Экраны и виджеты, рендер предметов/жидкостей.
-4. [ ] Forge-платформа: события, клавиши, сеть, mods.toml, поиск EMI-плагинов.
-5. [ ] JEMI под JEI 7 + скрытие UI JEI + перенос рецептов (кнопка «+») через JEI transfer handlers.
-6. [ ] Ванильный плагин под 1.16.5.
-7. [ ] Запуск клиента, проверка с JEI и набором модов (Mekanism, Thermal, Create, IE).
+2. [x] Бэкпорты (`dev.emi.emi.backport`): `TooltipComponent` + `TooltipRenderer`, `TagKey`, `ModelViewStack`, `CompatScreen`; `EmiPort` под 1.16.5.
+3. [x] Экраны и виджеты, рендер предметов/жидкостей.
+4. [x] Forge-платформа: события, клавиши, сеть, mods.toml, поиск EMI-плагинов.
+5. [x] JEMI под JEI 7 + скрытие UI JEI + кнопка «+» через JEI transfer handlers.
+6. [x] Ванильный плагин под 1.16.5 (без меди/воска/грязи).
+7. [~] Проверка в игре — см. ниже.
+
+### Проверено в игре (dev-клиент, Forge 36.2.39, JEI 7.8.1, Mekanism 10.1.2)
+
+* Клиент грузится, все mixin'ы применяются, выделенный сервер стартует.
+* EMI перезагружается при входе в мир (~1 с), оверлей со списком предметов, поиск, избранное, окно рецептов.
+* Оверлей JEI скрыт.
+* JEMI забирает из JEI все 32 категории машин Mekanism (Crusher, Enrichment Chamber, Osmium Compressor, …); рецепт дробителя рисуется JEI-категорией Mekanism внутри EMI, станции (дробитель + фабрики) показаны.
+
+### Ещё не проверено / известные пробелы
+
+* Кнопка «+» (перенос рецепта) в машинах модов и на выделенном сервере.
+* Рендер жидкостей/газов, дерево рецептов (BoM), конфиг-экран, скриншоты рецептов.
+* Пакетный рендер (`StackBatcher`) отключён — работает обычный рендер, медленнее на огромных списках.
+* `AbstractInventoryScreenMixin` (сдвиг иконок эффектов зелий от сайдбара) убран — в 1.16 другая разметка эффектов. Вариант: Forge `GuiScreenEvent.PotionShiftEvent`.
+* Предупреждения dev-режима: дубли id у JEI-рецептов (tipped arrows, Mekanism rotary) и тег-модели для блоков 1.17+ (медь) в ассетах EMI.
+* Проверить собранный jar в обычном Forge-лаунчере (не dev).
+
+## 4. Разработка
+
+```sh
+cd forge-1.16.5
+./gradlew build                      # jar в build/libs
+./gradlew runClient                  # dev-клиент (Java 8 подхватывается автоматически)
+./gradlew runClient -PdevAutoWorld   # сразу войти в тестовый творческий мир и открыть инвентарь
+./gradlew runClient -PdevAutoWorld -PtestMods -PdevShowRecipes=mekanism:dust_osmium   # + Mekanism, открыть рецепты
+./gradlew compileJava -PcoreOnly     # собрать без JEMI
+```
+
+Нужны JDK 17 (сборка) и JDK 8 (запуск игры). `tools/jp.sh` — javap по Minecraft/Forge/JEI с Yarn-именами; `tools/*.js` — скрипты механического портирования.
