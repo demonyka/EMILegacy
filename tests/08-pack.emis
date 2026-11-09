@@ -1,0 +1,71 @@
+# Big modpack compatibility tour (production): overlays, key handling, modded categories, RS grid fill
+world survival
+waitloaded
+wait 80
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 20
+cmd setblock 1 200 1 refinedstorage:creative_controller
+cmd setblock 1 200 2 refinedstorage:crafting_grid
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+cmd give @p minecraft:apple 1
+wait 20
+inventory
+wait 10
+shot k01_inventory
+move 141 186
+wait 3
+shot k02_hover_slot
+key key.keyboard.r
+wait 10
+dump
+shot k03_r_on_slot
+close
+wait 5
+close
+wait 5
+uses create:mechanical_press
+wait 15
+shot k04_create_press
+uses appliedenergistics2:inscriber
+wait 10
+shot k05_ae2_inscriber
+uses industrialforegoing:dissolution_chamber
+wait 10
+shot k06_if
+uses mysticalagriculture:infusion_altar
+wait 10
+shot k07_mystical
+recipes minecraft:diamond_ore
+wait 10
+shot k08_jer_worldgen
+uses tconstruct:smeltery_controller
+wait 10
+shot k09_tinkers
+uses twilightforest:uncrafting_table
+wait 10
+shot k10_twilight
+close
+wait 5
+use 1 200 2
+wait 15
+dump
+recipes minecraft:oak_planks
+wait 10
+shot k11_rs_recipe
+click 283 121
+wait 15
+dump
+shot k12_rs_filled
+close
+wait 5
+inventory
+wait 5
+click 212 227
+type apple
+wait 10
+move 328 31
+wait 5
+shot k13_tooltip
+quit

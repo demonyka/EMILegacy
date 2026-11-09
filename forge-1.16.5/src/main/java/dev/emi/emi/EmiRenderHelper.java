@@ -21,6 +21,8 @@ import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import dev.emi.emi.config.EmiConfig;
 import dev.emi.emi.backport.TooltipRenderer;
+import net.minecraft.item.ItemStack;
+import dev.emi.emi.screen.tooltip.EmiTextTooltipWrapper;
 import dev.emi.emi.registry.EmiRecipeFiller;
 import dev.emi.emi.runtime.EmiDrawContext;
 import dev.emi.emi.runtime.EmiLog;
@@ -170,6 +172,14 @@ public class EmiRenderHelper {
 			return;
 		}
 		y = Math.max(16, y);
+		// The item behind the tooltip, so mods drawing on Forge tooltip events (AppleSkin, Quark...) can do so
+		ItemStack contextStack = ItemStack.EMPTY;
+		for (TooltipComponent comp : components) {
+			if (comp instanceof EmiTextTooltipWrapper wrapper && wrapper.stack.getEmiStacks().size() == 1) {
+				contextStack = wrapper.stack.getEmiStacks().get(0).getItemStack();
+				break;
+			}
+		}
 		// Some mods assume this list will be mutable, oblige them
 		List<TooltipComponent> mutable = Lists.newArrayList();
 		int wrapWidth = Math.max(components.stream()
@@ -196,7 +206,7 @@ public class EmiRenderHelper {
 				mutable.add(comp);
 			}
 		}
-		TooltipRenderer.render(context.raw(), mutable, x, y, screen.width, screen.height);
+		TooltipRenderer.render(context.raw(), mutable, x, y, screen.width, screen.height, contextStack);
 	}
 
 	public static void drawSlotHightlight(EmiDrawContext context, int x, int y, int w, int h, int z) {

@@ -26,6 +26,12 @@ public class ItemStackMixin {
 		if (EmiConfig.appendItemModId && EmiConfig.appendModId && Thread.currentThread() != EmiSearch.searchThread && text != null && !text.isEmpty()) {
 			String namespace = EmiPort.getItemRegistry().getId(((ItemStack) (Object) this).getItem()).getNamespace();
 			String mod = EmiUtil.getModName(namespace);
+			// Other mods (Jade, Hwyla, ...) also append the mod name through ItemTooltipEvent
+			for (Text line : text) {
+				if (mod.equals(Formatting.strip(line.getString()))) {
+					return;
+				}
+			}
 			text.add(EmiPort.literal(mod, Formatting.BLUE, Formatting.ITALIC));
 		}
 	}

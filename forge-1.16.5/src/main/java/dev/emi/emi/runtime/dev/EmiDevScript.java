@@ -25,11 +25,8 @@ import net.minecraft.client.util.ScreenshotUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.resource.DataPackSettings;
 import net.minecraft.screen.slot.Slot;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.DynamicRegistryManager;
 import net.minecraft.util.registry.Registry;
@@ -73,6 +70,7 @@ public final class EmiDevScript {
 	private static boolean waitLoaded;
 	private static GameMode mode = GameMode.CREATIVE;
 	private static String pendingShot;
+	private static int pendingUse;
 	private static String connectHost;
 	private static int connectPort;
 
@@ -107,7 +105,18 @@ public final class EmiDevScript {
 
 	@SubscribeEvent
 	public static void onInit(GuiScreenEvent.InitGuiEvent.Post event) {
-		if (SCRIPT == null || worldStarted || !(event.getGui() instanceof TitleScreen)) {
+		if (SCRIPT == null) {
+			return;
+		}
+		// Modded dimensions trigger the vanilla "experimental settings" confirmation: proceed
+		if (worldStarted && MinecraftClient.getInstance().player == null
+				&& event.getGui() instanceof net.minecraft.client.gui.screen.ConfirmScreen && !event.getWidgetList().isEmpty()) {
+			EmiLog.info("[devscript] Confirming " + event.getGui().getTitle().getString());
+			net.minecraft.client.gui.widget.ButtonWidget proceed = (net.minecraft.client.gui.widget.ButtonWidget) event.getWidgetList().get(0);
+			MinecraftClient.getInstance().execute(proceed::onPress);
+			return;
+		}
+		if (worldStarted || !(event.getGui() instanceof TitleScreen)) {
 			return;
 		}
 		worldStarted = true;
@@ -144,6 +153,11 @@ public final class EmiDevScript {
 		if (pendingShot != null) {
 			return;
 		}
+		// Press "use" a couple of ticks after turning, once the crosshair target is updated
+		if (pendingUse > 0 && --pendingUse == 0) {
+			net.minecraft.client.option.KeyBinding.onKeyPressed(InputUtil.fromTranslationKey(client.options.keyUse.getBoundKeyTranslationKey()));
+			return;
+		}
 		if (waitTicks > 0) {
 			waitTicks--;
 			return;
@@ -176,10 +190,10 @@ public final class EmiDevScript {
 			case "waitloaded" -> waitLoaded = true;
 			case "cmd" -> client.player.sendChatMessage("/" + rest);
 			case "use" -> {
-				// Same path as a real right click: client interaction, packet to the server
+				// Like a player: look at the block, then press the "use" key (raycast + packet happen as usual)
 				BlockPos pos = new BlockPos(Integer.parseInt(p[1]), Integer.parseInt(p[2]), Integer.parseInt(p[3]));
-				client.interactionManager.interactBlock(client.player, client.world, Hand.MAIN_HAND,
-					new BlockHitResult(Vec3d.ofCenter(pos), Direction.UP, pos, false));
+				client.player.lookAt(net.minecraft.command.argument.EntityAnchorArgumentType.EntityAnchor.EYES, Vec3d.ofCenter(pos));
+				pendingUse = 2;
 			}
 			case "inventory" -> client.openScreen(new InventoryScreen(client.player));
 			case "close" -> {

@@ -1,0 +1,43 @@
+world survival
+waitloaded
+wait 80
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 1
+cmd setblock 0 199 0 minecraft:glass
+wait 20
+cmd setblock 1 200 0 minecraft:crafting_table
+cmd setblock 1 200 1 refinedstorage:creative_controller
+cmd setblock 1 200 2 refinedstorage:crafting_grid
+cmd setblock 1 200 -1 mekanism:formulaic_assemblicator
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+cmd give @p minecraft:cobblestone 8
+wait 20
+use 1 200 0
+wait 15
+dump
+close
+wait 10
+use 1 200 2
+wait 15
+dump
+shot w01_rs
+recipes minecraft:oak_planks
+wait 10
+click 283 121
+wait 15
+dump
+close
+wait 5
+close
+wait 10
+use 1 200 -1
+wait 15
+dump
+recipes minecraft:furnace
+wait 10
+click 283 121
+wait 15
+dump
+quit

@@ -1,0 +1,37 @@
+world survival
+waitloaded
+wait 80
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 20
+cmd setblock 1 200 1 refinedstorage:creative_controller
+cmd setblock 1 200 2 refinedstorage:crafting_grid
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+wait 20
+use 1 200 2
+wait 20
+dump
+shot u01_after_use
+recipes minecraft:oak_planks
+wait 10
+click 283 121
+wait 15
+dump
+shot u04_rs_filled
+close
+wait 5
+close
+wait 5
+inventory
+wait 5
+click 212 227
+type apple
+wait 10
+move 328 31
+wait 5
+shot u02_apple_tooltip
+move 382 31
+wait 5
+shot u03_golden_apple
+quit

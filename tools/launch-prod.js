@@ -29,5 +29,7 @@ const fixed = args.map((a) => a.replace(/[A-Za-z]:[^;= ]*[\\/]HeadlessMC[\\/][0-
 	}
 	return a;
 });
-const r = spawnSync(exe, fixed, { cwd: path.join(hmc, "game"), stdio: ["ignore", fs.openSync(path.join(hmc, "prod-stdout.txt"), "w"), fs.openSync(path.join(hmc, "prod-stdout.txt"), "a")], timeout: 900000 });
+// Extra JVM flags (e.g. -Dmixin.debug.verbose=true) via EXTRA_JVM
+const extra = (process.env.EXTRA_JVM || "").split(" ").filter(Boolean);
+const r = spawnSync(exe, extra.concat(fixed), { cwd: path.join(hmc, "game"), stdio: ["ignore", fs.openSync(path.join(hmc, "prod-stdout.txt"), "w"), fs.openSync(path.join(hmc, "prod-stdout.txt"), "a")], timeout: 900000 });
 console.log("exit=" + r.status);
