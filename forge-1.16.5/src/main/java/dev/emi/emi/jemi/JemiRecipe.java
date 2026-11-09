@@ -49,6 +49,9 @@ public class JemiRecipe<T> implements EmiRecipe {
 	public T recipe;
 	public boolean allowTree = true;
 	private final int width, height;
+	private static JemiRecipe<?> lastLayoutRecipe;
+	private static RecipeLayout<?> lastLayout;
+	private boolean layoutFailed, renderErrorLogged, tooltipErrorLogged;
 
 	public JemiRecipe(EmiRecipeCategory recipeCategory, IRecipeCategory<T> category, T recipe) {
 		this.recipeCategory = recipeCategory;
@@ -137,7 +140,7 @@ public class JemiRecipe<T> implements EmiRecipe {
 
 	@Override
 	public void addWidgets(WidgetHolder widgets) {
-		RecipeLayout<T> layout = JemiInternals.createLayout(category, recipe);
+		RecipeLayout<T> layout = getLayout();
 		if (layout == null) {
 			return;
 		}
@@ -150,6 +153,28 @@ public class JemiRecipe<T> implements EmiRecipe {
 		for (JemiSlotWidget<?> widget : slotWidgets) {
 			widgets.add(widget);
 		}
+	}
+
+	/**
+	 * Recipe tooltips add the widgets of the same recipe every frame. A new JEI layout every frame would run the
+	 * mod's layout code each time and restart the cycling of slot alternatives at a random position.
+	 */
+	@SuppressWarnings("unchecked")
+	private @Nullable RecipeLayout<T> getLayout() {
+		if (layoutFailed) {
+			return null;
+		}
+		if (lastLayoutRecipe == this && lastLayout != null) {
+			return (RecipeLayout<T>) lastLayout;
+		}
+		RecipeLayout<T> layout = JemiInternals.createLayout(category, recipe);
+		if (layout == null) {
+			layoutFailed = true;
+			return null;
+		}
+		lastLayoutRecipe = this;
+		lastLayout = layout;
+		return layout;
 	}
 
 	private <V> void addSlots(GuiIngredientGroup<V> group, List<GuiIngredient<?>> slots, List<JemiSlotWidget<?>> slotWidgets) {
@@ -207,7 +232,10 @@ public class JemiRecipe<T> implements EmiRecipe {
 					slot.draw(context.raw(), 0, 0);
 				}
 			} catch (Throwable t) {
-				EmiLog.error("[JEMI] Exception rendering JEI recipe", t);
+				if (!renderErrorLogged) {
+					renderErrorLogged = true;
+					EmiLog.error("[JEMI] Exception rendering JEI recipe " + id, t);
+				}
 			}
 			context.pop();
 			RenderSystem.color4f(1, 1, 1, 1);
@@ -243,7 +271,10 @@ public class JemiRecipe<T> implements EmiRecipe {
 					return strings.stream().map(t -> TooltipComponent.of(t.asOrderedText())).collect(Collectors.toList());
 				}
 			} catch (Throwable t) {
-				EmiLog.error("[JEMI] Exception getting JEI recipe tooltip", t);
+				if (!tooltipErrorLogged) {
+					tooltipErrorLogged = true;
+					EmiLog.error("[JEMI] Exception getting JEI recipe tooltip " + id, t);
+				}
 			}
 			return Lists.newArrayList();
 		}

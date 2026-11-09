@@ -108,10 +108,13 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 			ItemRenderer itemRenderer = client.getItemRenderer();
 			float zOffset = itemRenderer.zOffset;
 			itemRenderer.zOffset = 0;
-			itemRenderer.renderInGui(stack, x, y);
-			itemRenderer.renderGuiItemOverlay(client.textRenderer, stack, x, y, "");
-			itemRenderer.zOffset = zOffset;
-			view.pop();
+			try {
+				itemRenderer.renderInGui(stack, x, y);
+				itemRenderer.renderGuiItemOverlay(client.textRenderer, stack, x, y, "");
+			} finally {
+				itemRenderer.zOffset = zOffset;
+				view.pop();
+			}
 		}
 		if ((flags & RENDER_AMOUNT) != 0) {
 			String count = "";

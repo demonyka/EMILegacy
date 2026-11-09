@@ -109,6 +109,11 @@ public class StackBatcher {
 
 	public StackBatcher() {
 		Map<RenderLayer, BufferBuilder> buffers = new HashMap<>();
+		if (!isEnabled()) {
+			imm = new BatcherVertexConsumerProvider(new BufferBuilder(256), buffers);
+			unlitFacade = new UnlitFacade(imm);
+			return;
+		}
 		assign(buffers, RenderLayer.getSolid());
 		assign(buffers, RenderLayer.getCutout());
 		assign(buffers, RenderLayer.getTranslucent());

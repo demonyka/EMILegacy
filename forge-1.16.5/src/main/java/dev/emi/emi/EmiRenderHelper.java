@@ -348,6 +348,7 @@ public class EmiRenderHelper {
 			ModelViewStack view = ModelViewStack.INSTANCE;
 			view.push();
 			view.translate(x + 4, y + 4, 0);
+			try {
 
 			recipe.addWidgets(holder);
 			float delta = MinecraftClient.getInstance().getTickDelta();
@@ -368,7 +369,9 @@ public class EmiRenderHelper {
 				}
 			}
 
-			view.pop();
+			} finally {
+				view.pop();
+			}
 
 			// Force translucency to match that of the recipe background
 			context.disableBlend();

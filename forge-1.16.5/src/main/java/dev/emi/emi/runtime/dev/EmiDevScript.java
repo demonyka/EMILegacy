@@ -224,6 +224,9 @@ public final class EmiDevScript {
 				}
 			}
 			case "dump" -> dump(client);
+			case "state" -> EmiLog.info("[devscript] STATE tags=" + dev.emi.emi.registry.EmiTags.TAGS.size()
+				+ " recipes=" + dev.emi.emi.api.EmiApi.getRecipeManager().getRecipes().size()
+				+ " stacks=" + dev.emi.emi.registry.EmiStackList.stacks.size());
 			case "shot" -> pendingShot = p[1];
 			case "log" -> EmiLog.info("[devscript] LOG " + rest);
 			case "quit" -> client.scheduleStop();

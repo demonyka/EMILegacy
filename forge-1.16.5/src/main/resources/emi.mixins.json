@@ -17,6 +17,7 @@
     "accessor.SmithingRecipeAccessor",
     "jei.IngredientListOverlayMixin",
     "jei.LeftAreaDispatcherMixin",
+    "jei.RecipesGuiMixin",
     "CraftingResultSlotMixin",
     "GlobalMixin",
     "HandledScreenMixin",

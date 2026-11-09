@@ -48,25 +48,26 @@ public class EmiReloadManager {
 		EmiMixinTransformation.preach();
 	}
 
-	public static void reloadTags() {
+	// With an integrated server the tag event is posted from the server thread
+	public static synchronized void reloadTags() {
 		loadedResourcesMask |= 1;
-		if (loadedResourcesMask == 3) {
-			EmiLog.info("Recipes synchronized, reloading EMI");
-			loadedResourcesMask = 0;
-			reload();
-		} else {
-			EmiLog.info("Recipes synchronized, waiting for tags to reload EMI...");
-		}
-	}
-
-	public static void reloadRecipes() {
-		loadedResourcesMask |= 2;
 		if (loadedResourcesMask == 3) {
 			EmiLog.info("Tags synchronized, reloading EMI");
 			loadedResourcesMask = 0;
 			reload();
 		} else {
 			EmiLog.info("Tags synchronized, waiting for recipes to reload EMI...");
+		}
+	}
+
+	public static synchronized void reloadRecipes() {
+		loadedResourcesMask |= 2;
+		if (loadedResourcesMask == 3) {
+			EmiLog.info("Recipes synchronized, reloading EMI");
+			loadedResourcesMask = 0;
+			reload();
+		} else {
+			EmiLog.info("Recipes synchronized, waiting for tags to reload EMI...");
 		}
 	}
 

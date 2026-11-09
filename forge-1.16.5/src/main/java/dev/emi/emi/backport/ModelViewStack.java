@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Quaternion;
 
 /**
  * Stand-in for RenderSystem.getModelViewStack() from 1.17: operations go straight
@@ -33,6 +34,11 @@ public final class ModelViewStack extends MatrixStack {
 	@Override
 	public void scale(float x, float y, float z) {
 		RenderSystem.scalef(x, y, z);
+	}
+
+	@Override
+	public void multiply(Quaternion quaternion) {
+		RenderSystem.multMatrix(new Matrix4f(quaternion));
 	}
 
 	public void multiplyPositionMatrix(Matrix4f matrix) {

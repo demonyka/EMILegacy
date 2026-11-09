@@ -15,6 +15,7 @@ import dev.emi.emi.EmiPort;
 import dev.emi.emi.EmiUtil;
 import dev.emi.emi.registry.EmiTags;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.fluid.Fluid;
 import dev.emi.emi.backport.TagKey;
@@ -83,7 +84,11 @@ public class EmiTagKey<T> {
 	@SuppressWarnings("unchecked")
 	private static <T> @Nullable TagGroup<T> getGroup(Identifier registry) {
 		MinecraftClient client = MinecraftClient.getInstance();
-		TagManager manager = client.getNetworkHandler() != null ? client.getNetworkHandler().getTagManager() : ServerTagManagerHolder.getTagManager();
+		ClientPlayNetworkHandler handler = client.getNetworkHandler();
+		// With an integrated server the client handler only gets its tags after the recipes packet, which is
+		// what starts an EMI reload: its manager is still empty then. The server's tags are bound earlier.
+		TagManager manager = handler == null || client.isIntegratedServerRunning()
+			? ServerTagManagerHolder.getTagManager() : handler.getTagManager();
 		if (registry.equals(Registry.ITEM_KEY.getValue())) {
 			return (TagGroup<T>) manager.getItems();
 		} else if (registry.equals(Registry.BLOCK_KEY.getValue())) {

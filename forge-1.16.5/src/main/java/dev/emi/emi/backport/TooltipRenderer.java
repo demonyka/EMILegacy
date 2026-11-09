@@ -89,9 +89,21 @@ public final class TooltipRenderer {
 			borderBottom = color.getBorderEnd();
 		}
 
-		matrices.push();
 		float oldZ = itemRenderer.zOffset;
 		itemRenderer.zOffset = 400.0f;
+		try {
+			renderContents(matrices, components, stack, lines, textRenderer, itemRenderer, left, top, width, height,
+				background, borderTop, borderBottom);
+		} finally {
+			itemRenderer.zOffset = oldZ;
+		}
+	}
+
+	private static void renderContents(MatrixStack matrices, List<TooltipComponent> components, ItemStack stack, List<StringVisitable> lines,
+			TextRenderer textRenderer, ItemRenderer itemRenderer, int left, int top, int width, int height,
+			int background, int borderTop, int borderBottom) {
+		boolean events = !stack.isEmpty();
+		matrices.push();
 		Matrix4f matrix = matrices.peek().getModel();
 		int z = 400;
 
@@ -133,10 +145,10 @@ public final class TooltipRenderer {
 			lineY += component.getHeight() + (i == 0 ? 2 : 0);
 		}
 		immediate.draw();
+		matrices.pop();
 		if (events) {
 			MinecraftForge.EVENT_BUS.post(new RenderTooltipEvent.PostText(stack, lines, matrices, left, top, textRenderer, width, height));
 		}
-		matrices.pop();
 
 		lineY = top;
 		for (int i = 0; i < components.size(); i++) {
@@ -144,7 +156,6 @@ public final class TooltipRenderer {
 			component.drawItems(textRenderer, left, lineY, matrices, itemRenderer, 400);
 			lineY += component.getHeight() + (i == 0 ? 2 : 0);
 		}
-		itemRenderer.zOffset = oldZ;
 	}
 
 	/** Text of the components, for the event listeners that inspect tooltip lines. Non-text components become blank lines. */

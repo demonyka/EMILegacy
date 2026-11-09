@@ -221,6 +221,9 @@ public class ListWidget extends AbstractParentElement implements Drawable {
 				GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE
 			);
 			n = 4;
+			RenderSystem.disableAlphaTest();
+			RenderSystem.shadeModel(GL11.GL_SMOOTH);
+			RenderSystem.disableTexture();
 			bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
 			bufferBuilder.vertex((double)this.left, (double)(this.top + 4), 0.0).color(0, 0, 0, 0).next();
 			bufferBuilder.vertex((double)this.right, (double)(this.top + 4), 0.0).color(0, 0, 0, 0).next();
@@ -231,6 +234,9 @@ public class ListWidget extends AbstractParentElement implements Drawable {
 			bufferBuilder.vertex((double)this.right, (double)(this.bottom - 4), 0.0).color(0, 0, 0, 0).next();
 			bufferBuilder.vertex((double)this.left, (double)(this.bottom - 4), 0.0).color(0, 0, 0, 0).next();
 			tessellator.draw();
+			RenderSystem.enableTexture();
+			RenderSystem.shadeModel(GL11.GL_FLAT);
+			RenderSystem.enableAlphaTest();
 		}
 
 		if ((o = this.getMaxScroll()) > 0) {
@@ -240,6 +246,7 @@ public class ListWidget extends AbstractParentElement implements Drawable {
 			if (n < this.top) {
 				n = this.top;
 			}
+			RenderSystem.disableTexture();
 			bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
 			bufferBuilder.vertex(i, this.bottom, 0.0).color(0, 0, 0, 255).next();
 			bufferBuilder.vertex(j, this.bottom, 0.0).color(0, 0, 0, 255).next();
@@ -254,6 +261,7 @@ public class ListWidget extends AbstractParentElement implements Drawable {
 			bufferBuilder.vertex(j - 1, n, 0.0).color(192, 192, 192, 255).next();
 			bufferBuilder.vertex(i, n, 0.0).color(192, 192, 192, 255).next();
 			tessellator.draw();
+			RenderSystem.enableTexture();
 		}
 		RenderSystem.disableBlend();
 	}
@@ -467,6 +475,7 @@ public class ListWidget extends AbstractParentElement implements Drawable {
 				p = this.left + this.width / 2 - o / 2;
 				int q = this.left + this.width / 2 + o / 2;
 				float f = this.isFocused() ? 1.0f : 0.5f;
+				RenderSystem.disableTexture();
 				RenderSystem.color4f(f, f, f, 1.0f);
 				bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION);
 				bufferBuilder.vertex(p, m + n + 2, 0.0).next();
@@ -481,6 +490,8 @@ public class ListWidget extends AbstractParentElement implements Drawable {
 				bufferBuilder.vertex(q - 1, m - 1, 0.0).next();
 				bufferBuilder.vertex(p + 1, m - 1, 0.0).next();
 				tessellator.draw();
+				RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+				RenderSystem.enableTexture();
 			}
 			p = this.getRowLeft();
 			((Entry)entry).render(matrices, j, k, p, o - 3, n, mouseX, mouseY, Objects.equals(this.hoveredEntry, entry), delta);

@@ -14,6 +14,8 @@ A featureful and accessible item and recipe viewer.
 
 Unofficial port of EMI to Minecraft 1.16.5 (Forge). Install JEI next to EMI to see recipes
 from other mods: EMI reads every JEI recipe category and hides JEI's own interface.
+
+This is not the original mod: please do not report issues with this port to the EMI issue tracker.
 '''
 logoFile = "icon.png"
 

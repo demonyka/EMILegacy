@@ -1,24 +1,24 @@
 package dev.emi.emi.jemi;
 
-import java.util.Optional;
-
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.serializer.EmiIngredientSerializer;
+import dev.emi.emi.runtime.EmiLog;
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
-import mezz.jei.ingredients.IngredientManager;
+import mezz.jei.api.ingredients.subtypes.UidContext;
+import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.util.JsonHelper;
 
-@SuppressWarnings("rawtypes")
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class JemiStackSerializer implements EmiIngredientSerializer<JemiStack> {
-	// JEI 7 only exposes lookup by uid on its internal ingredient manager
-	private final IngredientManager manager;
+	private final IIngredientManager manager;
 
-	public JemiStackSerializer(IngredientManager manager) {
+	public JemiStackSerializer(IIngredientManager manager) {
 		this.manager = manager;
 	}
 
@@ -31,14 +31,21 @@ public class JemiStackSerializer implements EmiIngredientSerializer<JemiStack> {
 		if (manager == null) {
 			return EmiStack.EMPTY;
 		}
-		for (IIngredientType<?> type : manager.getRegisteredIngredientTypes()) {
-			if (type == VanillaTypes.ITEM || type == VanillaTypes.FLUID) {
-				continue;
+		// Public API only: the uid lookup of JEI's internal ingredient manager changed its signature within JEI 7
+		try {
+			for (IIngredientType type : manager.getRegisteredIngredientTypes()) {
+				if (type == VanillaTypes.ITEM || type == VanillaTypes.FLUID) {
+					continue;
+				}
+				IIngredientHelper helper = manager.getIngredientHelper(type);
+				for (Object ingredient : manager.getAllIngredients(type)) {
+					if (uid.equals(helper.getUniqueId(ingredient, UidContext.Ingredient))) {
+						return JemiUtil.getStack(type, ingredient).setAmount(amount);
+					}
+				}
 			}
-			Optional<?> opt = manager.getIngredientByUid(type, uid);
-			if (opt.isPresent()) {
-				return JemiUtil.getStack(type, opt.get()).setAmount(amount);
-			}
+		} catch (Throwable t) {
+			EmiLog.error("[JEMI] Could not look up JEI ingredient " + uid, t);
 		}
 		return EmiStack.EMPTY;
 	}

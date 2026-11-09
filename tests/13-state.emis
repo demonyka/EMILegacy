@@ -1,0 +1,34 @@
+# Loaded data and JEI routing: tag/recipe/stack counts after joining a singleplayer world and after /reload
+# (tags must not be 0), a furnace arrow click must open EMI's recipe screen (not JEI's), config screen list
+world survival
+waitloaded
+wait 40
+state
+cmd tp @p 0 200 0 -90 30
+cmd setblock 0 199 0 minecraft:stone
+cmd tp @p 0 200 0 -90 30
+wait 20
+cmd setblock 1 200 1 minecraft:furnace
+wait 40
+use 1 200 1
+wait 10
+dump
+click 215 79
+wait 10
+dump
+shot s01_furnace_arrow
+close
+wait 5
+close
+wait 5
+config
+wait 10
+shot s02_config
+close
+wait 5
+cmd reload
+wait 100
+waitloaded
+wait 20
+state
+quit

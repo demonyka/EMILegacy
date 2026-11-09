@@ -1,7 +1,6 @@
 package dev.emi.emi.mixin;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executors;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -30,7 +29,7 @@ public class MinecraftClientMixin {
 				if (ProxyRecipeManager.isAvailable()) {
 					EmiReloadManager.reload();
 				}
-			}, Executors.newFixedThreadPool(1));
+			});
 		}
 	}
 

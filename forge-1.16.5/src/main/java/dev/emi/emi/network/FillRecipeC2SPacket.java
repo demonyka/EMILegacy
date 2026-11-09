@@ -84,6 +84,9 @@ public class FillRecipeC2SPacket implements EmiPacket {
 			EmiLog.error("Client requested fill but passed input and crafting slot information was invalid, aborting");
 			return;
 		}
+		if (player.isSpectator()) {
+			return;
+		}
 		ScreenHandler handler = player.currentScreenHandler;
 		if (handler == null || handler.syncId != syncId) {
 			EmiLog.warn("Client requested fill but screen handler has changed, aborting");
@@ -117,9 +120,10 @@ public class FillRecipeC2SPacket implements EmiPacket {
 				Slot s = crafting.get(i);
 				if (s != null && s.canTakeItems(player) && !s.getStack().isEmpty()) {
 					ItemStack taken = s.getStack();
-					rubble.add(taken.copy());
-					s.setStack(ItemStack.EMPTY);
-					s.onTakeItem(player, taken);
+					ItemStack copy = taken.copy();
+					if (takeAll(s, player, taken)) {
+						rubble.add(copy);
+					}
 				}
 			}
 			try {	
@@ -139,11 +143,10 @@ public class FillRecipeC2SPacket implements EmiPacket {
 						Slot s = crafting.get(i);
 						if (s != null && s.canInsert(stack) && stack.getCount() <= s.getMaxItemCount() && stack.getCount() <= stack.getMaxCount()) {
 							if (!s.getStack().isEmpty()) { // Make sure we don't accidentally delete any items that could have been placed in this slot
-								if (s.canTakeItems(player)) {
-									ItemStack taken = s.getStack();
-									rubble.add(taken.copy());
-									s.setStack(ItemStack.EMPTY);
-									s.onTakeItem(player, taken);
+								ItemStack taken = s.getStack();
+								ItemStack copy = taken.copy();
+								if (s.canTakeItems(player) && takeAll(s, player, taken)) {
+									rubble.add(copy);
 								} else {
 									player.inventory.offerOrDrop(player.world, stack);
 									continue;
@@ -175,13 +178,26 @@ public class FillRecipeC2SPacket implements EmiPacket {
 		}
 	}
 
+	private static final int MAX_SLOTS = 4096;
+
+	/** Empties a slot, returns false for slots that keep their stack (ghost and display slots of mods). */
+	private static boolean takeAll(Slot s, PlayerEntity player, ItemStack taken) {
+		s.setStack(ItemStack.EMPTY);
+		if (!s.getStack().isEmpty()) {
+			return false;
+		}
+		s.onTakeItem(player, taken);
+		return true;
+	}
+
 	private static List<Integer> parseCompressedSlots(PacketByteBuf buf) {
 		List<Integer> list = Lists.newArrayList();
 		int amount = buf.readVarInt();
 		for (int i = 0; i < amount; i++) {
 			int low = buf.readVarInt();
 			int high = buf.readVarInt();
-			if (low < 0) {
+			// Untrusted input: an unbounded range would allocate until the server runs out of memory
+			if (low < 0 || high < low || high - low >= MAX_SLOTS || list.size() + (high - low + 1) > MAX_SLOTS) {
 				return null;
 			}
 			for (int j = low; j <= high; j++) {
@@ -250,13 +266,19 @@ public class FillRecipeC2SPacket implements EmiPacket {
 				int wanted = amount - grabbed;
 				ItemStack taken = st.copy();
 				if (st.getCount() <= wanted) {
-					grabbed += st.getCount();
-					s.setStack(ItemStack.EMPTY);
+					int count = st.getCount();
+					if (takeAll(s, player, taken)) {
+						grabbed += count;
+					}
 				} else {
-					grabbed = amount;
-					st.setCount(st.getCount() - wanted);
+					int left = st.getCount() - wanted;
+					st.setCount(left);
+					// Slots that hand out copies do not actually lose items
+					if (s.getStack().getCount() == left) {
+						grabbed = amount;
+						s.onTakeItem(player, taken);
+					}
 				}
-				s.onTakeItem(player, taken);
 			}
 		}
 		return grabbed;

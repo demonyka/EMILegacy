@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
@@ -43,6 +47,7 @@ import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.ISubtypeManager;
 import mezz.jei.api.ingredients.subtypes.UidContext;
+import dev.emi.emi.api.EmiApi;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.category.IRecipeCategory;
@@ -83,8 +88,10 @@ import net.minecraftforge.fluids.FluidStack;
  */
 @JeiPlugin
 public class JemiPlugin implements IModPlugin, EmiPlugin {
-	private static final Map<EmiRecipeCategory, IRecipeCategory<?>> CATEGORY_MAP = Maps.newHashMap();
-	private static final Map<List<Object>, JemiRecipeHandler<?, ?>> HANDLERS = Maps.newHashMap();
+	// Filled by the reload thread, read by the render thread
+	private static final Map<EmiRecipeCategory, IRecipeCategory<?>> CATEGORY_MAP = new ConcurrentHashMap<>();
+	private static final Map<Identifier, EmiRecipeCategory> CATEGORIES_BY_UID = new ConcurrentHashMap<>();
+	private static final Map<List<Object>, JemiRecipeHandler<?, ?>> HANDLERS = new ConcurrentHashMap<>();
 	private static ISubtypeManager subtypeManager;
 	public static volatile IJeiRuntime runtime;
 
@@ -127,10 +134,19 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 			while (runtime == null) {
 				Thread.sleep(100);
 			}
+			// The runtime is handed out while JEI is still starting on the main thread (later plugins,
+			// sorting): continue only after the main thread has left JEI's startup
+			MinecraftClient.getInstance().submit(() -> {}).get(30, TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			return;
+		} catch (ExecutionException | TimeoutException e) {
+			EmiLog.warn("[JEMI] Could not wait for the main thread, reading JEI anyway");
 		}
 		IJeiRuntime runtime = JemiPlugin.runtime;
+		if (runtime == null) {
+			EmiLog.warn("[JEMI] JEI restarted while EMI was waiting for it, skipping");
+			return;
+		}
 		EmiLog.info("[JEMI] JEI reloaded!");
 		Set<String> handledNamespaces = EmiAgnos.getPlugins().stream().map(EmiPluginContainer::id).collect(Collectors.toSet());
 
@@ -166,7 +182,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 
 		registry.addGenericDragDropHandler(new JemiDragDropHandler());
 
-		registry.addIngredientSerializer(JemiStack.class, new JemiStackSerializer(mezz.jei.Internal.getIngredientManager()));
+		registry.addIngredientSerializer(JemiStack.class, new JemiStackSerializer(runtime.getIngredientManager()));
 
 		EmiReloadManager.step(EmiPort.literal("Processing JEI stacks..."), 5_000);
 		IIngredientManager im = runtime.getIngredientManager();
@@ -202,6 +218,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 		categoryMap.put(VanillaRecipeCategoryUid.INFORMATION, VanillaEmiRecipeCategories.INFO);
 
 		CATEGORY_MAP.clear();
+		CATEGORIES_BY_UID.clear();
 		HANDLERS.clear();
 		EmiRecipeFiller.extraHandlers = JemiPlugin::getRecipeHandler;
 
@@ -221,6 +238,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 				if (categoryMap.containsKey(id)) {
 					EmiRecipeCategory category = categoryMap.get(id);
 					CATEGORY_MAP.put(category, c);
+					CATEGORIES_BY_UID.put(id, category);
 					for (EmiStack catalyst : catalysts) {
 						if (!catalyst.isEmpty()) {
 							registry.addWorkstation(category, catalyst);
@@ -243,6 +261,7 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 				}
 				EmiRecipeCategory category = new JemiCategory(c);
 				CATEGORY_MAP.put(category, c);
+				CATEGORIES_BY_UID.put(id, category);
 				registry.addCategory(category);
 				for (EmiStack catalyst : catalysts) {
 					if (!catalyst.isEmpty()) {
@@ -434,6 +453,53 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 			}
 		}
 		// JEI 7 subtype interpreters only exist for items and fluids
+	}
+
+	/**
+	 * JEI wants to open its recipe screen for an ingredient (its own key binds, other mods through the JEI API).
+	 * @return true if EMI took over
+	 */
+	public static boolean showFocus(IFocus<?> focus) {
+		try {
+			if (focus == null || runtime == null || !EmiReloadManager.isLoaded()) {
+				return false;
+			}
+			EmiStack stack = JemiUtil.getStack(focus.getValue());
+			if (stack.isEmpty()) {
+				return false;
+			}
+			if (focus.getMode() == IFocus.Mode.INPUT) {
+				EmiApi.displayUses(stack);
+			} else {
+				EmiApi.displayRecipes(stack);
+			}
+			return true;
+		} catch (Throwable t) {
+			EmiLog.error("[JEMI] Could not show recipes requested through JEI", t);
+			return false;
+		}
+	}
+
+	/**
+	 * JEI wants to open its recipe screen for categories (clickable areas of machine screens such as progress arrows).
+	 * @return true if EMI took over
+	 */
+	public static boolean showCategories(List<Identifier> uids) {
+		try {
+			if (uids == null || runtime == null || !EmiReloadManager.isLoaded()) {
+				return false;
+			}
+			for (Identifier uid : uids) {
+				EmiRecipeCategory category = CATEGORIES_BY_UID.get(uid);
+				if (category != null && !EmiApi.getRecipeManager().getRecipes(category).isEmpty()) {
+					EmiApi.displayRecipeCategory(category);
+					return true;
+				}
+			}
+		} catch (Throwable t) {
+			EmiLog.error("[JEMI] Could not show recipe categories requested through JEI", t);
+		}
+		return false;
 	}
 
 	private static EmiRecipeHandler<?> getRecipeHandler(ScreenHandler handler, EmiRecipe recipe) {
