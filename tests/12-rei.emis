@@ -1,0 +1,25 @@
+# EMI + REI together: overlays, key handling
+world survival
+waitloaded
+wait 60
+cmd gamemode survival
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+wait 10
+inventory
+wait 10
+shot x01_inventory
+move 141 186
+wait 3
+key key.keyboard.r
+wait 10
+dump
+shot x02_r_on_slot
+close
+wait 5
+close
+wait 5
+recipes mekanism:crusher
+wait 10
+shot x03_recipes
+quit

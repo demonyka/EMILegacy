@@ -160,7 +160,11 @@ public class EmiReloadManager {
 					plugins.addAll(EmiAgnos.getPlugins().stream()
 						.sorted((a, b) -> Integer.compare(entrypointPriority(a), entrypointPriority(b))).collect(Collectors.toList()));
 					
-					if (EmiAgnos.isModLoaded("jei")) {
+					if (EmiAgnos.isModLoaded("roughlyenoughitems")) {
+						// REI ships a JEI stub (mod id "jei") that sends JEI plugins to REI, not to a real JEI runtime
+						EmiLog.warn("Roughly Enough Items is installed: recipes from JEI plugins go to REI and both mods draw an item list."
+							+ " Use one recipe viewer: EMI + JEI, or REI alone.");
+					} else if (EmiAgnos.isModLoaded("jei")) {
 						// Loaded reflectively so JEI classes are only touched when JEI is installed.
 						// A broken JEI bridge must not take down the whole reload.
 						try {

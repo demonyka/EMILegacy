@@ -7,7 +7,9 @@ cd "$(dirname "$0")/.." || exit 1
 HMC=${HMC:?set HMC to the HeadlessMC directory}
 S=$(cygpath -m "$(realpath "$1")")
 (cd forge-1.16.5 && JAVA_HOME="$HOME/.jdks/jdk-17.0.21+9" ./gradlew build --no-daemon -q) || exit 1
-cp forge-1.16.5/build/libs/emi-*.jar "$HMC/game/mods/"
+V=$(grep "^mod_version=" forge-1.16.5/gradle.properties | cut -d= -f2)
+rm -f "${HMC:?}"/game/mods/emi-*.jar
+cp "forge-1.16.5/build/libs/emi-$V+1.16.5+forge.jar" "$HMC/game/mods/"
 rm -rf "${HMC:?}/game/saves/emi-test" "${HMC:?}/game/screenshots" "${HMC:?}/game/crash-reports"
 HMC="$HMC" node tools/launch-prod.js "$S"
 echo "exit=$?"

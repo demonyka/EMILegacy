@@ -10,4 +10,4 @@ Port of [EMI](https://github.com/emilyploszaj/emi) (item and recipe viewer, MIT)
 
 Recipes of other mods (machines etc.) come through JEI: install JEI next to EMI, EMI reads every JEI category and hides JEI's own UI.
 
-Details, plan and known gaps: [docs/PORTING.md](docs/PORTING.md).
+Details, plan and known gaps: [docs/PORTING.md](docs/PORTING.md). Mod compatibility: [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md).

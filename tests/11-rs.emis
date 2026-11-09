@@ -1,0 +1,26 @@
+# Refined Storage crafting grid: EMI "+" through RS's JEI transfer handler (production pack)
+world survival
+waitloaded
+wait 80
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 1
+cmd setblock 0 199 0 minecraft:glass
+wait 20
+cmd setblock -1 200 1 refinedstorage:crafting_grid
+cmd setblock -2 200 1 refinedstorage:creative_controller
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+wait 20
+use -1 200 1
+wait 20
+dump
+shot r01_rs_grid
+recipes minecraft:oak_planks
+wait 10
+shot r02_recipe
+click 283 121
+wait 20
+dump
+shot r03_rs_filled
+quit
