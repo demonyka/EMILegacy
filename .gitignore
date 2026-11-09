@@ -7,3 +7,4 @@ out/
 .vscode/
 bin/
 remappedSrc/
+build-log*.txt
