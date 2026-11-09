@@ -1,18 +1,15 @@
 package dev.emi.emi.jemi;
 
-
-import com.google.common.collect.ImmutableList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
 
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.api.EmiPlugin;
@@ -31,13 +28,6 @@ import dev.emi.emi.api.stack.EmiStackInteraction;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
 import dev.emi.emi.api.widget.SlotWidget;
-import dev.emi.emi.jemi.impl.JemiIngredientAcceptor;
-import dev.emi.emi.jemi.impl.JemiRecipeLayoutBuilder;
-import dev.emi.emi.jemi.runtime.JemiBookmarkOverlay;
-import dev.emi.emi.jemi.runtime.JemiDragDropHandler;
-import dev.emi.emi.jemi.runtime.JemiIngredientFilter;
-import dev.emi.emi.jemi.runtime.JemiIngredientListOverlay;
-import dev.emi.emi.jemi.runtime.JemiRecipesGui;
 import dev.emi.emi.platform.EmiAgnos;
 import dev.emi.emi.registry.EmiPluginContainer;
 import dev.emi.emi.registry.EmiRecipeFiller;
@@ -47,28 +37,30 @@ import dev.emi.emi.runtime.EmiReloadLog;
 import dev.emi.emi.runtime.EmiReloadManager;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaRecipeCategoryUid;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredientType;
-import mezz.jei.api.ingredients.IIngredientTypeWithSubtypes;
-import mezz.jei.api.ingredients.ITypedIngredient;
 import mezz.jei.api.ingredients.subtypes.ISubtypeManager;
 import mezz.jei.api.ingredients.subtypes.UidContext;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.IFocus;
+import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.vanilla.IJeiIngredientInfoRecipe;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.registration.IModIngredientRegistration;
-import mezz.jei.api.registration.IRuntimeRegistration;
 import mezz.jei.api.registration.ISubtypeRegistration;
-import mezz.jei.api.runtime.IClickableIngredient;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.api.runtime.IJeiRuntime;
-import mezz.jei.library.ingredients.subtypes.SubtypeInterpreters;
-import mezz.jei.library.load.registration.SubtypeRegistration;
+import mezz.jei.gui.GuiScreenHelper;
+import mezz.jei.input.IClickedIngredient;
+import mezz.jei.plugins.jei.info.IngredientInfoRecipe;
+import mezz.jei.recipes.RecipeTransferManager;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.fluid.Fluid;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.CraftingRecipe;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.screen.ScreenHandler;
@@ -77,38 +69,42 @@ import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.IShapedRecipe;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.fluids.FluidStack;
 
+/**
+ * JEMI: EMI's bridge to JEI 7. JEI instantiates this class as a JEI plugin (to receive the runtime),
+ * EMI instantiates it as an EMI plugin (see EmiReloadManager) to convert every JEI category,
+ * catalyst and recipe of mods without a native EMI plugin.
+ */
 @JeiPlugin
 public class JemiPlugin implements IModPlugin, EmiPlugin {
 	private static final Map<EmiRecipeCategory, IRecipeCategory<?>> CATEGORY_MAP = Maps.newHashMap();
+	private static final Map<List<Object>, JemiRecipeHandler<?, ?>> HANDLERS = Maps.newHashMap();
 	private static ISubtypeManager subtypeManager;
-	public static IJeiRuntime runtime;
-	public static BiPredicate<IIngredientTypeWithSubtypes<? extends Object, ? extends Object>, Object> hasSubtype = (a, b) -> true;
+	public static volatile IJeiRuntime runtime;
+
+	static {
+		// JEI 7 has no "runtime unavailable" callback, drop the runtime when leaving the world
+		try {
+			MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ClientPlayerNetworkEvent.LoggedOutEvent.class, event -> runtime = null);
+		} catch (Throwable t) {
+			EmiLog.error("[JEMI] Could not register logout listener", t);
+		}
+	}
 
 	@Override
 	public Identifier getPluginUid() {
 		return EmiPort.id("emi:jemi");
 	}
 
+	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
-		try {
-			if (((SubtypeRegistration) registration).getInterpreters() != null) {
-				hasSubtype = (type, ingredient) -> {
-					@SuppressWarnings("unchecked")
-					IIngredientTypeWithSubtypes<Object, Object> castedType = (IIngredientTypeWithSubtypes<Object, Object>) type;
-					SubtypeInterpreters interpreters = ((SubtypeRegistration) registration).getInterpreters();
-					return interpreters.contains(castedType, ingredient);
-				};
-			}
-			return;
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-		hasSubtype = (type, ingredient) -> {
-			@SuppressWarnings("unchecked")
-			IIngredientTypeWithSubtypes<Object, Object> castedType = (IIngredientTypeWithSubtypes<Object, Object>) type;
-			return subtypeManager.hasSubtypes(castedType, ingredient);
-		};
+		// First callback of every JEI (re)load: the previous runtime is stale from here on
+		runtime = null;
 	}
 
 	@Override
@@ -117,21 +113,8 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 	}
 
 	@Override
-	public void registerRuntime(IRuntimeRegistration registration) {
-		registration.setIngredientListOverlay(new JemiIngredientListOverlay());
-		registration.setBookmarkOverlay(new JemiBookmarkOverlay());
-		registration.setRecipesGui(new JemiRecipesGui());
-		registration.setIngredientFilter(new JemiIngredientFilter());
-	}
-
-	@Override
 	public void onRuntimeAvailable(IJeiRuntime runtime) {
 		JemiPlugin.runtime = runtime;
-	}
-
-	@Override
-	public void onRuntimeUnavailable() {
-		JemiPlugin.runtime = null;
 	}
 
 	@Override
@@ -140,23 +123,22 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 		EmiLog.info("[JEMI] Waiting for JEI to finish reloading...");
 		EmiReloadManager.step(EmiPort.literal("Waiting for JEI to finish..."), 20_000);
 		try {
-			while (true) {
-				if (runtime != null) {
-					break;
-				}
+			while (runtime == null) {
 				Thread.sleep(100);
 			}
-		} catch (Exception e) {
+		} catch (InterruptedException e) {
 			return;
 		}
+		IJeiRuntime runtime = JemiPlugin.runtime;
 		EmiLog.info("[JEMI] JEI reloaded!");
 		Set<String> handledNamespaces = EmiAgnos.getPlugins().stream().map(EmiPluginContainer::id).collect(Collectors.toSet());
 
 		EmiReloadManager.step(EmiPort.literal("Loading information from JEI..."), 5_000);
 		registry.addGenericExclusionArea((screen, consumer) -> {
-			if (runtime != null && runtime.getScreenHelper() != null) {
-				List<Rect2i> areas = runtime.getScreenHelper().getGuiExclusionAreas(screen).collect(Collectors.toList());
-				for (Rect2i r : areas) {
+			GuiScreenHelper helper = JemiInternals.getScreenHelper();
+			if (helper != null && screen == MinecraftClient.getInstance().currentScreen) {
+				helper.updateGuiExclusionAreas();
+				for (Rect2i r : helper.getGuiExclusionAreas()) {
 					if (r != null) {
 						consumer.accept(new Bounds(r.getX(), r.getY(), r.getWidth(), r.getHeight()));
 					}
@@ -165,79 +147,88 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 		});
 
 		registry.addGenericStackProvider((screen, x, y) -> {
-			return new EmiStackInteraction(runtime.getScreenHelper().getClickableIngredientUnderMouse(screen, x, y)
-					.map(IClickableIngredient::getTypedIngredient).map(JemiUtil::getStack).findFirst().orElse(EmiStack.EMPTY), null, false);
+			GuiScreenHelper helper = JemiInternals.getScreenHelper();
+			if (helper != null && screen instanceof HandledScreen<?> hs) {
+				try {
+					IClickedIngredient<?> clicked = helper.getPluginsIngredientUnderMouse(hs, x, y);
+					if (clicked != null) {
+						EmiStack stack = JemiUtil.getStack(clicked.getValue());
+						if (!stack.isEmpty()) {
+							return new EmiStackInteraction(stack, null, false);
+						}
+					}
+				} catch (Throwable t) {
+				}
+			}
+			return EmiStackInteraction.EMPTY;
 		});
 
 		registry.addGenericDragDropHandler(new JemiDragDropHandler());
 
-		registry.addIngredientSerializer(JemiStack.class, new JemiStackSerializer(runtime.getIngredientManager()));
+		registry.addIngredientSerializer(JemiStack.class, new JemiStackSerializer(mezz.jei.Internal.getIngredientManager()));
 
 		EmiReloadManager.step(EmiPort.literal("Processing JEI stacks..."), 5_000);
-		for (IIngredientType<?> type : runtime.getIngredientManager().getRegisteredIngredientTypes()) {
-			if (type == JemiUtil.getFluidType() || type == VanillaTypes.ITEM_STACK) {
+		IIngredientManager im = runtime.getIngredientManager();
+		for (IIngredientType<?> type : im.getRegisteredIngredientTypes()) {
+			if (type == VanillaTypes.ITEM || type == VanillaTypes.FLUID) {
 				continue;
 			}
-			for (Object o : runtime.getIngredientManager().getAllIngredients(type)) {
+			for (Object o : im.getAllIngredients(type)) {
 				EmiStack stack = JemiUtil.getStack(type, o);
 				if (!stack.isEmpty()) {
 					registry.addEmiStack(stack);
 				}
 			}
 		}
+		// JEI 7 has no public ingredient visibility query, hidden JEI ingredients are not mirrored
 
-		registry.removeEmiStacks(s -> {
-			try {
-				Optional<ITypedIngredient<?>> opt = JemiUtil.getTyped(s);
-				if (opt.isPresent()) {
-					return !runtime.getIngredientVisibility().isIngredientVisible(opt.get());
-				}
-			} catch (Throwable t) {
-			}
-			return false;
-		});
 		EmiReloadManager.step(EmiPort.literal("Processing JEI subtypes..."), 5_000);
 		safely("subtype comparison", () -> parseSubtypes(registry));
 
 		EmiReloadManager.step(EmiPort.literal("Processing JEI recipes..."), 5_000);
 		Set<Identifier> existingCategories = EmiRecipes.categories.stream().map(EmiRecipeCategory::getId).collect(Collectors.toSet());
-		Map<RecipeType, EmiRecipeCategory> categoryMap = Maps.newHashMap();
-		categoryMap.put(RecipeTypes.CRAFTING, VanillaEmiRecipeCategories.CRAFTING);
-		categoryMap.put(RecipeTypes.SMELTING, VanillaEmiRecipeCategories.SMELTING);
-		categoryMap.put(RecipeTypes.BLASTING, VanillaEmiRecipeCategories.BLASTING);
-		categoryMap.put(RecipeTypes.SMOKING, VanillaEmiRecipeCategories.SMOKING);
-		categoryMap.put(RecipeTypes.CAMPFIRE_COOKING, VanillaEmiRecipeCategories.CAMPFIRE_COOKING);
-		categoryMap.put(RecipeTypes.STONECUTTING, VanillaEmiRecipeCategories.STONECUTTING);
-		categoryMap.put(RecipeTypes.SMITHING, VanillaEmiRecipeCategories.SMITHING);
-		categoryMap.put(RecipeTypes.ANVIL, VanillaEmiRecipeCategories.ANVIL_REPAIRING);
-		categoryMap.put(RecipeTypes.BREWING, VanillaEmiRecipeCategories.BREWING);
-		categoryMap.put(RecipeTypes.FUELING, VanillaEmiRecipeCategories.FUEL);
-		categoryMap.put(RecipeTypes.COMPOSTING, VanillaEmiRecipeCategories.COMPOSTING);
-		categoryMap.put(RecipeTypes.INFORMATION, VanillaEmiRecipeCategories.INFO);
-		
+		Map<Identifier, EmiRecipeCategory> categoryMap = Maps.newHashMap();
+		categoryMap.put(VanillaRecipeCategoryUid.CRAFTING, VanillaEmiRecipeCategories.CRAFTING);
+		categoryMap.put(VanillaRecipeCategoryUid.FURNACE, VanillaEmiRecipeCategories.SMELTING);
+		categoryMap.put(VanillaRecipeCategoryUid.BLASTING, VanillaEmiRecipeCategories.BLASTING);
+		categoryMap.put(VanillaRecipeCategoryUid.SMOKING, VanillaEmiRecipeCategories.SMOKING);
+		categoryMap.put(VanillaRecipeCategoryUid.CAMPFIRE, VanillaEmiRecipeCategories.CAMPFIRE_COOKING);
+		categoryMap.put(VanillaRecipeCategoryUid.STONECUTTING, VanillaEmiRecipeCategories.STONECUTTING);
+		categoryMap.put(VanillaRecipeCategoryUid.SMITHING, VanillaEmiRecipeCategories.SMITHING);
+		categoryMap.put(VanillaRecipeCategoryUid.ANVIL, VanillaEmiRecipeCategories.ANVIL_REPAIRING);
+		categoryMap.put(VanillaRecipeCategoryUid.BREWING, VanillaEmiRecipeCategories.BREWING);
+		categoryMap.put(VanillaRecipeCategoryUid.FUEL, VanillaEmiRecipeCategories.FUEL);
+		categoryMap.put(VanillaRecipeCategoryUid.INFORMATION, VanillaEmiRecipeCategories.INFO);
+
 		CATEGORY_MAP.clear();
+		HANDLERS.clear();
 		EmiRecipeFiller.extraHandlers = JemiPlugin::getRecipeHandler;
 
-		List<IRecipeCategory<?>> categories = runtime.getRecipeManager().createRecipeCategoryLookup().includeHidden().get().collect(Collectors.toList());
+		IRecipeManager rm = runtime.getRecipeManager();
+		List<IRecipeCategory<?>> categories = rm.getRecipeCategories((IFocus<?>) null, true);
 		for (IRecipeCategory<?> c : categories) {
-			EmiLog.info("[JEMI] Collecting data for " + c.getTitle().getString());
-			EmiReloadManager.step(EmiPort.literal("Loading JEI data for ").append(c.getTitle()), 5_000);
+			Identifier id = c.getUid();
+			String title = id.toString();
 			try {
-				RecipeType type = c.getRecipeType();
-				Identifier id = type.getUid();
-				List<EmiStack> catalysts = runtime.getRecipeManager().createRecipeCatalystLookup(type).includeHidden().get().map(JemiUtil::getStack).collect(Collectors.toList());
-				if (categoryMap.containsKey(type)) {
-					EmiRecipeCategory category = categoryMap.get(type);
+				title = c.getTitleAsTextComponent().getString();
+			} catch (Throwable t) {
+			}
+			EmiLog.info("[JEMI] Collecting data for " + title);
+			EmiReloadManager.step(EmiPort.literal("Loading JEI data for " + title), 5_000);
+			try {
+				List<EmiStack> catalysts = rm.getRecipeCatalysts(c, true).stream().map(JemiUtil::getStack).collect(Collectors.toList());
+				if (categoryMap.containsKey(id)) {
+					EmiRecipeCategory category = categoryMap.get(id);
 					CATEGORY_MAP.put(category, c);
 					for (EmiStack catalyst : catalysts) {
 						if (!catalyst.isEmpty()) {
 							registry.addWorkstation(category, catalyst);
 						}
 					}
-					if (type == RecipeTypes.INFORMATION) {
-						addInfoRecipes(registry, (IRecipeCategory<IJeiIngredientInfoRecipe>) c);
-					} else if (type == RecipeTypes.CRAFTING) {
-						addCraftingRecipes(registry, (IRecipeCategory<CraftingRecipe>) c);
+					if (id.equals(VanillaRecipeCategoryUid.INFORMATION)) {
+						addInfoRecipes(registry, getRecipes(rm, c));
+					} else if (id.equals(VanillaRecipeCategoryUid.CRAFTING)) {
+						addCraftingRecipes(registry, (IRecipeCategory) c, (List) getRecipes(rm, c));
 					}
 					continue;
 				}
@@ -257,30 +248,37 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 						registry.addWorkstation(category, catalyst);
 					}
 				}
-				List<?> recipes = runtime.getRecipeManager().createRecipeLookup(type).includeHidden().get().collect(Collectors.toList());
-				for (Object r : recipes) {
+				for (Object r : getRecipes(rm, c)) {
 					try {
 						registry.addRecipe(new JemiRecipe(category, c, r));
 					} catch (Throwable t) {
-						EmiLog.error("Exception thrown adding adding JEI recipe", t);
+						EmiLog.error("[JEMI] Exception thrown adding JEI recipe", t);
 					}
 				}
-			} catch(Throwable t) {
-				EmiLog.error("Exception thrown adding adding JEI recipes", t);
+			} catch (Throwable t) {
+				EmiLog.error("[JEMI] Exception thrown adding JEI recipes", t);
 			}
 		}
 	}
 
-	private void addInfoRecipes(EmiRegistry registry, IRecipeCategory<IJeiIngredientInfoRecipe> category) {
-		List<IJeiIngredientInfoRecipe> recipes = runtime.getRecipeManager().createRecipeLookup(RecipeTypes.INFORMATION).includeHidden().get().collect(Collectors.toList());
-		Map<List<EmiStack>, List<IJeiIngredientInfoRecipe>> grouped = Maps.newHashMap();
-		for (IJeiIngredientInfoRecipe recipe : recipes) {
-			grouped.computeIfAbsent(recipe.getIngredients().stream().map(JemiUtil::getStack).collect(Collectors.toList()), k -> Lists.newArrayList()).add(recipe);
+	private static <T> List<T> getRecipes(IRecipeManager rm, IRecipeCategory<T> category) {
+		return rm.getRecipes(category, (IFocus<?>) null, true);
+	}
+
+	private void addInfoRecipes(EmiRegistry registry, List<?> recipes) {
+		Map<List<EmiStack>, List<IngredientInfoRecipe<?>>> grouped = Maps.newLinkedHashMap();
+		for (Object o : recipes) {
+			if (o instanceof IngredientInfoRecipe<?> recipe) {
+				List<EmiStack> stacks = recipe.getIngredients().stream().map(i -> JemiUtil.getStack(recipe.getIngredientType(), i))
+					.filter(s -> !s.isEmpty()).collect(Collectors.toList());
+				grouped.computeIfAbsent(stacks, k -> Lists.newArrayList()).add(recipe);
+			}
 		}
-		Map<Text, List<EmiStack>> identical = Maps.newHashMap();
-		for (Map.Entry<List<EmiStack>, List<IJeiIngredientInfoRecipe>> group : grouped.entrySet()) {
+		Map<String, List<EmiStack>> identical = Maps.newLinkedHashMap();
+		Map<String, Text> texts = Maps.newHashMap();
+		for (Map.Entry<List<EmiStack>, List<IngredientInfoRecipe<?>>> group : grouped.entrySet()) {
 			MutableText text = EmiPort.literal("");
-			for (IJeiIngredientInfoRecipe recipe : group.getValue()) {
+			for (IngredientInfoRecipe<?> recipe : group.getValue()) {
 				for (StringVisitable sv : recipe.getDescription()) {
 					MutableText current = EmiPort.literal("");
 					sv.visit((style, string) -> {
@@ -295,136 +293,162 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 					}
 				}
 			}
-			identical.computeIfAbsent(text, k -> Lists.newArrayList()).addAll(group.getKey());
+			String key = text.getString();
+			texts.putIfAbsent(key, text);
+			identical.computeIfAbsent(key, k -> Lists.newArrayList()).addAll(group.getKey());
 		}
-		
-		for (Text text : identical.keySet()) {
-			registry.addRecipe(new EmiInfoRecipe(identical.get(text).stream().map(s -> (EmiIngredient) s).collect(Collectors.toList()), ImmutableList.of(text), null));
+
+		for (Map.Entry<String, List<EmiStack>> entry : identical.entrySet()) {
+			if (entry.getValue().isEmpty()) {
+				continue;
+			}
+			registry.addRecipe(new EmiInfoRecipe(entry.getValue().stream().map(s -> (EmiIngredient) s).collect(Collectors.toList()),
+				ImmutableList.of(texts.get(entry.getKey())), null));
 		}
 	}
 
-	private void addCraftingRecipes(EmiRegistry registry, IRecipeCategory<CraftingRecipe> category) {
-		Set<Identifier> replaced = Sets.newHashSet();
-		Set<EmiRecipe> replacements = Sets.newHashSet();
-		List<CraftingRecipe> recipes = Stream.concat(
-			runtime.getRecipeManager().createRecipeLookup(category.getRecipeType()).includeHidden().get(),
-			registry.getRecipeManager().listAllOfType(net.minecraft.recipe.RecipeType.CRAFTING).stream()
-				.filter(r -> r instanceof SpecialCraftingRecipe)
-		).distinct().collect(Collectors.toList());
+	/**
+	 * EMI's vanilla plugin already shows every non-special crafting recipe from the recipe manager.
+	 * JEI 7 crafting recipes that EMI cannot know about are added here: recipes registered only to JEI
+	 * (display recipes for special crafting, generated recipes) and special recipes from mods.
+	 */
+	private void addCraftingRecipes(EmiRegistry registry, IRecipeCategory<CraftingRecipe> category, List<CraftingRecipe> recipes) {
 		for (CraftingRecipe recipe : recipes) {
 			try {
-				if (category.isHandled(recipe)) {
-					JemiRecipeLayoutBuilder builder = new JemiRecipeLayoutBuilder();
-					category.setRecipe(builder, recipe, runtime.getJeiHelpers().getFocusFactory().getEmptyFocusGroup());
-					List<EmiIngredient> inputs = Lists.newArrayList();
-					List<EmiStack> outputs = Lists.newArrayList();
-					for (JemiIngredientAcceptor acceptor : builder.ingredients) {
-						EmiIngredient stack = acceptor.build();
-						if (acceptor.role == RecipeIngredientRole.INPUT) {
-							inputs.add(stack);
-						} else if (acceptor.role == RecipeIngredientRole.CATALYST) {
-							inputs.add(stack);
-						} else if (acceptor.role == RecipeIngredientRole.OUTPUT) {
-							outputs.addAll(stack.getEmiStacks());
-						}
-					}
-					if (inputs.stream().anyMatch(i -> !i.isEmpty()) && outputs.stream().anyMatch(o -> !o.isEmpty())) {
-						EmiRecipe replacement;
-						if (outputs.size() > 1) {
-							replacement = new EmiPatternCraftingRecipe(inputs, EmiStack.EMPTY, category.getRegistryName(recipe), builder.shapeless) {
-
-								@Override
-								public List<EmiStack> getOutputs() {
-									return outputs;
-								}
-								
-								@Override
-								public SlotWidget getInputWidget(int slot, int x, int y) {
-									if (slot <= inputs.size()) {
-										return new SlotWidget(inputs.get(slot), x, y);
-									} else {
-										return new SlotWidget(EmiStack.EMPTY, x, y);
-									}
-								}
-
-								@Override
-								public SlotWidget getOutputWidget(int x, int y) {
-									return new GeneratedSlotWidget(r -> outputs.get(r.nextInt(outputs.size())), recipe.hashCode(), x, y);
-								}
-								
-							};
-						} else {
-							replacement = new EmiCraftingRecipe(inputs, outputs.get(0), category.getRegistryName(recipe), builder.shapeless);
-						}
-						if (replacement.getId() != null) {
-							replaced.add(replacement.getId());
-						}
-						replacements.add(replacement);
-						registry.addRecipe(replacement);
-					}
-				}
-			} catch (Throwable t) {
-				EmiLog.error("[JEMI] Exception thrown setting JEI crafting recipe", t);
-			}
-		}
-		registry.removeRecipes(r -> r instanceof EmiCraftingRecipe && replaced.contains(r.getId()) && !replacements.contains(r));
-	}
-
-	@SuppressWarnings({"unchecked"})
-	private void parseSubtypes(EmiRegistry registry) {
-		if (subtypeManager != null) {
-			IIngredientManager im = runtime.getIngredientManager();
-			List<IIngredientType<?>> types = Lists.newArrayList(im.getRegisteredIngredientTypes());
-			for (Item item : EmiPort.getItemRegistry()) {
-				if (hasSubtype.test(VanillaTypes.ITEM_STACK, item.getDefaultStack())) {
-					registry.setDefaultComparison(item, Comparison.compareData(stack -> {
-						return subtypeManager.getSubtypeInfo(stack.getItemStack(), UidContext.Recipe);
-					}));
-				}
-			}
-			for (Fluid fluid : EmiPort.getFluidRegistry()) {
-				IIngredientTypeWithSubtypes<Object, Object> type = (IIngredientTypeWithSubtypes<Object, Object>) JemiUtil.getFluidType();
-				if (hasSubtype.test(type, JemiUtil.getFluidHelper().create(fluid, 1000))) {
-					registry.setDefaultComparison(fluid, Comparison.compareData(stack -> {
-						ITypedIngredient<?> typed = JemiUtil.getTyped(stack).orElse(null);
-						if (typed != null) {
-							return subtypeManager.getSubtypeInfo(type, typed.getIngredient(), UidContext.Recipe);
-						}
-						return null;
-					}));
-				}
-			}
-			for (IIngredientType<?> type : types) {
-				if (type == VanillaTypes.ITEM_STACK || type == JemiUtil.getFluidType()) {
+				Identifier id = recipe.getId();
+				boolean known = id != null && registry.getRecipeManager().get(id).isPresent();
+				boolean modSpecial = recipe instanceof SpecialCraftingRecipe && id != null && !"minecraft".equals(id.getNamespace());
+				if (known && !modSpecial) {
 					continue;
 				}
-				if (type instanceof IIngredientTypeWithSubtypes iitws) {
-					List<Object> ings = Lists.newArrayList(im.getAllIngredients(type));
-					for (Object o : ings) {
-						try {
-							if (hasSubtype.test(iitws, o)) {
-								registry.setDefaultComparison(iitws.getBase(o), Comparison.compareData(stack -> {
-									if (stack instanceof JemiStack jemi) {
-										return subtypeManager.getSubtypeInfo(iitws, jemi.ingredient, UidContext.Recipe);
-									}
-									return null;
-								}));
-							}
-						} catch (Throwable t) {
-							EmiReloadLog.warn("Exception adding default comparison for JEI ingredient", t);
+				if (!category.isHandled(recipe)) {
+					continue;
+				}
+				JemiIngredients ingredients = new JemiIngredients();
+				category.setIngredients(recipe, ingredients);
+				List<List<ItemStack>> rawInputs = ingredients.getInputs(VanillaTypes.ITEM);
+				List<List<ItemStack>> rawOutputs = ingredients.getOutputs(VanillaTypes.ITEM);
+				if (rawInputs.size() > 9 || rawOutputs.isEmpty()) {
+					continue;
+				}
+				boolean shapeless = !(recipe instanceof IShapedRecipe<?>);
+				List<EmiIngredient> inputs = Lists.newArrayList();
+				if (shapeless) {
+					for (List<ItemStack> slot : rawInputs) {
+						inputs.add(JemiUtil.getIngredient(VanillaTypes.ITEM, slot));
+					}
+				} else {
+					IShapedRecipe<?> shaped = (IShapedRecipe<?>) recipe;
+					int w = shaped.getRecipeWidth();
+					int h = shaped.getRecipeHeight();
+					if (w > 3 || h > 3 || w * h != rawInputs.size()) {
+						continue;
+					}
+					for (int i = 0; i < 9; i++) {
+						int x = i % 3, y = i / 3;
+						if (x < w && y < h) {
+							inputs.add(JemiUtil.getIngredient(VanillaTypes.ITEM, rawInputs.get(y * w + x)));
+						} else {
+							inputs.add(EmiStack.EMPTY);
 						}
 					}
 				}
+				List<EmiStack> outputs = JemiUtil.getIngredient(VanillaTypes.ITEM, rawOutputs.get(0)).getEmiStacks()
+					.stream().filter(s -> !s.isEmpty()).collect(Collectors.toList());
+				if (inputs.stream().allMatch(EmiIngredient::isEmpty) || outputs.isEmpty()) {
+					continue;
+				}
+				EmiRecipe emiRecipe;
+				if (outputs.size() > 1) {
+					emiRecipe = new EmiPatternCraftingRecipe(inputs, EmiStack.EMPTY, id, shapeless) {
+
+						@Override
+						public List<EmiStack> getOutputs() {
+							return outputs;
+						}
+
+						@Override
+						public SlotWidget getInputWidget(int slot, int x, int y) {
+							if (slot < inputs.size()) {
+								return new SlotWidget(inputs.get(slot), x, y);
+							} else {
+								return new SlotWidget(EmiStack.EMPTY, x, y);
+							}
+						}
+
+						@Override
+						public SlotWidget getOutputWidget(int x, int y) {
+							return new GeneratedSlotWidget(r -> outputs.get(r.nextInt(outputs.size())), recipe.hashCode(), x, y);
+						}
+					};
+				} else {
+					emiRecipe = new EmiCraftingRecipe(inputs, outputs.get(0), id, shapeless);
+				}
+				registry.addRecipe(emiRecipe);
+			} catch (Throwable t) {
+				EmiLog.error("[JEMI] Exception thrown adding JEI crafting recipe", t);
 			}
 		}
+	}
+
+	private void parseSubtypes(EmiRegistry registry) {
+		if (subtypeManager == null) {
+			return;
+		}
+		ISubtypeManager sm = subtypeManager;
+		for (Item item : EmiPort.getItemRegistry()) {
+			try {
+				ItemStack stack = item.getDefaultStack();
+				if (!stack.isEmpty() && sm.getSubtypeInfo(stack, UidContext.Recipe) != null) {
+					registry.setDefaultComparison(item, Comparison.compareData(s -> {
+						ItemStack is = s.getItemStack();
+						return is.isEmpty() ? null : sm.getSubtypeInfo(is, UidContext.Recipe);
+					}));
+				}
+			} catch (Throwable t) {
+				EmiReloadLog.warn("Exception adding default comparison for JEI item subtype", t);
+			}
+		}
+		for (Fluid fluid : EmiPort.getFluidRegistry()) {
+			try {
+				if (fluid == Fluids.EMPTY) {
+					continue;
+				}
+				if (sm.getSubtypeInfo(new FluidStack(fluid, 1000), UidContext.Recipe) != null) {
+					registry.setDefaultComparison(fluid, Comparison.compareData(s -> {
+						return sm.getSubtypeInfo(new FluidStack(fluid, 1000, s.getNbt()), UidContext.Recipe);
+					}));
+				}
+			} catch (Throwable t) {
+				EmiReloadLog.warn("Exception adding default comparison for JEI fluid subtype", t);
+			}
+		}
+		// JEI 7 subtype interpreters only exist for items and fluids
 	}
 
 	private static EmiRecipeHandler<?> getRecipeHandler(ScreenHandler handler, EmiRecipe recipe) {
-		IRecipeCategory<?> category = CATEGORY_MAP.getOrDefault(recipe.getCategory(), null);
-		if (category != null) {
-			return runtime.getRecipeTransferManager().getRecipeTransferHandler(handler, category).map(JemiRecipeHandler::new).orElse(null);
+		IRecipeCategory<?> category = CATEGORY_MAP.get(recipe.getCategory());
+		if (category == null) {
+			return null;
 		}
-		return null;
+		RecipeTransferManager manager = JemiInternals.getTransferManager();
+		if (manager == null) {
+			return null;
+		}
+		try {
+			IRecipeTransferHandler<?> transfer = manager.getRecipeTransferHandler(handler, category);
+			if (transfer == null) {
+				return null;
+			}
+			return HANDLERS.computeIfAbsent(Arrays.asList(transfer, category), k -> createHandler(transfer, category));
+		} catch (Throwable t) {
+			return null;
+		}
+	}
+
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	private static JemiRecipeHandler<?, ?> createHandler(IRecipeTransferHandler<?> transfer, IRecipeCategory<?> category) {
+		return new JemiRecipeHandler((IRecipeTransferHandler) transfer, (IRecipeCategory) category);
 	}
 
 	private static void safely(String name, Runnable runnable) {

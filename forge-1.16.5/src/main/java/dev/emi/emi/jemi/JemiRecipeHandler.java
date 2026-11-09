@@ -1,65 +1,50 @@
 package dev.emi.emi.jemi;
 
-
-
-import java.util.stream.Collectors;
-import com.google.common.collect.ImmutableList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
-import dev.emi.emi.api.recipe.EmiCraftingRecipe;
+import com.google.common.collect.ImmutableList;
+
 import dev.emi.emi.api.recipe.EmiPlayerInventory;
 import dev.emi.emi.api.recipe.EmiRecipe;
-import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.recipe.handler.EmiCraftContext;
 import dev.emi.emi.api.recipe.handler.EmiRecipeHandler;
-import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.RecipeFillButtonWidget;
-import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.Widget;
-import dev.emi.emi.jemi.impl.JemiRecipeLayoutBuilder;
-import dev.emi.emi.jemi.impl.JemiRecipeSlot;
-import dev.emi.emi.jemi.impl.JemiRecipeSlotsView;
+import dev.emi.emi.backport.TooltipComponent;
 import dev.emi.emi.runtime.EmiDrawContext;
 import dev.emi.emi.runtime.EmiLog;
-import dev.emi.emi.runtime.ProxyRecipeManager;
-import dev.emi.emi.screen.EmiScreenManager;
-import mezz.jei.api.gui.builder.IIngredientAcceptor;
-import mezz.jei.api.ingredients.IIngredientType;
-import mezz.jei.api.ingredients.ITypedIngredient;
-import mezz.jei.api.recipe.RecipeIngredientRole;
-import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.gui.ingredient.IGuiIngredient;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
+import mezz.jei.gui.recipes.RecipeLayout;
+import mezz.jei.transfer.RecipeTransferErrorInternal;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeManager;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.text.Text;
 
+/**
+ * EMI fill button backed by a JEI 7 recipe transfer handler. The JEI handler works on a JEI recipe
+ * layout, so one is built for the raw recipe: the wrapped JEI recipe for {@link JemiRecipe}s, or
+ * the backing vanilla recipe for EMI's own recipes in categories mapped to JEI vanilla categories.
+ */
 public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeHandler<T> {
-	private final RecipeType<R> type;
-	//private IRecipeCategory<R> category;
-	public IRecipeTransferHandler<T, R> handler;
+	private static final int COSMETIC_COLOR = 0x80FFA500;
+	private static final int MISSING_COLOR = 0x66FF0000;
+	private final IRecipeTransferHandler<T> handler;
+	private final IRecipeCategory<R> category;
+	private Object cachedRecipe;
+	private RecipeLayout<R> cachedLayout;
 
-	public JemiRecipeHandler(IRecipeTransferHandler<T, R> handler) {
+	public JemiRecipeHandler(IRecipeTransferHandler<T> handler, IRecipeCategory<R> category) {
 		this.handler = handler;
-		type = handler.getRecipeType();
-		/*
-		if (type != null) {
-			List<IRecipeCategory<R>> categories = (List<IRecipeCategory<R>>) (Object) JemiPlugin.runtime.getRecipeManager().createRecipeCategoryLookup().includeHidden().limitTypes(ImmutableList.of(type)).get().collect(Collectors.toList());
-			if (!categories.isEmpty()) {
-				category = categories.get(0);
-			}
-		}*/
-	}
-
-	@Override
-	public boolean alwaysDisplaySupport(EmiRecipe recipe) {
-		return type != null;
+		this.category = category;
 	}
 
 	@Override
@@ -69,188 +54,116 @@ public class JemiRecipeHandler<T extends ScreenHandler, R> implements EmiRecipeH
 
 	@Override
 	public boolean supportsRecipe(EmiRecipe recipe) {
-		return (type == null || getRawRecipe(recipe) != null) && recipe.supportsRecipeTree();
+		return getRawRecipe(recipe) != null && recipe.supportsRecipeTree();
 	}
 
 	@Override
 	public boolean canCraft(EmiRecipe recipe, EmiCraftContext<T> context) {
-		IRecipeTransferError err = jeiCraft(recipe, context, false, null);
-		return err == null || err.getType().allowsTransfer;
+		return allowsTransfer(transfer(recipe, context, false, null));
 	}
 
 	@Override
 	public boolean craft(EmiRecipe recipe, EmiCraftContext<T> context) {
-		IRecipeTransferError err = jeiCraft(recipe, context, true, null);
-		if (err == null || err.getType().allowsTransfer) {
+		boolean success = allowsTransfer(transfer(recipe, context, true, null));
+		if (success) {
 			MinecraftClient.getInstance().openScreen(context.getScreen());
 		}
-		return err == null || err.getType().allowsTransfer;
+		return success;
 	}
 
 	@Override
-	public void render(EmiRecipe recipe, EmiCraftContext<T> context, List<Widget> widgets, MatrixStack raw) {
-		EmiDrawContext draw = EmiDrawContext.wrap(raw);
-		R rawRecipe = getRawRecipe(recipe);
-		JemiRecipeSlotsView view = createSlotsView(recipe, rawRecipe, widgets);
-		IRecipeTransferError err = jeiCraft(recipe, context, false, view);
-		if (err != null) {
-			if (err.getType() == IRecipeTransferError.Type.COSMETIC) {
-				for (Widget widget : widgets) {
-					if (widget instanceof RecipeFillButtonWidget) {
-						Bounds b = widget.getBounds();
-						draw.fill(b.left(), b.top(), b.width(), b.height(), err.getButtonHighlightColor());
-					}
+	public List<TooltipComponent> getTooltip(EmiRecipe recipe, EmiCraftContext<T> context) {
+		IRecipeTransferError err = transfer(recipe, context, false, null);
+		if (err == null) {
+			return ImmutableList.of();
+		}
+		List<Text> message = JemiInternals.getErrorMessage(err);
+		if (!message.isEmpty()) {
+			return message.stream().map(t -> TooltipComponent.of(t.asOrderedText())).collect(Collectors.toList());
+		}
+		return EmiRecipeHandler.super.getTooltip(recipe, context);
+	}
+
+	@Override
+	public void render(EmiRecipe recipe, EmiCraftContext<T> context, List<Widget> widgets, MatrixStack matrices) {
+		EmiDrawContext draw = EmiDrawContext.wrap(matrices);
+		RecipeLayout<R> layout = createLayout(recipe);
+		IRecipeTransferError err = transfer(recipe, context, false, layout);
+		if (err == null) {
+			return;
+		}
+		if (err.getType() == IRecipeTransferError.Type.COSMETIC) {
+			for (Widget widget : widgets) {
+				if (widget instanceof RecipeFillButtonWidget) {
+					Bounds b = widget.getBounds();
+					draw.fill(b.left(), b.top(), b.width(), b.height(), COSMETIC_COLOR);
 				}
 			}
-			if (view != null) {
-				view.getSlotViews().forEach(v -> {
-					if (v instanceof JemiRecipeSlot jrs) {
-						jrs.highlight = 0;
+		}
+		// Slot highlights only line up when EMI displays the JEI layout itself
+		if (layout != null && recipe instanceof JemiRecipe) {
+			try {
+				for (Integer slot : JemiInternals.getErrorSlots(err)) {
+					IGuiIngredient<ItemStack> ingredient = layout.getItemStacks().getGuiIngredients().get(slot);
+					if (ingredient != null) {
+						ingredient.drawHighlight(draw.raw(), MISSING_COLOR, 0, 0);
 					}
-				});
-				draw.push();
-				draw.matrices().translate(-100000, -100000, -100000);
-				draw.matrices().scale(0, 0, 0);
-				err.showError(raw, EmiScreenManager.lastMouseX, EmiScreenManager.lastMouseY, view, 0, 0);
-				draw.pop();
-				view.getSlotViews().forEach(v -> {
-					if (v instanceof JemiRecipeSlot jrs && jrs.highlight != 0 && !jrs.isEmpty()) {
-						draw.fill(jrs.x, jrs.y, 18, 18, jrs.highlight);
-					}
-				});
+				}
+			} catch (Throwable t) {
 			}
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private IRecipeTransferError jeiCraft(EmiRecipe recipe, EmiCraftContext<T> context, boolean craft, JemiRecipeSlotsView view) {
+	private static boolean allowsTransfer(IRecipeTransferError err) {
+		return err == null || err.getType() == IRecipeTransferError.Type.COSMETIC;
+	}
+
+	private IRecipeTransferError transfer(EmiRecipe recipe, EmiCraftContext<T> context, boolean doTransfer, RecipeLayout<R> layout) {
 		try {
+			R raw = getRawRecipe(recipe);
+			if (raw == null) {
+				return RecipeTransferErrorInternal.INSTANCE;
+			}
+			if (layout == null) {
+				layout = getLayout(raw);
+			}
+			if (layout == null) {
+				return RecipeTransferErrorInternal.INSTANCE;
+			}
 			MinecraftClient client = MinecraftClient.getInstance();
-			R rawRecipe = getRawRecipe(recipe);
-			
-			if (view == null) {
-				view = createSlotsView(recipe, rawRecipe, ImmutableList.of());
-			}
-
-			if (view == null) {
-				return () -> IRecipeTransferError.Type.INTERNAL;
-			}
-			
-			return handler.transferRecipe(context.getScreenHandler(), rawRecipe != null ? rawRecipe : (R) recipe, view, client.player, context.getAmount() > 1, craft);
-		} catch (Exception e) {
-			EmiLog.error("Error executing JEI craft", e);
+			return handler.transferRecipe(context.getScreenHandler(), raw, layout, client.player, context.getAmount() > 1, doTransfer);
+		} catch (Throwable t) {
+			EmiLog.error("[JEMI] Error executing JEI recipe transfer", t);
 		}
-		return () -> IRecipeTransferError.Type.INTERNAL;
+		return RecipeTransferErrorInternal.INSTANCE;
 	}
 
-	private JemiRecipeSlotsView createSlotsView(EmiRecipe recipe, R rawRecipe, List<Widget> widgets) {
-		JemiRecipeLayoutBuilder builder = null;
-		if (rawRecipe != null) {
-			/*
-			if (category != null) {
-				builder = new JemiRecipeLayoutBuilder();
-				category.setRecipe(builder, rawRecipe, JemiPlugin.runtime.getJeiHelpers().getFocusFactory().getEmptyFocusGroup());
-			}*/
-		} else if (type != null) {
-			return null;
-		}
-
-		if (builder == null) {
-			List<SlotWidget> slotWidgets = widgets.stream().filter(w -> w instanceof SlotWidget).map(w -> (SlotWidget) w).collect(Collectors.toList());
-			builder = new JemiRecipeLayoutBuilder();
-			addIngredients(builder, slotWidgets, recipe.getOutputs(), RecipeIngredientRole.OUTPUT);
-			int blankedSlots = 0;
-			// People assume very specific slot layouts from JEI. Oblige them.
-			if (recipe instanceof EmiCraftingRecipe ecr) {
-				if (ecr.shapeless) {
-					int inputSize = recipe.getInputs().size();
-					if (inputSize == 1) {
-						addBlankIngredients(builder, slotWidgets, 4, RecipeIngredientRole.INPUT);
-						blankedSlots += 4;
-						addIngredients(builder, slotWidgets, recipe.getInputs(), RecipeIngredientRole.INPUT);
-					} else if (inputSize < 5) {
-						int wrap = 0;
-						for (EmiIngredient i : recipe.getInputs()) {
-							addIngredients(builder, slotWidgets, ImmutableList.of(i), RecipeIngredientRole.INPUT);
-							wrap++;
-							if (wrap >= 2) {
-								wrap = 0;
-								addBlankIngredients(builder, slotWidgets, 1, RecipeIngredientRole.INPUT);
-								blankedSlots += 1;
-							}
-						}
-					} else {
-						addIngredients(builder, slotWidgets, recipe.getInputs(), RecipeIngredientRole.INPUT);
-					}
-				} else {
-					if (ecr.canFit(1, 3)) {
-						addBlankIngredients(builder, slotWidgets, 1, RecipeIngredientRole.INPUT);
-						blankedSlots += 1;
-					} else if (ecr.canFit(3, 1) || (ecr.canFit(3, 2) && !ecr.canFit(2, 2))) {
-						addBlankIngredients(builder, slotWidgets, 3, RecipeIngredientRole.INPUT);
-						blankedSlots += 3;
-					}
-					addIngredients(builder, slotWidgets, recipe.getInputs().subList(0, Math.max(9, recipe.getInputs().size()) - blankedSlots), RecipeIngredientRole.INPUT);
-				}
-			} else {
-				addIngredients(builder, slotWidgets, recipe.getInputs(), RecipeIngredientRole.INPUT);
-			}
-			if (recipe.getCategory() == VanillaEmiRecipeCategories.CRAFTING) {
-				for (int i = recipe.getInputs().size() + blankedSlots; i < 9; i++) {
-					addIngredients(builder, slotWidgets, ImmutableList.of(EmiStack.EMPTY), RecipeIngredientRole.INPUT);
-				}
-			}
-			addIngredients(builder, slotWidgets, recipe.getCatalysts(), RecipeIngredientRole.CATALYST);
-		}
-
-		return new JemiRecipeSlotsView(builder.slots.stream().map(JemiRecipeSlot::new).collect(Collectors.toList()));
+	private RecipeLayout<R> createLayout(EmiRecipe recipe) {
+		R raw = getRawRecipe(recipe);
+		return raw == null ? null : getLayout(raw);
 	}
 
-	@SuppressWarnings("unchecked")
+	// canCraft/getTooltip/render are queried every frame for the hovered recipe, so reuse the last layout
+	private RecipeLayout<R> getLayout(R raw) {
+		if (raw != cachedRecipe || cachedLayout == null) {
+			cachedLayout = JemiInternals.createLayout(category, raw);
+			cachedRecipe = raw;
+		}
+		return cachedLayout;
+	}
+
 	private R getRawRecipe(EmiRecipe recipe) {
 		try {
-			if (type != null && type.getRecipeClass() != null) {
-				if (recipe instanceof JemiRecipe jr && jr.recipe != null) {
-					if (type.getRecipeClass().isAssignableFrom(jr.recipe.getClass())) {
-						return type.getRecipeClass().cast(jr.recipe);
-					}
-				}
-				Recipe<?> entry = ProxyRecipeManager.getRecipe(recipe.getId());
-				if (entry != null && type.getRecipeClass().isAssignableFrom(entry.getClass())) {
-					return type.getRecipeClass().cast(entry);
-				}
+			Class<? extends R> clazz = category.getRecipeClass();
+			if (recipe instanceof JemiRecipe<?> jr && jr.category == category) {
+				return clazz.cast(jr.recipe);
 			}
-			Recipe<?> entry = ProxyRecipeManager.getRecipe(recipe.getId());
-			return (R) entry;
-		} catch (Exception e) {
+			Recipe<?> backing = recipe.getBackingRecipe();
+			if (backing != null && clazz.isInstance(backing)) {
+				return clazz.cast(backing);
+			}
+		} catch (Throwable t) {
 		}
 		return null;
-	}
-
-	private void addBlankIngredients(JemiRecipeLayoutBuilder builder, List<SlotWidget> widgets, int amount, RecipeIngredientRole role) {
-		for (int i = 0; i < amount; i++) {
-			addIngredients(builder, widgets, ImmutableList.of(EmiStack.EMPTY), RecipeIngredientRole.INPUT);
-		}
-	}
-
-	@SuppressWarnings({"rawtypes", "unchecked"})
-	private void addIngredients(JemiRecipeLayoutBuilder builder, List<SlotWidget> widgets, List<? extends EmiIngredient> stacks, RecipeIngredientRole role) {
-		for (EmiIngredient ing : stacks) {
-			int x = 0, y = 0;
-			for (SlotWidget w : widgets) {
-				if (w.getStack() == ing) {
-					x = w.getBounds().x();
-					y = w.getBounds().y();
-				}
-			}
-			IIngredientAcceptor acceptor = builder.addSlot(role, x, y);
-			for (EmiStack stack : ing.getEmiStacks()) {
-				Optional<ITypedIngredient<?>> opt = JemiUtil.getTyped(stack);
-				if (opt.isPresent()) {
-					ITypedIngredient<?> typed = opt.get();
-					acceptor.addIngredient((IIngredientType) typed.getType(), typed.getIngredient());
-				}
-			}
-		}
 	}
 }

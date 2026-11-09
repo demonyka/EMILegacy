@@ -13,6 +13,8 @@
     "accessor.ItemRendererAccessor",
     "accessor.ShovelItemAccessor",
     "accessor.SmithingRecipeAccessor",
+    "jei.IngredientListOverlayMixin",
+    "jei.LeftAreaDispatcherMixin",
     "CraftingResultSlotMixin",
     "GlobalMixin",
     "HandledScreenMixin",

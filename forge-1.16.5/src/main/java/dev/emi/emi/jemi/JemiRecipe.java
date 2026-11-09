@@ -1,13 +1,13 @@
 package dev.emi.emi.jemi;
 
-
-import java.util.stream.Collectors;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Lists;
+import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.EmiUtil;
@@ -18,27 +18,27 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
-import dev.emi.emi.jemi.impl.JemiIngredientAcceptor;
-import dev.emi.emi.jemi.impl.JemiRecipeLayoutBuilder;
-import dev.emi.emi.jemi.impl.JemiRecipeSlot;
-import dev.emi.emi.jemi.impl.JemiRecipeSlotBuilder;
+import dev.emi.emi.backport.TooltipComponent;
 import dev.emi.emi.jemi.widget.JemiSlotWidget;
-import dev.emi.emi.jemi.widget.JemiTankWidget;
 import dev.emi.emi.runtime.EmiDrawContext;
 import dev.emi.emi.runtime.EmiLog;
-import dev.emi.emi.runtime.ProxyRecipeManager;
-import dev.emi.emi.screen.EmiScreenManager;
-import mezz.jei.api.gui.IRecipeLayoutDrawable;
 import mezz.jei.api.gui.drawable.IDrawable;
-import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.library.focus.FocusGroup;
-import dev.emi.emi.backport.TooltipComponent;
-import net.minecraft.client.util.InputUtil;
+import mezz.jei.gui.ingredients.GuiIngredient;
+import mezz.jei.gui.ingredients.GuiIngredientGroup;
+import mezz.jei.gui.recipes.RecipeLayout;
+import mezz.jei.gui.recipes.ShapelessIcon;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Rect2i;
 import net.minecraft.recipe.Recipe;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+/**
+ * A JEI 7 recipe shown in EMI. Inputs and outputs come from {@code setIngredients}, the display
+ * is the JEI recipe layout itself (background, category drawing, slots) with EMI slot widgets on top.
+ */
 public class JemiRecipe<T> implements EmiRecipe {
 	public List<EmiIngredient> inputs = Lists.newArrayList();
 	public List<EmiIngredient> catalysts = Lists.newArrayList();
@@ -48,31 +48,43 @@ public class JemiRecipe<T> implements EmiRecipe {
 	public IRecipeCategory<T> category;
 	public T recipe;
 	public boolean allowTree = true;
+	private final int width, height;
 
 	public JemiRecipe(EmiRecipeCategory recipeCategory, IRecipeCategory<T> category, T recipe) {
 		this.recipeCategory = recipeCategory;
 		this.category = category;
 		this.recipe = recipe;
-		this.originalId = category.getRegistryName(recipe);
+		if (recipe instanceof Recipe<?> r) {
+			this.originalId = r.getId();
+		}
 		if (this.originalId != null) {
 			this.id = EmiPort.id("jei", "/" + EmiUtil.subId(this.originalId));
 		}
-		JemiRecipeLayoutBuilder builder = new JemiRecipeLayoutBuilder();
-		category.setRecipe(builder, recipe, JemiPlugin.runtime.getJeiHelpers().getFocusFactory().getEmptyFocusGroup());
-		for (JemiRecipeSlotBuilder jrsb : builder.slots) {
-			jrsb.acceptor.coerceStacks(jrsb.tooltipCallback, jrsb.renderers);
+		IDrawable background = category.getBackground();
+		this.width = background == null ? 0 : background.getWidth();
+		this.height = background == null ? 0 : background.getHeight();
+
+		JemiIngredients ingredients = new JemiIngredients();
+		category.setIngredients(recipe, ingredients);
+		for (Map.Entry<IIngredientType<?>, List<List<?>>> entry : ingredients.inputs.entrySet()) {
+			for (List<?> slot : entry.getValue()) {
+				EmiIngredient ing = JemiUtil.getIngredient(entry.getKey(), slot);
+				if (!ing.isEmpty()) {
+					inputs.add(ing);
+				}
+			}
 		}
-		for (JemiIngredientAcceptor acceptor : builder.ingredients) {
-			EmiIngredient stack = acceptor.build();
-			if (acceptor.role == RecipeIngredientRole.INPUT) {
-				inputs.add(stack);
-			} else if (acceptor.role == RecipeIngredientRole.CATALYST) {
-				catalysts.add(stack);
-			} else if (acceptor.role == RecipeIngredientRole.OUTPUT) {
-				if (stack.getEmiStacks().size() > 1) {
+		for (Map.Entry<IIngredientType<?>, List<List<?>>> entry : ingredients.outputs.entrySet()) {
+			for (List<?> slot : entry.getValue()) {
+				EmiIngredient ing = JemiUtil.getIngredient(entry.getKey(), slot);
+				if (ing.getEmiStacks().size() > 1) {
 					allowTree = false;
 				}
-				outputs.addAll(stack.getEmiStacks());
+				for (EmiStack stack : ing.getEmiStacks()) {
+					if (!stack.isEmpty()) {
+						outputs.add(stack);
+					}
+				}
 			}
 		}
 	}
@@ -84,7 +96,7 @@ public class JemiRecipe<T> implements EmiRecipe {
 
 	@Override
 	public @Nullable Recipe<?> getBackingRecipe() {
-		return ProxyRecipeManager.getRecipe(originalId);
+		return recipe instanceof Recipe<?> r ? r : null;
 	}
 
 	@Override
@@ -109,12 +121,12 @@ public class JemiRecipe<T> implements EmiRecipe {
 
 	@Override
 	public int getDisplayWidth() {
-		return category.getWidth();
+		return width;
 	}
 
 	@Override
 	public int getDisplayHeight() {
-		return category.getHeight();
+		return height;
 	}
 
 	@Override
@@ -123,38 +135,47 @@ public class JemiRecipe<T> implements EmiRecipe {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void addWidgets(WidgetHolder widgets) {
-		Optional<IRecipeLayoutDrawable<T>> opt = JemiPlugin.runtime.getRecipeManager().createRecipeLayoutDrawable(category, recipe, FocusGroup.EMPTY);
-		JemiRecipeLayoutBuilder builder = new JemiRecipeLayoutBuilder();
-		category.setRecipe(builder, recipe, JemiPlugin.runtime.getJeiHelpers().getFocusFactory().getEmptyFocusGroup());
-		for (JemiRecipeSlotBuilder jrsb : builder.slots) {
-			jrsb.acceptor.coerceStacks(jrsb.tooltipCallback, jrsb.renderers);
+		RecipeLayout<T> layout = JemiInternals.createLayout(category, recipe);
+		if (layout == null) {
+			return;
 		}
-		if (opt.isPresent()) {
-			widgets.add(new JemiWidget(0, 0, getDisplayWidth(), getDisplayHeight(), opt.get()));
-			for (JemiRecipeSlotBuilder sb : builder.slots) {
-				JemiRecipeSlot slot = new JemiRecipeSlot(sb);
-				if (slot.tankInfo != null && !slot.getIngredients(JemiUtil.getFluidType()).collect(Collectors.toList()).isEmpty()) {
-					widgets.add(new JemiTankWidget(slot, this));
-				} else {
-					widgets.add(new JemiSlotWidget(slot, this));
-				}
+		List<GuiIngredient<?>> slots = Lists.newArrayList();
+		List<JemiSlotWidget<?>> slotWidgets = Lists.newArrayList();
+		for (GuiIngredientGroup<?> group : JemiInternals.getGroups(layout)) {
+			addSlots(group, slots, slotWidgets);
+		}
+		widgets.add(new JemiWidget(layout, slots));
+		for (JemiSlotWidget<?> widget : slotWidgets) {
+			widgets.add(widget);
+		}
+	}
+
+	private <V> void addSlots(GuiIngredientGroup<V> group, List<GuiIngredient<?>> slots, List<JemiSlotWidget<?>> slotWidgets) {
+		for (Map.Entry<Integer, GuiIngredient<V>> entry : group.getGuiIngredients().entrySet()) {
+			GuiIngredient<V> ingredient = entry.getValue();
+			slots.add(ingredient);
+			try {
+				slotWidgets.add(new JemiSlotWidget<V>(group, entry.getKey(), ingredient, this));
+			} catch (Throwable t) {
+				EmiLog.error("[JEMI] Exception creating slot for JEI recipe", t);
 			}
 		}
 	}
 
+	/**
+	 * Draws the JEI recipe layout like {@code RecipeLayout#drawRecipe}, minus JEI's own recipe border
+	 * and slot hover highlight (EMI draws both). Mouse coordinates are relative to the recipe origin.
+	 */
 	public class JemiWidget extends Widget {
-
-		private final IRecipeLayoutDrawable<T> recipeLayoutDrawable;
+		private final RecipeLayout<T> layout;
+		private final List<GuiIngredient<?>> slots;
 		private final Bounds bounds;
-		private final int x, y;
 
-		public JemiWidget(int x, int y, int w, int h, IRecipeLayoutDrawable<T> recipeLayoutDrawable) {
-			this.recipeLayoutDrawable = recipeLayoutDrawable;
-			this.bounds = new Bounds(x, y, w, h);
-			this.x = x;
-			this.y = y;
+		public JemiWidget(RecipeLayout<T> layout, List<GuiIngredient<?>> slots) {
+			this.layout = layout;
+			this.slots = slots;
+			this.bounds = new Bounds(0, 0, getDisplayWidth(), getDisplayHeight());
 		}
 
 		@Override
@@ -163,35 +184,78 @@ public class JemiRecipe<T> implements EmiRecipe {
 		}
 
 		@Override
+		@SuppressWarnings("deprecation")
 		public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
 			EmiDrawContext context = EmiDrawContext.wrap(matrices);
+			RenderSystem.color4f(1, 1, 1, 1);
+			RenderSystem.disableLighting();
+			RenderSystem.enableAlphaTest();
 			context.push();
-			context.translate(x, y);
-			IDrawable background = category.getBackground();
-			if (background != null) {
-				background.draw(context.raw());
+			try {
+				IDrawable background = category.getBackground();
+				if (background != null) {
+					background.draw(context.raw());
+				}
+				category.draw(recipe, context.raw(), mouseX, mouseY);
+				RenderSystem.color4f(1, 1, 1, 1);
+				ShapelessIcon shapeless = JemiInternals.getShapelessIcon(layout);
+				if (shapeless != null && background != null) {
+					shapeless.draw(context.raw(), background.getWidth());
+				}
+				for (GuiIngredient<?> slot : slots) {
+					slot.draw(context.raw(), 0, 0);
+				}
+			} catch (Throwable t) {
+				EmiLog.error("[JEMI] Exception rendering JEI recipe", t);
 			}
-			category.draw(recipe, recipeLayoutDrawable.getRecipeSlotsView(), context.raw(), mouseX, mouseY);
-			context.resetColor();
 			context.pop();
+			RenderSystem.color4f(1, 1, 1, 1);
+			RenderSystem.disableBlend();
+			RenderSystem.disableLighting();
+			RenderSystem.enableDepthTest();
+		}
+
+		private boolean isOverSlot(int mouseX, int mouseY) {
+			for (GuiIngredient<?> slot : slots) {
+				Rect2i r = slot.getRect();
+				if (mouseX >= r.getX() && mouseY >= r.getY() && mouseX < r.getX() + r.getWidth() && mouseY < r.getY() + r.getHeight()) {
+					return true;
+				}
+			}
+			return false;
 		}
 
 		@Override
 		public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-			return category.getTooltipStrings(recipe, recipeLayoutDrawable.getRecipeSlotsView(), mouseX, mouseY)
-				.stream()
-				.map(t -> TooltipComponent.of(t.asOrderedText()))
-				.collect(Collectors.toList());
+			if (isOverSlot(mouseX, mouseY)) {
+				return Lists.newArrayList();
+			}
+			try {
+				List<Text> strings = category.getTooltipStrings(recipe, mouseX, mouseY);
+				if ((strings == null || strings.isEmpty())) {
+					ShapelessIcon shapeless = JemiInternals.getShapelessIcon(layout);
+					if (shapeless != null) {
+						strings = shapeless.getTooltipStrings(mouseX, mouseY);
+					}
+				}
+				if (strings != null) {
+					return strings.stream().map(t -> TooltipComponent.of(t.asOrderedText())).collect(Collectors.toList());
+				}
+			} catch (Throwable t) {
+				EmiLog.error("[JEMI] Exception getting JEI recipe tooltip", t);
+			}
+			return Lists.newArrayList();
 		}
 
 		@Override
 		public boolean mouseClicked(int mouseX, int mouseY, int button) {
-			return category.handleInput(recipe, mouseX, mouseY, InputUtil.Type.MOUSE.createFromCode(button));
-		}
-
-		@Override
-		public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-			return category.handleInput(recipe, EmiScreenManager.lastMouseX, EmiScreenManager.lastMouseY, InputUtil.fromKeyCode(keyCode, scanCode));
+			// JEI 7 categories only receive clicks, there is no key input hook
+			try {
+				return category.handleClick(recipe, mouseX, mouseY, button);
+			} catch (Throwable t) {
+				EmiLog.error("[JEMI] Exception handling JEI recipe click", t);
+				return false;
+			}
 		}
 	}
 }

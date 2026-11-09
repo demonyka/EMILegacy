@@ -10,14 +10,15 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.stack.serializer.EmiIngredientSerializer;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.ingredients.IIngredientType;
-import mezz.jei.api.runtime.IIngredientManager;
+import mezz.jei.ingredients.IngredientManager;
 import net.minecraft.util.JsonHelper;
 
 @SuppressWarnings("rawtypes")
 public class JemiStackSerializer implements EmiIngredientSerializer<JemiStack> {
-	private final IIngredientManager manager;
+	// JEI 7 only exposes lookup by uid on its internal ingredient manager
+	private final IngredientManager manager;
 
-	public JemiStackSerializer(IIngredientManager manager) {
+	public JemiStackSerializer(IngredientManager manager) {
 		this.manager = manager;
 	}
 
@@ -25,10 +26,13 @@ public class JemiStackSerializer implements EmiIngredientSerializer<JemiStack> {
 	public String getType() {
 		return "jemi";
 	}
-	
+
 	public EmiStack create(String uid, long amount) {
+		if (manager == null) {
+			return EmiStack.EMPTY;
+		}
 		for (IIngredientType<?> type : manager.getRegisteredIngredientTypes()) {
-			if (type == VanillaTypes.ITEM_STACK || type == JemiUtil.getFluidType()) {
+			if (type == VanillaTypes.ITEM || type == VanillaTypes.FLUID) {
 				continue;
 			}
 			Optional<?> opt = manager.getIngredientByUid(type, uid);
