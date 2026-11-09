@@ -1,0 +1,37 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.emi.emi.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "plugin": "dev.emi.emi.mixinsupport.EmiMixinPlugin",
+  "client": [
+    "accessor.AxeItemAccessor",
+    "accessor.BakedModelManagerAccessor",
+    "accessor.CraftingResultSlotAccessor",
+    "accessor.HandledScreenAccessor",
+    "accessor.HoeItemAccessor",
+    "accessor.ItemRendererAccessor",
+    "accessor.OrderedTextTooltipComponentAccessor",
+    "accessor.ScreenAccessor",
+    "accessor.ShovelItemAccessor",
+    "accessor.SmithingRecipeAccessor",
+    "jei.PluginCallerMixin",
+    "AbstractInventoryScreenMixin",
+    "CraftingResultSlotMixin",
+    "GlobalMixin",
+    "HandledScreenMixin",
+    "HoeItemMixin",
+    "ItemStackMixin",
+    "KeyboardMixin",
+    "MinecraftClientMixin",
+    "MouseMixin",
+    "RecipeBookWidgetMixin",
+    "ScreenMixin",
+    "ToastManagerMixin"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
