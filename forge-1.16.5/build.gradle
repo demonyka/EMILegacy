@@ -169,3 +169,19 @@ tasks.withType(net.fabricmc.loom.task.AbstractRunTask).configureEach {
 if (project.hasProperty("devAutoWorld")) {
 	loom.runs.client.vmArg "-Demi.devAutoWorld=true"
 }
+
+// Porting aid: -PtestMods adds mods with JEI integration to the dev client (compat testing only)
+if (project.hasProperty("testMods")) {
+	repositories {
+		exclusiveContent {
+			forRepository { maven { url "https://api.modrinth.com/maven" } }
+			filter { includeGroup "maven.modrinth" }
+		}
+	}
+	dependencies {
+		modLocalRuntime "maven.modrinth:mekanism:10.1.2.457"
+	}
+}
+if (project.hasProperty("devShowRecipes")) {
+	loom.runs.client.vmArg "-Demi.devShowRecipes=${project.devShowRecipes}"
+}

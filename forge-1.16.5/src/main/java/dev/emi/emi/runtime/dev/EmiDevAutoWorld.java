@@ -28,7 +28,9 @@ public final class EmiDevAutoWorld {
 	private static final String WORLD = "emi-test";
 	private static final boolean ENABLED = Boolean.getBoolean("emi.devAutoWorld");
 	private static boolean started, inventoryOpened;
+	private static final String SHOW_RECIPES = System.getProperty("emi.devShowRecipes");
 	private static int ticksInWorld;
+	private static boolean recipesShown;
 
 	private EmiDevAutoWorld() {
 	}
@@ -65,9 +67,20 @@ public final class EmiDevAutoWorld {
 			return;
 		}
 		ticksInWorld++;
-		if (!inventoryOpened && ticksInWorld > 40 && EmiReloadManager.isLoaded()) {
+		// Optionally open the recipe screen for an item id, e.g. -Demi.devShowRecipes=mekanism:crusher
+		if (SHOW_RECIPES != null && !recipesShown && inventoryOpened && ticksInWorld > 80) {
+			recipesShown = true;
+			net.minecraft.item.Item item = net.minecraft.util.registry.Registry.ITEM.get(new net.minecraft.util.Identifier(SHOW_RECIPES));
+			EmiLog.info("[dev] Showing recipes for " + SHOW_RECIPES);
+			dev.emi.emi.api.EmiApi.displayRecipes(dev.emi.emi.api.stack.EmiStack.of(item));
+			return;
+		}
+		// Keep the inventory open (focus loss may close it) so screenshots always show EMI
+		if (ticksInWorld > 40 && ticksInWorld % 20 == 0 && client.currentScreen == null && EmiReloadManager.isLoaded()) {
+			if (!inventoryOpened) {
+				EmiLog.info("[dev] EMI loaded, opening inventory");
+			}
 			inventoryOpened = true;
-			EmiLog.info("[dev] EMI loaded, opening inventory");
 			client.openScreen(new InventoryScreen(client.player));
 		}
 	}
