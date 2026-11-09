@@ -1,0 +1,47 @@
+# Fill ("+") into vanilla crafting table and a Mekanism machine in survival; R key; search
+world survival
+waitloaded
+wait 40
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 20
+cmd setblock 0 199 0 minecraft:glass
+cmd setblock 1 199 0 minecraft:glass
+cmd setblock 1 200 1 minecraft:crafting_table
+cmd setblock 1 200 -1 mekanism:crusher
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+cmd give @p mekanism:ingot_osmium 8
+wait 10
+use 1 200 1
+wait 10
+dump
+shot f01_crafting_open
+recipes minecraft:oak_planks
+wait 10
+shot f02_recipe
+click 283 121
+wait 10
+dump
+shot f03_after_fill
+move 328 31
+wait 2
+key key.keyboard.r
+wait 10
+shot f04_r_key
+close
+wait 5
+click 212 227
+type @mekanism
+wait 10
+shot f05_search
+close
+wait 5
+use 1 200 -1
+wait 10
+dump
+shot f06_crusher_gui
+recipes mekanism:dust_osmium
+wait 10
+shot f07_crusher_recipe
+quit

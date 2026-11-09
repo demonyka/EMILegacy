@@ -193,7 +193,7 @@ public class EmiAgnosForge extends EmiAgnos {
 							return;
 						}
 						if (BrewingRecipeRegistry.isBrewable(potion)) {
-							Identifier id = EmiPort.id("emi", "brewing/item/"
+							Identifier id = EmiPort.id("emi", "/brewing/item/"
 								+ EmiUtil.subId(Registry.POTION.getId(potion)) + "/" + gid + "/" + iid + "/" + oid);
 							registry.addRecipe(new EmiBrewingRecipe(
 								EmiStack.of(EmiPort.setPotion(new ItemStack(recipe.input.get()), potion)), EmiIngredient.of(recipe.ingredient),
@@ -220,7 +220,7 @@ public class EmiAgnosForge extends EmiAgnos {
 						EmiStack input = EmiStack.of(is);
 						EmiIngredient ingredient = EmiIngredient.of(recipe.getIngredient());
 						EmiStack output = EmiStack.of(recipe.getOutput(is, recipe.getIngredient().getMatchingStacksClient()[0]));
-						Identifier id = EmiPort.id("emi", "brewing/forge/"
+						Identifier id = EmiPort.id("emi", "/brewing/forge/"
 							+ EmiUtil.subId(input.getId()) + "/"
 							+ EmiUtil.subId(ingredient.getEmiStacks().get(0).getId()) + "/"
 							+ EmiUtil.subId(output.getId()));

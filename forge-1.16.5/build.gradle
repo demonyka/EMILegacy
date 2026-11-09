@@ -165,9 +165,9 @@ tasks.withType(net.fabricmc.loom.task.AbstractRunTask).configureEach {
 	javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(8) }
 }
 
-// Porting aid: -PdevAutoWorld makes runClient enter a creative test world and open the inventory
-if (project.hasProperty("devAutoWorld")) {
-	loom.runs.client.vmArg "-Demi.devAutoWorld=true"
+// Test harness: -PdevScript=<file> runs an EMI dev script in the client (see EmiDevScript)
+if (project.hasProperty("devScript")) {
+	loom.runs.client.vmArg "-Demi.devScript=${file(project.devScript).absolutePath}"
 }
 
 // Porting aid: -PtestMods adds mods with JEI integration to the dev client (compat testing only)
@@ -180,8 +180,9 @@ if (project.hasProperty("testMods")) {
 	}
 	dependencies {
 		modLocalRuntime "maven.modrinth:mekanism:10.1.2.457"
+		modLocalRuntime "maven.modrinth:immersiveengineering:5.1.0-148"
+		modLocalRuntime "maven.modrinth:botania:1.16.5-420.3-forge"
+		modLocalRuntime "maven.modrinth:patchouli:1.16.4-53.3-forge"
+		modLocalRuntime "maven.modrinth:curios:1.16.5-4.1.0.0"
 	}
-}
-if (project.hasProperty("devShowRecipes")) {
-	loom.runs.client.vmArg "-Demi.devShowRecipes=${project.devShowRecipes}"
 }

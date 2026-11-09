@@ -170,6 +170,18 @@ public class EmiSearchWidget extends TextFieldWidget {
 	public boolean isFocused() {
 		return isFocused;
 	}
+
+	// 1.16: TextFieldWidget routes focus changes through setTextFieldFocused -> super.setFocused,
+	// which would bypass the focus reimplementation above
+	@Override
+	public void setTextFieldFocused(boolean focused) {
+		setFocused(focused);
+	}
+
+	@Override
+	protected void onFocusedChanged(boolean focused) {
+		setFocused(focused);
+	}
 	
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {

@@ -58,7 +58,8 @@ public class JemiRecipe<T> implements EmiRecipe {
 			this.originalId = r.getId();
 		}
 		if (this.originalId != null) {
-			this.id = EmiPort.id("jei", "/" + EmiUtil.subId(this.originalId));
+			// Category is part of the id: some mods reuse one recipe in several JEI categories
+			this.id = EmiPort.id("jei", "/" + EmiUtil.subId(category.getUid()) + "/" + EmiUtil.subId(this.originalId));
 		}
 		IDrawable background = category.getBackground();
 		this.width = background == null ? 0 : background.getWidth();

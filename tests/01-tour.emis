@@ -1,0 +1,44 @@
+# Tour: vanilla + modded screens, JEI-provided machine categories, fluids, tree, config
+world survival
+waitloaded
+wait 60
+cmd gamemode creative
+cmd setblock 0 199 0 minecraft:glass
+cmd setblock 1 199 0 minecraft:glass
+cmd tp @p 0 200 0 -90 30
+cmd setblock 1 200 1 minecraft:crafting_table
+wait 20
+inventory
+wait 10
+shot t01_inventory
+recipes minecraft:oak_planks
+wait 10
+shot t02_recipes_planks
+uses mekanism:crusher
+wait 10
+shot t03_uses_crusher
+uses minecraft:furnace
+wait 10
+shot t04_thermal_iron_dust
+uses immersiveengineering:crusher
+wait 10
+shot t05_ie_crusher
+uses botania:mana_pool
+wait 10
+shot t06_botania_pool
+wait 10
+uses mekanism:electrolytic_separator
+wait 10
+shot t08_fluids_gases
+tree
+wait 10
+shot t09_tree
+close
+wait 5
+config
+wait 10
+shot t10_config
+close
+wait 5
+dump
+quit

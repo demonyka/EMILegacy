@@ -1,0 +1,40 @@
+world survival
+waitloaded
+wait 40
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 20
+cmd setblock 1 200 1 minecraft:crafting_table
+cmd setblock 1 200 -1 mekanism:formulaic_assemblicator
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+cmd give @p minecraft:cobblestone 16
+wait 10
+inventory
+wait 5
+click 212 227
+wait 5
+shot s01_search_clicked
+type stone
+wait 10
+shot s02_search_typed
+close
+wait 5
+use 1 200 1
+wait 10
+dump
+recipes minecraft:oak_planks
+wait 10
+click 283 121
+wait 10
+dump
+shot c01_crafting_filled
+close
+wait 5
+use 1 200 -1
+wait 10
+dump
+recipes minecraft:furnace
+wait 10
+shot a01_assemblicator_recipe
+quit

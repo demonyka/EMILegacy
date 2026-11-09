@@ -1,0 +1,51 @@
+world survival
+waitloaded
+wait 40
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 20
+cmd setblock 1 200 -1 mekanism:formulaic_assemblicator
+cmd clear @p
+cmd give @p minecraft:cobblestone 16
+wait 10
+inventory
+wait 5
+click 212 227
+type @botania
+wait 10
+shot i01_search_botania
+key key.keyboard.escape
+wait 5
+close
+wait 5
+use 1 200 -1
+wait 10
+recipes minecraft:furnace
+wait 10
+click 283 121
+wait 15
+dump
+shot i02_assemblicator_filled
+close
+wait 5
+cmd gamemode creative
+wait 10
+inventory
+wait 5
+click 328 31
+wait 5
+dump
+shot i03_cheat_click
+key key.keyboard.escape
+wait 5
+recipes minecraft:oak_planks
+wait 10
+click 283 93
+wait 5
+shot i04_favorited
+close
+wait 5
+inventory
+wait 5
+shot i05_favorites_panel
+quit

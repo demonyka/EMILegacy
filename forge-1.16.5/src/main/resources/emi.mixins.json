@@ -11,6 +11,8 @@
     "accessor.HandledScreenAccessor",
     "accessor.HoeItemAccessor",
     "accessor.ItemRendererAccessor",
+    "accessor.KeyboardAccessor",
+    "accessor.MouseAccessor",
     "accessor.ShovelItemAccessor",
     "accessor.SmithingRecipeAccessor",
     "jei.IngredientListOverlayMixin",
