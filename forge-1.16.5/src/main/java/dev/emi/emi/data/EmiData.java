@@ -48,14 +48,14 @@ public class EmiData {
 			new EmiDataLoader<Map<String, EmiRecipeCategoryProperties>>(
 				EmiPort.id("emi:category_properties"), "category/properties", Maps::newHashMap,
 				(map, json, id) -> {
-					for (String k : json.keySet()) {
-						if (JsonHelper.hasJsonObject(json, k)) {
+					for (String k : EmiPort.keys(json)) {
+						if (EmiPort.hasJsonObject(json, k)) {
 							EmiRecipeCategoryProperties props = map.computeIfAbsent(k, s -> new EmiRecipeCategoryProperties());
 							JsonObject val = json.getAsJsonObject(k);
-							if (JsonHelper.hasNumber(val, "order")) {
+							if (EmiPort.hasNumber(val, "order")) {
 								props.order = val.get("order").getAsInt();
 							}
-							if (JsonHelper.hasJsonObject(val, "icon")) {
+							if (EmiPort.hasJsonObject(val, "icon")) {
 								JsonObject icon = val.getAsJsonObject("icon");
 								if (JsonHelper.hasString(icon, "texture")) {
 									props.icon = () -> new EmiTexture(EmiPort.id(JsonHelper.getString(icon, "texture")), 0, 0, 16, 16, 16, 16, 16, 16);
@@ -63,7 +63,7 @@ public class EmiData {
 									props.icon = () -> EmiIngredientSerializer.getDeserialized(icon.get("stack"));
 								}
 							}
-							if (JsonHelper.hasJsonObject(val, "simplified_icon")) {
+							if (EmiPort.hasJsonObject(val, "simplified_icon")) {
 								JsonObject icon = val.getAsJsonObject("simplified_icon");
 								if (JsonHelper.hasString(icon, "texture")) {
 									props.simplified = () -> new EmiTexture(EmiPort.id(JsonHelper.getString(icon, "texture")), 0, 0, 16, 16, 16, 16, 16, 16);

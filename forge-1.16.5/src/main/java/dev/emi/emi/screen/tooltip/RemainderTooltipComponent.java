@@ -71,10 +71,8 @@ public class RemainderTooltipComponent implements EmiTooltipComponent {
 				ModelViewStack view = ModelViewStack.INSTANCE;
 				view.push();
 				view.multiplyPositionMatrix(context.matrices().peek().getModel());
-				RenderSystem.applyModelViewMatrix();
 				render.item.renderGuiItemOverlay(render.text, is, 18 * 2, 18 * i, "");
 				view.pop();
-				RenderSystem.applyModelViewMatrix();
 				context.drawStack(input, 18 * 2, 18 * i, -1 ^ (EmiIngredient.RENDER_ICON | EmiIngredient.RENDER_AMOUNT | EmiIngredient.RENDER_REMAINDER));
 				Text t = remainder.damage > 0 ? EmiPort.literal("+" + remainder.damage, Formatting.GREEN) : EmiPort.literal("" + remainder.damage, Formatting.RED);
 				int width = render.text.getWidth(t);

@@ -30,14 +30,14 @@ public class EmiTagExclusionsLoader extends SinglePreparationResourceReloader<Ta
 				continue;
 			}
 			try {
-				for (Resource resource : manager.getAllResources(id)) {
+				for (Resource resource : EmiPort.getAllResources(manager, id)) {
 					InputStreamReader reader = new InputStreamReader(EmiPort.getInputStream(resource));
 					JsonObject json = JsonHelper.deserialize(GSON, reader, JsonObject.class);
 					try {
 						if (JsonHelper.getBoolean(json, "replace", false)) {
 							exclusions.clear();
 						}
-						for (String key : json.keySet()) {
+						for (String key : EmiPort.keys(json)) {
 							Identifier type = EmiPort.id(key);
 							if (JsonHelper.hasArray(json, key)) {
 								JsonArray arr = JsonHelper.getArray(json, key);

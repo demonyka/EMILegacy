@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+import dev.emi.emi.backport.CompatScreen;
+
 
 
 import com.github.bsideup.jabel.Desugar;
@@ -22,7 +24,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
-public class ConfigEnumScreen<T> extends Screen {
+public class ConfigEnumScreen<T> extends CompatScreen {
 	private final ConfigScreen last;
 	private final List<Entry<T>> entries;
 	private final Consumer<T> selection;

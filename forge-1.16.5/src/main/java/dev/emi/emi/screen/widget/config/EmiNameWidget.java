@@ -124,11 +124,11 @@ public class EmiNameWidget implements Drawable {
 		}
 
 		context.drawCenteredTextWithShadow(
-			EmiPort.literal(parts[0], Style.EMPTY.withColor(0xeb7bfc))
+			EmiPort.literal(parts[0], EmiPort.color(0xeb7bfc))
 				.append(EmiPort.literal("  "))
-				.append(EmiPort.literal(parts[1], Style.EMPTY.withColor(0x7bfca2)))
+				.append(EmiPort.literal(parts[1], EmiPort.color(0x7bfca2)))
 				.append(EmiPort.literal("  "))
-				.append(EmiPort.literal(parts[2], Style.EMPTY.withColor(0x7bebfc))),
+				.append(EmiPort.literal(parts[2], EmiPort.color(0x7bebfc))),
 			x, y, -1);
 	}
 }

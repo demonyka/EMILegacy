@@ -13,7 +13,7 @@ const rules = [
 	[/(?<![\w.])Map\.of\(/g, "ImmutableMap.of(", "com.google.common.collect.ImmutableMap"],
 	[/(?<![\w.])Map\.copyOf\(/g, "ImmutableMap.copyOf(", "com.google.common.collect.ImmutableMap"],
 	[/(?<![\w.])Map\.entry\(/g, "Maps.immutableEntry(", "com.google.common.collect.Maps"],
-	[/\.toList\(\)/g, ".collect(Collectors.toList())", "java.util.stream.Collectors"],
+	[/(?<![\w.]Collectors)\.toList\(\)/g,".collect(Collectors.toList())", "java.util.stream.Collectors"],
 	[/\.isBlank\(\)/g, ".trim().isEmpty()", null],
 	[/\.strip\(\)/g, ".trim()", null],
 	[/^(\s*)((?:public |private |protected |static |final )*)record (\w+)/gm, "$1@Desugar\n$1$2record $3", "com.github.bsideup.jabel.Desugar"],

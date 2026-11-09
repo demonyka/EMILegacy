@@ -65,7 +65,7 @@ public class EmiBannerDuplicateRecipe extends EmiPatternCraftingRecipe {
 		NbtCompound tag = new NbtCompound();
 		tag.put("Patterns", pattern.toTag());
 
-		BlockItem.setBlockEntityNbt(stack, BlockEntityType.BANNER, tag);
+		stack.putSubTag("BlockEntityTag", tag);
 		//stack.setNbt(tag);
 		EmiStack emiStack = EmiStack.of(stack);
 		if (reminder) {

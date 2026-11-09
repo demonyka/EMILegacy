@@ -44,8 +44,8 @@ public class EmiPlayerInventory {
 	public EmiPlayerInventory(PlayerEntity entity) {
 		HandledScreen<?> screen = EmiApi.getHandledScreen();
 		if (screen != null && screen.getScreenHandler() != null) {
-			if (screen.getScreenHandler().getCursorStack() != null) {
-				addStack(screen.getScreenHandler().getCursorStack());
+			if (EmiPort.getCursorStack() != null) {
+				addStack(EmiPort.getCursorStack());
 			}
 			List<EmiRecipeHandler<?>> handlers = (List) EmiRecipeFiller.getAllHandlers(screen);
 			if (!handlers.isEmpty()) {
@@ -61,7 +61,7 @@ public class EmiPlayerInventory {
 			}
 		}
 
-		PlayerInventory pInv = entity.getInventory();
+		PlayerInventory pInv = entity.inventory;
 		for (int i = 0; i < pInv.main.size(); i++) {
 			addStack(pInv.main.get(i));
 		}
@@ -73,8 +73,8 @@ public class EmiPlayerInventory {
 		}
 		HandledScreen<?> screen = EmiApi.getHandledScreen();
 		if (screen != null && screen.getScreenHandler() != null) {
-			if (screen.getScreenHandler().getCursorStack() != null) {
-				addStack(screen.getScreenHandler().getCursorStack());
+			if (EmiPort.getCursorStack() != null) {
+				addStack(EmiPort.getCursorStack());
 			}
 		}
 	}
@@ -141,7 +141,7 @@ public class EmiPlayerInventory {
 					return i;
 				}
 				return Long.compare(a.getAmount(), b.getAmount());
-			}).collect(Collectors.collect(Collectors.toList()));
+			}).collect(Collectors.toList());
 	}
 
 	public List<Boolean> getCraftAvailability(EmiRecipe recipe) {

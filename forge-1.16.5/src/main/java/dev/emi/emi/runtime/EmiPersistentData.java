@@ -1,5 +1,9 @@
 package dev.emi.emi.runtime;
 
+
+
+import dev.emi.emi.EmiPort;
+import com.google.gson.GsonBuilder;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -12,7 +16,7 @@ import net.minecraft.util.JsonHelper;
 
 public class EmiPersistentData {
 	public static final File FILE = new File("emi.json");
-	public static final Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
+	public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	
 	public static void save() {
 		try {
@@ -39,7 +43,7 @@ public class EmiPersistentData {
 				EmiFavorites.load(JsonHelper.getArray(json, "favorites"));
 			}
 			EmiSidebars.load(json);
-			if (JsonHelper.hasJsonObject(json, "recipe_defaults")) {
+			if (EmiPort.hasJsonObject(json, "recipe_defaults")) {
 				BoM.loadAdded(JsonHelper.getObject(json, "recipe_defaults"));
 			}
 			if (JsonHelper.hasArray(json, "hidden_stacks")) {

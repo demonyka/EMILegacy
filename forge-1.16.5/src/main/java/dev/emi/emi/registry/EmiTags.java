@@ -33,7 +33,6 @@ import dev.emi.emi.backport.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
 import net.minecraft.util.registry.RegistryKey;
 
 public class EmiTags {
@@ -168,7 +167,7 @@ public class EmiTags {
 			path = path.substring(0, path.length() - 5);
 			String[] parts = path.substring(17).split("/");
 			if (id.getNamespace().equals("emi") && parts.length > 1) {
-				Identifier mid = new ModelIdentifier(id.getNamespace(), path.substring(12), "inventory");
+				Identifier mid = new ModelIdentifier(new Identifier(id.getNamespace(), path.substring(12)), "inventory");
 				EmiTags.MODELED_TAGS.put(TagKey.of(EmiPort.getItemRegistry().getKey(), EmiPort.id(parts[0], path.substring(18 + parts[0].length()))), mid);
 				consumer.accept(mid);
 			}

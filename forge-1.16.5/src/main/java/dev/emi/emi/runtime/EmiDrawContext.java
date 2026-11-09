@@ -52,13 +52,11 @@ public class EmiDrawContext {
 	}
 
 	public void drawTexture(Identifier texture, int x, int y, int z, float u, float v, int width, int height, int textureWidth, int textureHeight) {
-		EmiPort.setPositionTexShader();
 		EmiPort.bindTexture(texture);
 		DrawableHelper.drawTexture(matrices, x, y, z, u, v, width, height, textureWidth, textureHeight);
 	}
 
 	public void drawTexture(Identifier texture, int x, int y, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
-		EmiPort.setPositionTexShader();
 		EmiPort.bindTexture(texture);
 		DrawableHelper.drawTexture(matrices, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
 	}
@@ -104,7 +102,7 @@ public class EmiDrawContext {
 	}
 
 	public void drawCenteredTextWithShadow(Text text, int x, int y, int color) {
-		DrawableHelper.drawCenteredTextWithShadow(matrices, client.textRenderer, text.asOrderedText(), x, y, color);
+		DrawableHelper.drawCenteredText(matrices, client.textRenderer, text, x, y, color);
 	}
 
 	public void enableDepthTest() {

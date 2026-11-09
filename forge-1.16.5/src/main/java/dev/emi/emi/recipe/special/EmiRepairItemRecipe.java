@@ -19,7 +19,7 @@ import net.minecraft.util.Identifier;
 
 public class EmiRepairItemRecipe extends EmiPatternCraftingRecipe {
 	public static final List<Item> TOOLS = EmiPort.getItemRegistry().stream()
-			.filter(Item::isDamageable).collect(Collectors.collect(Collectors.toList()));
+			.filter(Item::isDamageable).collect(Collectors.toList());
 	private final Item tool;
 
 	public EmiRepairItemRecipe(Item tool, Identifier id) {

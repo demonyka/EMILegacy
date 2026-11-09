@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+import dev.emi.emi.backport.CompatScreen;
+
 
 import com.google.common.collect.ImmutableList;
 import java.lang.reflect.Field;
@@ -25,7 +27,7 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
-public class ConfigPresetScreen extends Screen {
+public class ConfigPresetScreen extends CompatScreen {
 	private final ConfigScreen last;
 	private ListWidget list;
 	public ButtonWidget resetButton;

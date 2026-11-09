@@ -156,7 +156,6 @@ public class SlotWidget extends Widget {
 
 	@Override
 	public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-		EmiPort.setPositionTexShader();
 		EmiDrawContext context = EmiDrawContext.wrap(matrices);
 		context.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		drawBackground(matrices, mouseX, mouseY, delta);

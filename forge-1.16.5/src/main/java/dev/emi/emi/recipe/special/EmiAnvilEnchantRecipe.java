@@ -89,7 +89,7 @@ public class EmiAnvilEnchantRecipe implements EmiRecipe {
 		NbtCompound tag = new NbtCompound();
 		NbtList StoredEnchantments = new NbtList();
 		NbtCompound enchant = new NbtCompound();
-		String id = getTool().getTag().getList("Enchantments", NbtElement.COMPOUND_TYPE).getCompound(0).getString("id");
+		String id = getTool().getTag().getList("Enchantments", 10).getCompound(0).getString("id");
 
 		enchant.putString("id", id);
 		enchant.putShort("lvl", (short) level);

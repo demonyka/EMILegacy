@@ -27,7 +27,7 @@ public class IntGroup {
 	}
 
 	public String serialize() {
-		return values.intStream().mapToObj(i -> "" + i).collect(Collectors.joining(", "));
+		return values.stream().map(i -> "" + i).collect(Collectors.joining(", "));
 	}
 
 	public void deserialize(String text) {

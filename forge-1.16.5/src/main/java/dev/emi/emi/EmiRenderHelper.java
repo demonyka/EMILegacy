@@ -32,7 +32,6 @@ import dev.emi.emi.backport.OrderedTextTooltipComponent;
 import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.render.VertexFormat.DrawMode;
 import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
@@ -88,7 +87,6 @@ public class EmiRenderHelper {
 		if (sprite == null) {
 			return;
 		}
-		EmiPort.setPositionColorTexShader();
 		RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
 		EmiPort.bindTexture(sprite.getAtlas().getId());
 		RenderSystem.enableBlend();
@@ -134,9 +132,9 @@ public class EmiRenderHelper {
 		return
 			EmiPort.append(
 				EmiPort.append(
-					EmiPort.literal("E", Style.EMPTY.withColor(0xeb7bfc)),
-					EmiPort.literal("M", Style.EMPTY.withColor(0x7bfca2))),
-				EmiPort.literal("I", Style.EMPTY.withColor(0x7bebfc)));
+					EmiPort.literal("E", EmiPort.color(0xeb7bfc)),
+					EmiPort.literal("M", EmiPort.color(0x7bfca2))),
+				EmiPort.literal("I", EmiPort.color(0x7bebfc)));
 	}
 
 	public static Text getPageText(int page, int total, int maxWidth) {
@@ -340,7 +338,6 @@ public class EmiRenderHelper {
 			ModelViewStack view = ModelViewStack.INSTANCE;
 			view.push();
 			view.translate(x + 4, y + 4, 0);
-			RenderSystem.applyModelViewMatrix();
 
 			recipe.addWidgets(holder);
 			float delta = MinecraftClient.getInstance().getTickDelta();
@@ -362,7 +359,6 @@ public class EmiRenderHelper {
 			}
 
 			view.pop();
-			RenderSystem.applyModelViewMatrix();
 
 			// Force translucency to match that of the recipe background
 			context.disableBlend();

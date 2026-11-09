@@ -1,6 +1,8 @@
 package dev.emi.emi.config;
 
 
+
+import dev.emi.emi.EmiPort;
 import com.google.common.collect.ImmutableList;
 import java.io.File;
 import java.io.FileWriter;
@@ -215,7 +217,7 @@ public class EmiConfig {
 	public static IntGroup leftSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
 		ImmutableList.of("columns", "rows"),
-		IntList.of(12, 100)
+		EmiPort.intList(12, 100)
 	);
 
 	@Comment("How much space to maintain between the left sidebar and obstructions, in pixels")
@@ -256,7 +258,7 @@ public class EmiConfig {
 	public static IntGroup rightSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
 		ImmutableList.of("columns", "rows"),
-		IntList.of(12, 100)
+		EmiPort.intList(12, 100)
 	);
 
 	@Comment("How much space to maintain between the right sidebar and obstructions, in pixels")
@@ -294,7 +296,7 @@ public class EmiConfig {
 	public static IntGroup topSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
 		ImmutableList.of("columns", "rows"),
-		IntList.of(9, 9)
+		EmiPort.intList(9, 9)
 	);
 
 	@Comment("How much space to maintain between the top sidebar and obstructions, in pixels")
@@ -332,7 +334,7 @@ public class EmiConfig {
 	public static IntGroup bottomSidebarSize = new IntGroup(
 		"emi.sidebar.size.",
 		ImmutableList.of("columns", "rows"),
-		IntList.of(9, 9)
+		EmiPort.intList(9, 9)
 	);
 
 	@Comment("How much space to maintain between the bottom sidebar and obstructions, in pixels")

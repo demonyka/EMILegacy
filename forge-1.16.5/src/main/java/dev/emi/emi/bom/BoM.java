@@ -67,7 +67,7 @@ public class BoM {
 							}
 						}
 					}
-					if (!arr.isEmpty()) {
+					if (arr.size() != 0) {
 						resolutions.add(recipe.getId().toString(), arr);
 					}
 				}
@@ -107,7 +107,7 @@ public class BoM {
 			}
 		}
 		JsonObject resolutions = JsonHelper.getObject(object, "resolutions", new JsonObject());
-		for (String key : resolutions.keySet()) {
+		for (String key : EmiPort.keys(resolutions)) {
 			Identifier id = EmiPort.id(key);
 			EmiRecipe recipe = EmiApi.getRecipeManager().getRecipe(id);
 			if (recipe != null && JsonHelper.hasArray(resolutions, key)) {
@@ -121,7 +121,7 @@ public class BoM {
 			}
 		}
 		JsonObject addedTags = JsonHelper.getObject(object, "tags", new JsonObject());
-		for (String key : addedTags.keySet()) {
+		for (String key : EmiPort.keys(addedTags)) {
 			EmiIngredient tag = EmiIngredientSerializer.getDeserialized(new JsonPrimitive(key));
 			EmiIngredient stack = EmiIngredientSerializer.getDeserialized(addedTags.get(key));
 			if (!tag.isEmpty() && !stack.isEmpty() && stack.getEmiStacks().size() == 1 && tag.getEmiStacks().containsAll(stack.getEmiStacks())) {

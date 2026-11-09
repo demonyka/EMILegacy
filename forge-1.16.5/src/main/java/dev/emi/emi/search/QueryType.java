@@ -1,5 +1,7 @@
 package dev.emi.emi.search;
 
+
+import dev.emi.emi.EmiPort;
 import java.util.function.Function;
 
 import net.minecraft.text.Style;
@@ -18,10 +20,10 @@ public enum QueryType {
 	private QueryType(String prefix, int color, int slashColor, int regexColor, int escapeColor,
 			Function<String, Query> queryConstructor, Function<String, Query> regexQueryConstructor) {
 		this.prefix = prefix;
-		this.color = Style.EMPTY.withColor(color);
-		this.slashColor = Style.EMPTY.withColor(slashColor);
-		this.regexColor = Style.EMPTY.withColor(regexColor);
-		this.escapeColor = Style.EMPTY.withColor(escapeColor);
+		this.color = EmiPort.color(color);
+		this.slashColor = EmiPort.color(slashColor);
+		this.regexColor = EmiPort.color(regexColor);
+		this.escapeColor = EmiPort.color(escapeColor);
 		this.queryConstructor = queryConstructor;
 		this.regexQueryConstructor = regexQueryConstructor;
 	}

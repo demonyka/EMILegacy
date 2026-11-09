@@ -52,8 +52,8 @@ public class CoercedRecipeHandler<T extends ScreenHandler> implements StandardRe
 			slots.add(null);
 		}
 		for (Slot slot : handler.slots) {
-			if (slot.inventory == inv && slot.getIndex() < width * height && slot.getIndex() >= 0) {
-				int index = slot.getIndex();
+			if (slot.inventory == inv && slot.getSlotIndex() < width * height && slot.getSlotIndex() >= 0) {
+				int index = slot.getSlotIndex();
 				index = index * 3 / width;
 				slots.set(index, slot);
 			}

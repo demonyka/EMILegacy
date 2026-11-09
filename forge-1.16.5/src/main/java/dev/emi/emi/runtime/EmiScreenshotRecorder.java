@@ -1,7 +1,8 @@
 package dev.emi.emi.runtime;
 
+import org.lwjgl.opengl.GL11;
 
-import dev.emi.emi.backport.ModelViewStack;
+
 import java.io.File;
 import java.util.function.Consumer;
 
@@ -11,7 +12,6 @@ import dev.emi.emi.EmiPort;
 import dev.emi.emi.config.EmiConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.Framebuffer;
-import net.minecraft.client.gl.SimpleFramebuffer;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.ClickEvent;
@@ -58,28 +58,29 @@ public class EmiScreenshotRecorder {
 			scale = EmiConfig.recipeScreenshotScale;
 		}
 
-		Framebuffer framebuffer = new SimpleFramebuffer(width * scale, height * scale, true, MinecraftClient.IS_SYSTEM_MAC);
+		Framebuffer framebuffer = new Framebuffer(width * scale, height * scale, true, MinecraftClient.IS_SYSTEM_MAC);
 		framebuffer.setClearColor(0f, 0f, 0f, 0f);
 		framebuffer.clear(MinecraftClient.IS_SYSTEM_MAC);
 
 		framebuffer.beginWrite(true);
 
-		ModelViewStack view = ModelViewStack.INSTANCE;
-		view.push();
-		view.loadIdentity();
-		view.translate(-1.0, 1.0, 0.0);
-		view.scale(2f / width, -2f / height, -1f / 1000f);
-		view.translate(0.0, 0.0, 10.0);
-		EmiPort.applyModelViewMatrix();
-
-		Matrix4f backupProj = RenderSystem.getProjectionMatrix();
-		RenderSystem.setProjectionMatrix(Util.make(new Matrix4f(), Matrix4f::loadIdentity));
+		// 1.16: fixed-function projection and model-view stacks
+		RenderSystem.matrixMode(GL11.GL_PROJECTION);
+		RenderSystem.pushMatrix();
+		RenderSystem.loadIdentity();
+		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
+		RenderSystem.pushMatrix();
+		RenderSystem.loadIdentity();
+		RenderSystem.translated(-1.0, 1.0, 0.0);
+		RenderSystem.scalef(2f / width, -2f / height, -1f / 1000f);
+		RenderSystem.translated(0.0, 0.0, 10.0);
 
 		renderer.run();
 
-		RenderSystem.setProjectionMatrix(backupProj);
-		view.pop();
-		EmiPort.applyModelViewMatrix();
+		RenderSystem.popMatrix();
+		RenderSystem.matrixMode(GL11.GL_PROJECTION);
+		RenderSystem.popMatrix();
+		RenderSystem.matrixMode(GL11.GL_MODELVIEW);
 
 		framebuffer.endWrite();
 		client.getFramebuffer().beginWrite(true);

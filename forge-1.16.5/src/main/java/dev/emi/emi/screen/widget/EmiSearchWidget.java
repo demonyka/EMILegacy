@@ -154,7 +154,7 @@ public class EmiSearchWidget extends TextFieldWidget {
 			searchHistoryIndex = 0;
 			String currentSearch = getText();
 			if (!currentSearch.trim().isEmpty() && !currentSearch.isEmpty()) {
-				searchHistory.removeIf(String::isBlank);
+				searchHistory.removeIf(s -> s.trim().isEmpty());
 				searchHistory.remove(currentSearch);
 				searchHistory.add(0, currentSearch);
 				if (searchHistory.size() > 36) {
@@ -243,7 +243,6 @@ public class EmiSearchWidget extends TextFieldWidget {
 			view.translate(this.x + this.width / 2, this.y + this.height / 2, 0);
 			view.multiply(Vec3f.NEGATIVE_Z.getDegreesQuaternion(deg));
 			view.translate(-(this.x + this.width / 2), -(this.y + this.height / 2), 0);
-			EmiPort.applyModelViewMatrix();
 		}
 
 		if (lower.contains("jeb_")) {
@@ -265,6 +264,5 @@ public class EmiSearchWidget extends TextFieldWidget {
 		}
 		context.resetColor();
 		view.pop();
-		EmiPort.applyModelViewMatrix();
 	}
 }

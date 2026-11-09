@@ -103,7 +103,8 @@ public class StackBatcher {
 	public static final List<RenderLayer> EXTRA_RENDER_LAYERS = Lists.newArrayList();
 
 	public static boolean isEnabled() {
-		return EmiConfig.useBatchedRenderer && !isIncompatibleSodiumLoaded;
+		// TODO(1.16.5): batching bakes items into VBOs drawn with the 1.17 modelview matrix; not ported yet
+		return false;
 	}
 
 	public StackBatcher() {
@@ -177,7 +178,7 @@ public class StackBatcher {
 							List<BakedQuad> quads = EmiPort.getQuads(model);
 							for (BakedQuad quad : quads) {
 								if (quad != null) {
-									spritesToUpdate.add(quad.getSprite());
+									// Sodium sprite tracking is Fabric-only, nothing to do on Forge 1.16
 								}
 							}
 						}
@@ -213,16 +214,14 @@ public class StackBatcher {
 		}
 		RenderSystem.enableDepthTest();
 		DiffuseLighting.enableGuiDepthLighting();
-		Matrix4f mat = RenderSystem.getModelViewMatrix().copy();
-		mat.multiply(Matrix4f.scale(1, -1, 1));
+		Matrix4f mat = Matrix4f.scale(1, -1, 1);
 		// Flipped Y creates an offset
-		mat.multiplyByTranslation(x, -y - 16, 0);
+		mat.multiply(Matrix4f.translate(x, -y - 16, 0));
 		for (Map.Entry<RenderLayer, VertexBuffer> en : buffers.entrySet()) {
 			en.getKey().startDrawing();
-			EmiPort.setShader(en.getValue(), mat);
+			EmiPort.drawVertexBuffer(en.getValue(), en.getKey().getVertexFormat(), mat);
 			en.getKey().endDrawing();
 		}
-		BufferRenderer.unbindAll();
 	}
 	
 	private void bake() {
@@ -237,7 +236,7 @@ public class StackBatcher {
 	public void bake(RenderLayer layer) {
 		BufferBuilder bldr = imm.getBufferInternal(layer);
 		if (!imm.getActiveConsumers().remove(bldr)) return;
-		VertexBuffer vb = new VertexBuffer();
+		VertexBuffer vb = new VertexBuffer(layer.getVertexFormat());
 		EmiPort.upload(vb, bldr);
 		buffers.put(layer, vb);
 		bldr.reset();
@@ -386,11 +385,6 @@ public class StackBatcher {
 			}
 
 			@Override
-			public void unfixColor() {
-				delegate.unfixColor();
-			}
-
-			@Override
 			public VertexConsumer texture(float u, float v) {
 				delegate.texture(u, v);
 				return this;
@@ -411,11 +405,6 @@ public class StackBatcher {
 			public VertexConsumer light(int u, int v) {
 				delegate.light(u, v);
 				return this;
-			}
-
-			@Override
-			public void fixedColor(int r, int g, int b, int a) {
-				delegate.fixedColor(r, g, b, a);
 			}
 
 			@Override

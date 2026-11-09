@@ -41,7 +41,7 @@ public class EmiDataLoader<T> extends SinglePreparationResourceReloader<T>
 			if (!id.getNamespace().equals("emi")) {
 				continue;
 			}
-			for (Resource resource : manager.getAllResources(id)) {
+			for (Resource resource : EmiPort.getAllResources(manager, id)) {
 				try {
 					InputStreamReader reader = new InputStreamReader(EmiPort.getInputStream(resource));
 					JsonObject json = JsonHelper.deserialize(GSON, reader, JsonObject.class);

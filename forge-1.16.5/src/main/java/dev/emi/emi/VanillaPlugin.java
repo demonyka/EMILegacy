@@ -104,7 +104,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.ComposterBlock;
-import net.minecraft.block.Oxidizable;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.block.TallFlowerBlock;
 import net.minecraft.client.MinecraftClient;
@@ -120,7 +119,6 @@ import net.minecraft.item.ArmorItem;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.DyeableItem;
-import net.minecraft.item.HoneycombItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
@@ -160,10 +158,10 @@ import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SmokerScreenHandler;
 import net.minecraft.tag.ItemTags;
 import dev.emi.emi.backport.TagKey;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.RegistryEntry;
 
 @EmiEntrypoint
 public class VanillaPlugin implements EmiPlugin {
@@ -335,7 +333,7 @@ public class VanillaPlugin implements EmiPlugin {
 			EmiPort.getDisabledItems()
 		).collect(Collectors.toSet());
 
-		List<Item> dyeableItems = EmiPort.getItemRegistry().stream().filter(i -> i instanceof DyeableItem).collect(Collectors.collect(Collectors.toList()));
+		List<Item> dyeableItems = EmiPort.getItemRegistry().stream().filter(i -> i instanceof DyeableItem).collect(Collectors.toList());
 
 		for (CraftingRecipe recipe : getRecipes(registry, RecipeType.CRAFTING)) {
 			Identifier id = ProxyRecipeManager.getId(recipe);
@@ -373,18 +371,18 @@ public class VanillaPlugin implements EmiPlugin {
 			} else if (recipe instanceof BookCloningRecipe book) {
 				addRecipeSafe(registry, () -> new EmiBookCloningRecipe(id), recipe);
 			} else if (recipe instanceof TippedArrowRecipe tipped) {
-				EmiPort.getPotionRegistry().streamEntries().forEach(entry -> {
-					if (entry.value() == Potions.EMPTY) {
+				EmiPort.getPotionRegistry().forEach(potion -> {
+					if (potion == Potions.EMPTY) {
 						return;
 					}
 					EmiStack arrow = EmiStack.of(Items.ARROW);
 					addRecipeSafe(registry, () -> new EmiCraftingRecipe(ImmutableList.of(
 							arrow, arrow, arrow, arrow,
-							EmiStack.of(EmiPort.setPotion(new ItemStack(Items.LINGERING_POTION), entry.value())),
+							EmiStack.of(EmiPort.setPotion(new ItemStack(Items.LINGERING_POTION), potion)),
 							arrow, arrow, arrow, arrow
 						),
-						EmiStack.of(EmiPort.setPotion(new ItemStack(Items.TIPPED_ARROW, 8), entry.value())),
-						synthetic("crafting/tipped_arrow", EmiUtil.subId(EmiPort.getPotionRegistry().getId(entry.value()))),
+						EmiStack.of(EmiPort.setPotion(new ItemStack(Items.TIPPED_ARROW, 8), potion)),
+						synthetic("crafting/tipped_arrow", EmiUtil.subId(EmiPort.getPotionRegistry().getId(potion))),
 						false), recipe);
 				});
 			} else if (recipe instanceof FireworkStarRecipe star) {
@@ -538,7 +536,7 @@ public class VanillaPlugin implements EmiPlugin {
 		}
 		addRecipeSafe(registry, () -> new EmiAnvilRecipe(EmiStack.of(Items.ELYTRA), EmiStack.of(Items.PHANTOM_MEMBRANE),
 			synthetic("anvil/repairing/material", EmiUtil.subId(Items.ELYTRA) + "/" + EmiUtil.subId(Items.PHANTOM_MEMBRANE))));
-		addRecipeSafe(registry, () -> new EmiAnvilRecipe(EmiStack.of(Items.SHIELD), EmiIngredient.of(ItemTags.PLANKS),
+		addRecipeSafe(registry, () -> new EmiAnvilRecipe(EmiStack.of(Items.SHIELD), EmiIngredient.of(TagKey.of(Registry.ITEM_KEY, ItemTags.PLANKS.getId())),
 			synthetic("anvil/repairing/material", EmiUtil.subId(Items.SHIELD) + "/" + EmiUtil.subId(Items.OAK_PLANKS))));
 
 		for (Enchantment e : EmiPort.getEnchantmentRegistry().stream().collect(Collectors.toList())) {
@@ -582,15 +580,6 @@ public class VanillaPlugin implements EmiPlugin {
 			Identifier id = synthetic("world/stripping", EmiUtil.subId(entry.getKey()));
 			addRecipeSafe(registry, () -> basicWorld(EmiStack.of(entry.getKey()), axes, EmiStack.of(entry.getValue()), id));
 		}
-		for (Map.Entry<Block, Block> entry : Oxidizable.OXIDATION_LEVEL_DECREASES.get().entrySet()) {
-			Identifier id = synthetic("world/stripping", EmiUtil.subId(entry.getKey()));
-			addRecipeSafe(registry, () -> basicWorld(EmiStack.of(entry.getKey()), axes, EmiStack.of(entry.getValue()), id));
-		}
-		for (Map.Entry<Block, Block> entry : HoneycombItem.WAXED_TO_UNWAXED_BLOCKS.get().entrySet()) {
-			Identifier id = synthetic("world/stripping", EmiUtil.subId(entry.getKey()));
-			addRecipeSafe(registry, () -> basicWorld(EmiStack.of(entry.getKey()), axes, EmiStack.of(entry.getValue()), id));
-		}
-		
 		EmiIngredient shears = damagedTool(EmiStack.of(Items.SHEARS), 1);
 		addRecipeSafe(registry, () -> EmiWorldInteractionRecipe.builder()
 			.id(synthetic("world/shearing", "minecraft/pumpkin"))
@@ -602,27 +591,11 @@ public class VanillaPlugin implements EmiPlugin {
 		EmiIngredient hoes = damagedTool(getPreferredTag(ImmutableList.of(
 				"minecraft:hoes", "c:hoes", "c:tools/hoes", "fabric:hoes", "forge:tools/hoes"
 			), EmiStack.of(Items.IRON_HOE)), 1);
-		for (Map.Entry<Block, Pair<Predicate<ItemUsageContext>, Consumer<ItemUsageContext>>> entry
-				: HoeItemAccessor.getTillingActions().entrySet()) {
-			Consumer<ItemUsageContext> consumer = entry.getValue().getSecond();
-			if (EmiClient.HOE_ACTIONS.containsKey(consumer)) {
-				Block b = entry.getKey();
-				Identifier id = synthetic("world/tilling", EmiUtil.subId(b));
-				List<EmiStack> list = EmiClient.HOE_ACTIONS.get(consumer).stream().map(EmiStack::of).collect(Collectors.toList());
-				if (list.size() == 1) {
-					addRecipeSafe(registry, () -> basicWorld(EmiStack.of(b), hoes, list.get(0), id));
-				} else if (list.size() == 2) {
-					addRecipeSafe(registry, () -> EmiWorldInteractionRecipe.builder()
-						.id(id)
-						.leftInput(EmiStack.of(b))
-						.rightInput(hoes, true)
-						.output(list.get(0))
-						.output(list.get(1))
-						.build());
-				} else {
-					EmiReloadLog.warn("Encountered hoe action of peculiar size " + list.size() + ", skipping.");
-				}
-			}
+		for (Map.Entry<Block, BlockState> entry : HoeItemAccessor.getTilledBlocks().entrySet()) {
+			Block b = entry.getKey();
+			Block result = entry.getValue().getBlock();
+			Identifier id = synthetic("world/tilling", EmiUtil.subId(b));
+			addRecipeSafe(registry, () -> basicWorld(EmiStack.of(b), hoes, EmiStack.of(result), id));
 		}
 
 		EmiIngredient shovels = damagedTool(getPreferredTag(ImmutableList.of(
@@ -632,12 +605,6 @@ public class VanillaPlugin implements EmiPlugin {
 			Block result = entry.getValue().getBlock();
 			Identifier id = synthetic("world/flattening", EmiUtil.subId(entry.getKey()));
 			addRecipeSafe(registry, () -> basicWorld(EmiStack.of(entry.getKey()), shovels, EmiStack.of(result), id));
-		}
-
-		EmiIngredient honeycomb = EmiStack.of(Items.HONEYCOMB);
-		for (Map.Entry<Block, Block> entry : HoneycombItem.UNWAXED_TO_WAXED_BLOCKS.get().entrySet()) {
-			Identifier id = synthetic("world/waxing", EmiUtil.subId(entry.getKey()));
-			addRecipeSafe(registry, () -> basicWorld(EmiStack.of(entry.getKey()), honeycomb, EmiStack.of(entry.getValue()), id, false));
 		}
 
 		for (Item i : dyeableItems) {
@@ -706,8 +673,7 @@ public class VanillaPlugin implements EmiPlugin {
 			.output(EmiStack.of(Items.BASALT))
 			.build());
 
-		EmiPort.getFluidRegistry().streamEntries().forEach(entry -> {
-			Fluid fluid = entry.value();
+		EmiPort.getFluidRegistry().forEach(fluid -> {
 			Item bucket = fluid.getBucketItem();
 			if (fluid.isStill(fluid.getDefaultState()) && !fluid.getDefaultState().getBlockState().isAir() && bucket != Items.AIR && fluid instanceof FlowableFluid) {
 				addRecipeSafe(registry, () -> basicWorld(EmiStack.of(Items.BUCKET), EmiStack.of(fluid, FluidUnit.BUCKET), EmiStack.of(bucket),
@@ -718,11 +684,7 @@ public class VanillaPlugin implements EmiPlugin {
 		addRecipeSafe(registry, () -> basicWorld(EmiStack.of(Items.GLASS_BOTTLE), water,
 			EmiStack.of(EmiPort.setPotion(new ItemStack(Items.POTION), Potions.WATER)),
 			synthetic("world/unique", "minecraft/water_bottle")));
-
-		EmiStack waterBottle = EmiStack.of(EmiPort.setPotion(new ItemStack(Items.POTION), Potions.WATER))
-			.setRemainder(EmiStack.of(Items.GLASS_BOTTLE));
-		EmiStack mud = EmiStack.of(Items.MUD);
-		addRecipeSafe(registry, () -> basicWorld(EmiStack.of(Items.DIRT), waterBottle, mud, synthetic("world/unique", "minecraft/mud"), false));
+		// Mud (dirt + water bottle) does not exist before 1.19
 	}
 
 	private static EmiIngredient damagedTool(EmiIngredient tool, int damage) {

@@ -33,8 +33,6 @@ import net.minecraft.screen.ScreenHandler;
 import dev.emi.emi.backport.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryEntryList.Named;
 import net.minecraft.util.registry.RegistryKey;
 
 public class EmiUtil {

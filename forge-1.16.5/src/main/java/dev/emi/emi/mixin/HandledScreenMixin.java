@@ -59,11 +59,8 @@ public abstract class HandledScreenMixin extends Screen {
 		ModelViewStack viewStack = ModelViewStack.INSTANCE;
 		viewStack.push();
 		viewStack.translate(-x, -y, 0.0);
-		RenderSystem.applyModelViewMatrix();
-		EmiPort.setPositionTexShader();
 		EmiScreenManager.render(context, mouseX, mouseY, delta);
 		EmiScreenManager.drawForeground(context, mouseX, mouseY, delta);
 		viewStack.pop();
-		RenderSystem.applyModelViewMatrix();
 	}
 }

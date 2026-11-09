@@ -1,6 +1,8 @@
 package dev.emi.emi.registry;
 
 
+
+import dev.emi.emi.EmiPort;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Map;
@@ -157,7 +159,7 @@ public class EmiRecipeFiller {
 							ItemStack ss = s.getStack();
 							if (EmiStack.of(s.getStack()).isEqual(stack)) {
 								for (DiscoveredItem di : d) {
-									if (ItemStack.canCombine(ss, di.stack)) {
+									if (EmiPort.canCombine(ss, di.stack)) {
 										di.amount += ss.getCount();
 										continue slotLoop;
 									}
@@ -200,7 +202,7 @@ public class EmiRecipeFiller {
 						continue;
 					}
 					for (DiscoveredItem ui : unique) {
-						if (ItemStack.canCombine(di.stack, ui.stack)) {
+						if (EmiPort.canCombine(di.stack, ui.stack)) {
 							ui.consumed += di.consumed;
 							continue outer;
 						}
@@ -289,7 +291,7 @@ public class EmiRecipeFiller {
 	public static <T extends ScreenHandler> boolean clientFill(StandardRecipeHandler<T> handler, EmiRecipe recipe,
 			HandledScreen<T> screen, List<ItemStack> stacks, EmiCraftContext.Destination destination) {
 		T screenHandler = screen.getScreenHandler();
-		if (handler != null && screenHandler.getCursorStack().isEmpty()) {
+		if (handler != null && EmiPort.getCursorStack().isEmpty()) {
 			MinecraftClient client = MinecraftClient.getInstance();
 			ClientPlayerInteractionManager manager = client.interactionManager;
 			PlayerEntity player = client.player;
@@ -320,7 +322,7 @@ public class EmiRecipeFiller {
 						continue;
 					}
 					ItemStack is = input.getStack().copy();
-					if (ItemStack.canCombine(is, stack)) {
+					if (EmiPort.canCombine(is, stack)) {
 						manager.clickSlot(screenHandler.syncId, input.id, 0, SlotActionType.PICKUP, player);
 						if (is.getCount() <= needed) {
 							needed -= is.getCount();

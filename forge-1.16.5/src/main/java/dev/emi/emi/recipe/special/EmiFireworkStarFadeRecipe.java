@@ -26,7 +26,7 @@ public class EmiFireworkStarFadeRecipe extends EmiPatternCraftingRecipe {
 
 	public EmiFireworkStarFadeRecipe(Identifier id) {
 		super(ImmutableList.of(
-			EmiIngredient.of(DYES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.collect(Collectors.toList()))),
+			EmiIngredient.of(DYES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.toList())),
 			EmiStack.of(Items.FIREWORK_STAR)), EmiStack.of(Items.FIREWORK_STAR), id);
 	}
 

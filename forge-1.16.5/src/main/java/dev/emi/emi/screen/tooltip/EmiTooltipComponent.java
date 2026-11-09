@@ -52,7 +52,7 @@ public interface EmiTooltipComponent extends TooltipComponent {
 		}
 
 		public void draw(Text text, int x, int y, int color, boolean shadow) {
-			renderer.draw(text, x + this.x, y + this.y, color, shadow, matrix, vertexConsumers, false, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+			renderer.draw(text, x + this.x, y + this.y, color, shadow, matrix, vertexConsumers, false, 0, 0xF000F0);
 		}
 	}
 

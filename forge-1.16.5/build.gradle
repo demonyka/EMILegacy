@@ -147,3 +147,10 @@ tasks.register('generateClassLists') {
 }
 
 sourceSets.main.output.dir(synthMixinDir, builtBy: generateClassLists)
+
+// Porting aid: compile without the JEI bridge and Forge platform layer (-PcoreOnly)
+if (project.hasProperty("coreOnly")) {
+	sourceSets.main.java {
+		exclude 'dev/emi/emi/jemi/**', 'dev/emi/emi/mixin/jei/**', 'dev/emi/emi/platform/forge/**', 'dev/emi/emi/api/forge/**'
+	}
+}

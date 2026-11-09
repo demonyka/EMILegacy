@@ -696,14 +696,12 @@ public class EmiScreenManager {
 					ModelViewStack view = ModelViewStack.INSTANCE;
 					view.push();
 					view.translate(0, 0, 200);
-					EmiPort.applyModelViewMatrix();
 					int lhx = space.getRawX(lastHoveredCraftableOffset);
 					int lhy = space.getRawY(lastHoveredCraftableOffset);
 					context.fill(lhx, lhy, 18, 18, 0x44AA00FF);
 					lastHoveredCraftable.getStack().render(context.raw(), lhx + 1, lhy + 1, delta,
 							EmiIngredient.RENDER_ICON);
 					view.pop();
-					EmiPort.applyModelViewMatrix();
 				}
 			}
 		}
@@ -746,7 +744,7 @@ public class EmiScreenManager {
 		try {
 			ItemStack cursor = ItemStack.EMPTY;
 			if (client.currentScreen instanceof HandledScreen<?> handled) {
-				cursor = handled.getScreenHandler().getCursorStack();
+				cursor = EmiPort.getCursorStack();
 			}
 			ScreenSpace space = getHoveredSpace(mouseX, mouseY);
 			if (EmiApi.isCheatMode() && !cursor.isEmpty() && space != null && space.getType() == SidebarType.INDEX && EmiConfig.deleteCursorStack.isBound()) {
@@ -828,7 +826,7 @@ public class EmiScreenManager {
 								}
 								return EmiPort.literal(a);
 							})
-							.collect(Collectors.collect(Collectors.toList())), 0, 20);
+							.collect(Collectors.toList()), 0, 20);
 				}
 			}
 			context.drawTextWithShadow(title, devTextX, screen.height + off, color);
@@ -1095,7 +1093,7 @@ public class EmiScreenManager {
 		}
 		if (draggedStack.isEmpty() && button == 0) {
 			if (client.currentScreen instanceof HandledScreen<?> handled) {
-				if (!handled.getScreenHandler().getCursorStack().isEmpty()) {
+				if (!EmiPort.getCursorStack().isEmpty()) {
 					return false;
 				}
 			}
@@ -1351,8 +1349,8 @@ public class EmiScreenManager {
 		}
 		ItemStack is = stack.getItemStack().copy();
 		is.setCount(amount);
-		if (mode == 1 && client.player.getAbilities().creativeMode && client.currentScreen instanceof CreativeInventoryScreen) {
-			client.player.currentScreenHandler.setCursorStack(is);
+		if (mode == 1 && client.player.abilities.creativeMode && client.currentScreen instanceof CreativeInventoryScreen) {
+			EmiPort.setCursorStack(is);
 			return true;
 		}
 		if (EmiClient.onServer) {
@@ -1367,7 +1365,7 @@ public class EmiScreenManager {
 				}
 				command += " " + amount;
 				if (command.length() < 256) {
-					client.player.sendCommand(command);
+					client.player.sendChatMessage("/" + command);
 					return true;
 				}
 			}
@@ -1377,10 +1375,10 @@ public class EmiScreenManager {
 	
 	private static boolean deleteCursor(int mx, int my) {
 		if (client.currentScreen instanceof HandledScreen<?> handled) {
-			ItemStack cursor = handled.getScreenHandler().getCursorStack();
+			ItemStack cursor = EmiPort.getCursorStack();
 			ScreenSpace space = getHoveredSpace(mx, my);
 			if (!cursor.isEmpty() && space != null && space.getType() == SidebarType.INDEX) {
-				handled.getScreenHandler().setCursorStack(ItemStack.EMPTY);
+				EmiPort.setCursorStack(ItemStack.EMPTY);
 				EmiNetwork.sendToServer(new CreateItemC2SPacket(1, ItemStack.EMPTY));
 				return true;
 			}
@@ -1758,7 +1756,6 @@ public class EmiScreenManager {
 		public void render(EmiDrawContext context, int mouseX, int mouseY, float delta, int startIndex) {
 			if (this.pageSize > 0) {
 				context.enableDepthTest();
-				EmiPort.setPositionTexShader();
 				context.setColor(1.0F, 1.0F, 1.0F, 1.0F);
 				int hx = -1, hy = -1;
 				batcher.begin(this.tx + PADDING_SIZE, this.ty + PADDING_SIZE, 0);

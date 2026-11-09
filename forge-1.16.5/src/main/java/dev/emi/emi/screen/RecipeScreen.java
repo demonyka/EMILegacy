@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+import dev.emi.emi.backport.CompatScreen;
+
 
 
 import java.util.stream.Collectors;
@@ -46,7 +48,7 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class RecipeScreen extends Screen {
+public class RecipeScreen extends CompatScreen {
 	private static final Identifier TEXTURE = EmiPort.id("emi", "textures/gui/background.png");
 	public static @Nullable EmiIngredient resolve = null;
 	private Map<EmiRecipeCategory, List<EmiRecipe>> recipes;
@@ -224,7 +226,6 @@ public class RecipeScreen extends Screen {
 			int my = mouseY - group.y();
 			context.push();
 			context.translate(group.x(), group.y());
-			EmiPort.applyModelViewMatrix();
 			try {
 				for (Widget widget : group.widgets) {
 					widget.render(context.raw(), mx, my, delta);
@@ -248,7 +249,6 @@ public class RecipeScreen extends Screen {
 				}
 			}
 			context.pop();
-			EmiPort.applyModelViewMatrix();
 		}
 		EmiScreenManager.drawBackground(context, mouseX, mouseY, delta);
 		EmiScreenManager.render(context, mouseX, mouseY, delta);

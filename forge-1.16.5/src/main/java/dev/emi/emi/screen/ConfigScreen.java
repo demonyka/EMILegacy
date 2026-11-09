@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+import dev.emi.emi.backport.CompatScreen;
+
 
 
 import java.util.stream.Collectors;
@@ -64,7 +66,7 @@ import net.minecraft.text.StringVisitable;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
-public class ConfigScreen extends Screen {
+public class ConfigScreen extends CompatScreen {
 	private static final int maxWidth = 240;
 	private Screen last;
 	private ConfigSearch search;

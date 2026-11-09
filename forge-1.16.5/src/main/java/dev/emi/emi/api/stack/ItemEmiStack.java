@@ -105,7 +105,6 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 			ModelViewStack view = ModelViewStack.INSTANCE;
 			view.push();
 			view.multiplyPositionMatrix(matrices.peek().getModel());
-			RenderSystem.applyModelViewMatrix();
 			ItemRenderer itemRenderer = client.getItemRenderer();
 			float zOffset = itemRenderer.zOffset;
 			itemRenderer.zOffset = 0;
@@ -113,7 +112,6 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 			itemRenderer.renderGuiItemOverlay(client.textRenderer, stack, x, y, "");
 			itemRenderer.zOffset = zOffset;
 			view.pop();
-			RenderSystem.applyModelViewMatrix();
 		}
 		if ((flags & RENDER_AMOUNT) != 0) {
 			String count = "";
@@ -129,14 +127,14 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 	
 	@Override
 	public boolean isSideLit() {
-		return client.getItemRenderer().getHeldItemModel(getItemStack(), null, null, 0).isSideLit();
+		return client.getItemRenderer().getHeldItemModel(getItemStack(), null, null).isSideLit();
 	}
 	
 	@Override
 	public boolean isUnbatchable() {
 		ItemStack stack = getItemStack();
 		return unbatchable || stack.hasGlint() || stack.isDamaged() || !EmiAgnos.canBatch(stack)
-			|| client.getItemRenderer().getHeldItemModel(getItemStack(), null, null, 0).isBuiltin();
+			|| client.getItemRenderer().getHeldItemModel(getItemStack(), null, null).isBuiltin();
 	}
 	
 	@Override
@@ -149,13 +147,13 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 		EmiDrawContext context = EmiDrawContext.wrap(matrices);
 		ItemStack stack = getItemStack();
 		ItemRenderer ir = client.getItemRenderer();
-		BakedModel model = ir.getHeldItemModel(stack, null, null, 0);
+		BakedModel model = ir.getHeldItemModel(stack, null, null);
 		context.push();
 		try {
 			context.matrices().translate(x, y, 100.0f + z + (model.hasDepth() ? 50 : 0));
 			context.translate(8, 8);
 			context.matrices().scale(16.0f, 16.0f, 16.0f);
-			ir.renderItem(stack, ModelTransformation.Mode.GUI, false, context.raw(), vcp, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, model);
+			ir.renderItem(stack, ModelTransformation.Mode.GUI, false, context.raw(), vcp, 0xF000F0, OverlayTexture.DEFAULT_UV, model);
 		} finally {
 			context.pop();
 		}

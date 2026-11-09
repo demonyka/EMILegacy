@@ -82,11 +82,8 @@ public class EmiClientForge {
 			ModelViewStack viewStack = ModelViewStack.INSTANCE;
 			viewStack.push();
 			viewStack.translate(-screen.getGuiLeft(), -screen.getGuiTop(), 0.0);
-			RenderSystem.applyModelViewMatrix();
-			EmiPort.setPositionTexShader();
 			EmiScreenManager.render(context, event.getMouseX(), event.getMouseY(), client.getTickDelta());
 			viewStack.pop();
-			RenderSystem.applyModelViewMatrix();
 		}
 	}
 
@@ -100,7 +97,6 @@ public class EmiClientForge {
 		if (base != null) {
 			MinecraftClient client = MinecraftClient.getInstance();
 			context.push();
-			EmiPort.setPositionTexShader();
 			EmiScreenManager.drawForeground(context, event.getMouseX(), event.getMouseY(), client.getTickDelta());
 			context.pop();
 		}

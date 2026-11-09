@@ -2,13 +2,18 @@ package dev.emi.emi;
 
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import org.lwjgl.opengl.GL11;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.emi.emi.api.stack.Comparison;
@@ -42,10 +47,14 @@ import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.JsonHelper;
+import it.unimi.dsi.fastutil.ints.IntArrayList;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.registry.Registry;
 
@@ -98,6 +107,15 @@ public final class EmiPort {
 	 */
 	public static Collection<Identifier> findResources(ResourceManager manager, String prefix, Predicate<String> pred) {
 		return manager.findResources(prefix, pred);
+	}
+
+	/** 1.16 declares IOException (missing resources); newer versions do not. */
+	public static List<Resource> getAllResources(ResourceManager manager, Identifier id) {
+		try {
+			return manager.getAllResources(id);
+		} catch (Exception e) {
+			return java.util.Collections.emptyList();
+		}
 	}
 
 	public static InputStream getInputStream(Resource resource) {
@@ -222,6 +240,49 @@ public final class EmiPort {
 
 	public static void setShaderColor(float r, float g, float b, float a) {
 		RenderSystem.color4f(r, g, b, a);
+	}
+
+	/** The cursor stack lives in the player inventory in 1.16, not in the screen handler. */
+	public static ItemStack getCursorStack() {
+		MinecraftClient client = MinecraftClient.getInstance();
+		return client.player == null ? ItemStack.EMPTY : client.player.inventory.getCursorStack();
+	}
+
+	public static void setCursorStack(ItemStack stack) {
+		MinecraftClient client = MinecraftClient.getInstance();
+		if (client.player != null) {
+			client.player.inventory.setCursorStack(stack);
+		}
+	}
+
+	/** ItemStack.canCombine from 1.17: same item and same NBT. */
+	public static boolean canCombine(ItemStack a, ItemStack b) {
+		return a.getItem() == b.getItem() && ItemStack.areTagsEqual(a, b);
+	}
+
+	public static Style color(int rgb) {
+		return Style.EMPTY.withColor(TextColor.fromRgb(rgb));
+	}
+
+	/** Gson 2.8.0 (shipped with 1.16.5) has no JsonObject#keySet. */
+	public static Set<String> keys(JsonObject json) {
+		Set<String> keys = new LinkedHashSet<>();
+		for (Map.Entry<String, JsonElement> entry : json.entrySet()) {
+			keys.add(entry.getKey());
+		}
+		return keys;
+	}
+
+	public static boolean hasJsonObject(JsonObject json, String key) {
+		return json.has(key) && json.get(key).isJsonObject();
+	}
+
+	public static boolean hasNumber(JsonObject json, String key) {
+		return json.has(key) && JsonHelper.isNumber(json.get(key));
+	}
+
+	public static IntList intList(int... values) {
+		return new IntArrayList(values);
 	}
 
 	public static void playClickSound() {

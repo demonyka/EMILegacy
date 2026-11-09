@@ -31,7 +31,7 @@ public class RecipeDefaultLoader extends SinglePreparationResourceReloader<Recip
 				continue;
 			}
 			try {
-				for (Resource resource : manager.getAllResources(id)) {
+				for (Resource resource : EmiPort.getAllResources(manager, id)) {
 					InputStreamReader reader = new InputStreamReader(EmiPort.getInputStream(resource));
 					JsonObject json = JsonHelper.deserialize(GSON, reader, JsonObject.class);
 					loadDefaults(defaults, json);
@@ -71,14 +71,14 @@ public class RecipeDefaultLoader extends SinglePreparationResourceReloader<Recip
 			defaults.add(id);
 		}
 		JsonObject resolutions = JsonHelper.getObject(json, "resolutions", new JsonObject());
-		for (String key : resolutions.keySet()) {
+		for (String key : EmiPort.keys(resolutions)) {
 			Identifier id = EmiPort.id(key);
 			if (JsonHelper.hasArray(resolutions, key)) {
 				defaults.add(id, JsonHelper.getArray(resolutions, key));
 			}
 		}
 		JsonObject addedTags = JsonHelper.getObject(json, "tags", new JsonObject());
-		for (String key : addedTags.keySet()) {
+		for (String key : EmiPort.keys(addedTags)) {
 			defaults.addTag(new JsonPrimitive(key), addedTags.get(key));
 		}
 	}

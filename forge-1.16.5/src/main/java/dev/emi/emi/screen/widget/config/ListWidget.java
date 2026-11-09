@@ -21,9 +21,6 @@ import net.minecraft.client.gui.AbstractParentElement;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
-import net.minecraft.client.gui.screen.narration.NarrationPart;
 import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.BufferBuilder;
@@ -39,7 +36,7 @@ import net.minecraft.util.math.MathHelper;
  * Shamelessly modified vanilla lists to support variable width.
  * This is the lesser of two evils, at least this way I have vanilla compat.
  */
-public class ListWidget extends AbstractParentElement implements Drawable, Selectable {
+public class ListWidget extends AbstractParentElement implements Drawable {
 	protected final MinecraftClient client;
 	private final List<Entry> children = Lists.newArrayList();
 	protected int width;
@@ -164,7 +161,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 		int j = i + 6;
 		Tessellator tessellator = Tessellator.getInstance();
 		BufferBuilder bufferBuilder = tessellator.getBuffer();
-		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 		this.hoveredEntry = this.isMouseOver(mouseX, mouseY) ? this.getEntryAtPosition(mouseX, mouseY) : null;
 
 		{	// Render background
@@ -196,7 +192,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 
 
 		{	// Render horizontal shadows
-			RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 			EmiPort.bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
 			RenderSystem.enableDepthTest();
 			RenderSystem.depthFunc(519);
@@ -225,7 +220,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 			RenderSystem.blendFuncSeparate(
 				GlStateManager.SrcFactor.SRC_ALPHA, GlStateManager.DstFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SrcFactor.ZERO, GlStateManager.DstFactor.ONE
 			);
-			RenderSystem.setShader(GameRenderer::getPositionColorShader);
 			n = 4;
 			bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
 			bufferBuilder.vertex((double)this.left, (double)(this.top + 4), 0.0).color(0, 0, 0, 0).next();
@@ -240,7 +234,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 		}
 
 		if ((o = this.getMaxScroll()) > 0) {
-			RenderSystem.setShader(GameRenderer::getPositionColorShader);
 			m = (int)((float)((this.bottom - this.top) * (this.bottom - this.top)) / (float)this.getMaxPosition());
 			m = MathHelper.clamp(m, 32, this.bottom - this.top - 8);
 			n = (int)this.getScrollAmount() * (this.bottom - this.top - m) / o + this.top;
@@ -473,7 +466,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 			if (this.renderSelection && this.isSelectedEntry(j)) {
 				p = this.left + this.width / 2 - o / 2;
 				int q = this.left + this.width / 2 + o / 2;
-				RenderSystem.setShader(GameRenderer::getPositionShader);
 				float f = this.isFocused() ? 1.0f : 0.5f;
 				RenderSystem.color4f(f, f, f, 1.0f);
 				bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION);
@@ -531,17 +523,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 		return false;
 	}
 
-	@Override
-	public Selectable.SelectionType getType() {
-		if (this.isFocused()) {
-			return Selectable.SelectionType.FOCUSED;
-		}
-		if (this.hoveredEntry != null) {
-			return Selectable.SelectionType.HOVERED;
-		}
-		return Selectable.SelectionType.NONE;
-	}
-
 	@Nullable
 	public Entry getHoveredEntry() {
 		return this.hoveredEntry;
@@ -549,14 +530,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 
 	void setEntryParentList(Entry entry) {
 		entry.parentList = this;
-	}
-
-	protected void appendNarrations(NarrationMessageBuilder builder, Entry entry) {
-		int i;
-		List<Entry> list = this.children();
-		if (list.size() > 1 && (i = list.indexOf(entry)) != -1) {
-			builder.put(NarrationPart.POSITION, (Text)EmiPort.translatable("narrator.position.list", i + 1, list.size()));
-		}
 	}
 
 	public int getTotalHeight() {
@@ -568,10 +541,6 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 			height -= padding;
 		}
 		return height;
-	}
-
-	@Override
-	public void appendNarrations(NarrationMessageBuilder var1) {
 	}
 
 	public static abstract class Entry extends AbstractParentElement {

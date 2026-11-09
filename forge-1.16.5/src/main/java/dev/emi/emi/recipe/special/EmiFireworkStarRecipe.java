@@ -32,9 +32,9 @@ public class EmiFireworkStarRecipe extends EmiPatternCraftingRecipe {
 
 	public EmiFireworkStarRecipe(Identifier id) {
 		super(ImmutableList.of(
-				EmiIngredient.of(DYES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.collect(Collectors.toList()))),
-						EmiIngredient.of(SHAPES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.collect(Collectors.toList()))),
-						EmiIngredient.of(EFFECTS.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.collect(Collectors.toList()))),
+				EmiIngredient.of(DYES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.toList())),
+						EmiIngredient.of(SHAPES.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.toList())),
+						EmiIngredient.of(EFFECTS.stream().map(i -> (EmiIngredient) EmiStack.of(i)).collect(Collectors.toList())),
 						EmiStack.of(Items.GUNPOWDER)),
 				EmiStack.of(Items.FIREWORK_STAR), id);
 	}

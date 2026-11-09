@@ -38,7 +38,6 @@ import net.minecraft.item.ItemStack;
 import dev.emi.emi.backport.TagKey;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.RegistryEntry;
 
 @ApiStatus.Internal
 public class TagEmiIngredient implements EmiIngredient {
@@ -136,7 +135,6 @@ public class TagEmiIngredient implements EmiIngredient {
 				vs.translate(8.0, 8.0, 0.0);
 				vs.scale(1.0f, -1.0f, 1.0f);
 				vs.scale(16.0f, 16.0f, 16.0f);
-				RenderSystem.applyModelViewMatrix();
 				
 				MatrixStack ms = new MatrixStack();
 				model.getTransformation().getTransformation(ModelTransformation.Mode.GUI).apply(false, ms);
@@ -148,7 +146,7 @@ public class TagEmiIngredient implements EmiIngredient {
 				VertexConsumerProvider.Immediate immediate = client.getBufferBuilders().getEntityVertexConsumers();
 				((ItemRendererAccessor) client.getItemRenderer())
 					.invokeRenderBakedItemModel(model,
-						ItemStack.EMPTY, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, ms, 
+						ItemStack.EMPTY, 0xF000F0, OverlayTexture.DEFAULT_UV, ms, 
 						ItemRenderer.getDirectItemGlintConsumer(immediate,
 							TexturedRenderLayers.getEntityTranslucentCull(), true, false));
 				immediate.draw();
@@ -158,7 +156,6 @@ public class TagEmiIngredient implements EmiIngredient {
 				}
 
 				vs.pop();
-				RenderSystem.applyModelViewMatrix();
 			}
 		}
 		if ((flags & RENDER_AMOUNT) != 0 && !tagKey.isOf(EmiPort.getFluidRegistry())) {

@@ -90,7 +90,7 @@ public class FluidEmiStack extends EmiStack {
 		if (!text.isEmpty()) {
 			list.add(new EmiTextTooltipWrapper(this, EmiPort.ordered(text.get(0))));
 		}
-		list.addAll(text.stream().skip(1).map(EmiTooltipComponents::of).collect(Collectors.collect(Collectors.toList())));
+		list.addAll(text.stream().skip(1).map(EmiTooltipComponents::of).collect(Collectors.toList()));
 		if (amount > 1) {
 			list.add(EmiTooltipComponents.getAmount(this));
 		}

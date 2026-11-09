@@ -8,3 +8,5 @@ out/
 bin/
 remappedSrc/
 build-log*.txt
+.claude/
+core-errors.txt

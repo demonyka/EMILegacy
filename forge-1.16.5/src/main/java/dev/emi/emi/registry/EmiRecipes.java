@@ -197,7 +197,7 @@ public class EmiRecipes {
 				List<EmiRecipe> cRecipes = byCategory.get(category);
 				Comparator<EmiRecipe> sort = EmiRecipeCategoryProperties.getSort(category);
 				if (doSort && sort != EmiRecipeSorting.none()) {
-					cRecipes = cRecipes.stream().sorted(sort).collect(Collectors.collect(Collectors.toList()));
+					cRecipes = cRecipes.stream().sorted(sort).collect(Collectors.toList());
 					EmiRecipeSorter.clear();
 				}
 				byCategory.put(category, cRecipes);

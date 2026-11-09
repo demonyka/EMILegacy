@@ -85,7 +85,7 @@ public class EmiGrindstoneDisenchantingBookRecipe implements EmiRecipe {
 		NbtCompound tag = new NbtCompound();
 		NbtList StoredEnchantments = new NbtList();
 		NbtCompound enchant = new NbtCompound();
-		String id = enchantedTool.getTag().getList("Enchantments", NbtElement.COMPOUND_TYPE).getCompound(0).getString("id");
+		String id = enchantedTool.getTag().getList("Enchantments", 10).getCompound(0).getString("id");
 
 		enchant.putString("id", id);
 		enchant.putShort("lvl", (short) level);
