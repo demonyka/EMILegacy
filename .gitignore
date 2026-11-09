@@ -11,3 +11,4 @@ build-log*.txt
 .claude/
 core-errors.txt
 run-log*.txt
+prod-result.txt

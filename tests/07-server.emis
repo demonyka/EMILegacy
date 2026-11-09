@@ -1,0 +1,17 @@
+# Dedicated server: fill recipe through EMI's network packet (server needs op for commands: run "op" in console)
+connect localhost 25599
+waitloaded
+wait 60
+cmd gamemode survival
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+wait 20
+inventory
+wait 5
+recipes minecraft:oak_planks
+wait 10
+click 283 121
+wait 15
+dump
+shot v01_server_filled
+quit

@@ -1,0 +1,46 @@
+# Production smoke test (real Forge, release jar): JEI categories of several mods, fill, search
+world survival
+waitloaded
+wait 60
+cmd gamemode survival
+cmd tp @p 0 200 0 -90 30
+wait 20
+cmd setblock 1 200 1 minecraft:crafting_table
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+wait 10
+inventory
+wait 5
+shot p01_inventory
+click 212 227
+type @thermal
+wait 10
+shot p02_search_thermal
+key key.keyboard.escape
+wait 3
+close
+wait 5
+uses thermal:machine_pulverizer
+wait 10
+shot p03_pulverizer
+uses mekanism:enrichment_chamber
+wait 10
+shot p04_enrichment
+uses immersiveengineering:crusher
+wait 10
+shot p05_ie
+close
+wait 5
+close
+wait 5
+use 1 200 1
+wait 10
+dump
+wait 10
+recipes minecraft:oak_planks
+wait 10
+click 283 121
+wait 10
+dump
+shot p06_filled
+quit

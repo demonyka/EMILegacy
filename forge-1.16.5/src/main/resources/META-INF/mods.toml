@@ -1,15 +1,19 @@
 modLoader = "javafml"
 loaderVersion = "[36,)"
-#issueTrackerURL = ""
 license = "MIT"
 
 [[mods]]
 modId = "emi"
 version = "${version}"
 displayName = "EMI"
-authors = "Emi"
+authors = "Emi (original mod), EMI Legacy contributors (1.16.5 port)"
+credits = "Port of EMI by Emi: https://github.com/emilyploszaj/emi"
+displayURL = "https://github.com/emilyploszaj/emi"
 description = '''
-A featureful and accessible item and recipe viewer
+A featureful and accessible item and recipe viewer.
+
+Unofficial port of EMI to Minecraft 1.16.5 (Forge). Install JEI next to EMI to see recipes
+from other mods: EMI reads every JEI recipe category and hides JEI's own interface.
 '''
 logoFile = "icon.png"
 

@@ -1,0 +1,7 @@
+world survival
+waitloaded
+wait 40
+inventory
+wait 10
+shot z01
+quit

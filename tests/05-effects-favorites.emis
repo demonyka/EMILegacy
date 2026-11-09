@@ -1,0 +1,22 @@
+world survival
+waitloaded
+wait 40
+cmd gamemode survival
+cmd effect give @p minecraft:speed 1000
+cmd effect give @p minecraft:night_vision 1000
+cmd effect give @p minecraft:haste 1000
+wait 10
+inventory
+wait 5
+move 328 31
+wait 2
+key key.keyboard.a
+wait 2
+move 346 31
+wait 2
+key key.keyboard.a
+wait 10
+move 200 400
+wait 2
+shot e01_effects_favorites
+quit

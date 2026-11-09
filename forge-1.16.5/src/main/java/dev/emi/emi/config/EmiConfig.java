@@ -113,10 +113,9 @@ public class EmiConfig {
 	@ConfigValue("ui.fluid-unit")
 	public static FluidUnit fluidUnit = EmiAgnos.isForge() ? FluidUnit.MILLIBUCKETS : FluidUnit.LITERS;
 
-	@Comment("Whether to use the batched render system. Batching is faster, but may have incompatibilities"
-		+ " with shaders or other mods.")
-	@ConfigValue("ui.use-batched-renderer")
-	public static boolean useBatchedRenderer = true;
+	// The batched renderer depends on 1.17+ rendering and is not available on 1.16.5,
+	// so it is not exposed as a config option here.
+	public static boolean useBatchedRenderer = false;
 
 	@Comment("Whether to have the search bar in the center of the screen, instead of to the side.")
 	@ConfigValue("ui.center-search-bar")

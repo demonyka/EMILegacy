@@ -4,7 +4,7 @@ Port of [EMI](https://github.com/emilyploszaj/emi) (item and recipe viewer, MIT)
 
 | Version | Status |
 |---|---|
-| 1.16.5 Forge | works in dev: overlay, search, favorites, recipe screen; recipes of other mods via JEI (tested with Mekanism) |
+| 1.16.5 Forge | release 1.1.24-legacy.1, tested in production Forge with JEI, Mekanism, Thermal, IE, Botania |
 | 1.12.2 Forge | planned, see [docs/PORTING.md](docs/PORTING.md) |
 | 1.7.10 | not planned (no JEI; NEI handlers can't list all recipes) |
 

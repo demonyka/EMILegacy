@@ -50,6 +50,7 @@ import net.minecraftforge.fml.common.Mod;
  * and screenshotted without manual input. Commands:
  * <pre>
  * world [survival|creative]   create/load the test world (only valid as first command)
+ * connect HOST PORT           join a server instead (only valid as first command)
  * wait N | waitloaded          wait N ticks / until EMI has reloaded
  * cmd TEXT                     run a server command (without slash)
  * use X Y Z                    right-click the block at X Y Z as the player (opens machine GUIs)
@@ -71,6 +72,9 @@ public final class EmiDevScript {
 	private static int waitTicks;
 	private static boolean waitLoaded;
 	private static GameMode mode = GameMode.CREATIVE;
+	private static String pendingShot;
+	private static String connectHost;
+	private static int connectPort;
 
 	static {
 		if (SCRIPT != null) {
@@ -82,7 +86,11 @@ public final class EmiDevScript {
 						LINES.add(line);
 					}
 				}
-				if (!LINES.isEmpty() && LINES.peekFirst().startsWith("world")) {
+				if (!LINES.isEmpty() && LINES.peekFirst().startsWith("connect ")) {
+					String[] parts = LINES.pollFirst().split(" ");
+					connectHost = parts[1];
+					connectPort = Integer.parseInt(parts[2]);
+				} else if (!LINES.isEmpty() && LINES.peekFirst().startsWith("world")) {
 					String[] parts = LINES.pollFirst().split(" ");
 					if (parts.length > 1 && parts[1].equals("survival")) {
 						mode = GameMode.SURVIVAL;
@@ -105,7 +113,9 @@ public final class EmiDevScript {
 		worldStarted = true;
 		MinecraftClient client = MinecraftClient.getInstance();
 		client.execute(() -> {
-			if (client.getLevelStorage().levelExists(WORLD)) {
+			if (connectHost != null) {
+				client.openScreen(new net.minecraft.client.gui.screen.ConnectScreen(event.getGui(), client, connectHost, connectPort));
+			} else if (client.getLevelStorage().levelExists(WORLD)) {
 				client.startIntegratedServer(WORLD);
 			} else {
 				DynamicRegistryManager.Impl registries = DynamicRegistryManager.create();
@@ -115,10 +125,23 @@ public final class EmiDevScript {
 		});
 	}
 
+	// Screenshots are taken at the end of the frame, before the buffers are swapped
+	@SubscribeEvent
+	public static void onRender(TickEvent.RenderTickEvent event) {
+		if (pendingShot != null && event.phase == TickEvent.Phase.END) {
+			String name = pendingShot;
+			pendingShot = null;
+			shot(MinecraftClient.getInstance(), name);
+		}
+	}
+
 	@SubscribeEvent
 	public static void onTick(TickEvent.ClientTickEvent event) {
 		MinecraftClient client = MinecraftClient.getInstance();
 		if (SCRIPT == null || event.phase != TickEvent.Phase.END || client.player == null) {
+			return;
+		}
+		if (pendingShot != null) {
 			return;
 		}
 		if (waitTicks > 0) {
@@ -187,9 +210,7 @@ public final class EmiDevScript {
 				}
 			}
 			case "dump" -> dump(client);
-			case "shot" -> ScreenshotUtils.saveScreenshot(client.runDirectory, p[1] + ".png",
-				client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight(), client.getFramebuffer(),
-				text -> EmiLog.info("[devscript] " + text.getString()));
+			case "shot" -> pendingShot = p[1];
 			case "log" -> EmiLog.info("[devscript] LOG " + rest);
 			case "quit" -> client.scheduleStop();
 			default -> EmiLog.warn("[devscript] Unknown command " + p[0]);
@@ -199,6 +220,26 @@ public final class EmiDevScript {
 	private static void moveMouse(MinecraftClient client, long window, double scale, double x, double y) {
 		GLFW.glfwSetCursorPos(window, x * scale, y * scale);
 		((MouseAccessor) client.mouse).emi$onCursorPos(window, x * scale, y * scale);
+	}
+
+	// Encodes the frame with ImageIO: stb-based vanilla saving fails in some launch environments
+	private static void shot(MinecraftClient client, String name) {
+		try (net.minecraft.client.texture.NativeImage image = ScreenshotUtils.takeScreenshot(
+				client.getWindow().getFramebufferWidth(), client.getWindow().getFramebufferHeight(), client.getFramebuffer())) {
+			java.awt.image.BufferedImage out = new java.awt.image.BufferedImage(image.getWidth(), image.getHeight(), java.awt.image.BufferedImage.TYPE_INT_RGB);
+			for (int y = 0; y < image.getHeight(); y++) {
+				for (int x = 0; x < image.getWidth(); x++) {
+					int abgr = image.getPixelColor(x, y);
+					out.setRGB(x, y, (abgr & 0xFF) << 16 | (abgr & 0xFF00) | (abgr >> 16 & 0xFF));
+				}
+			}
+			File dir = new File(client.runDirectory, "screenshots");
+			dir.mkdirs();
+			javax.imageio.ImageIO.write(out, "png", new File(dir, name + ".png"));
+			EmiLog.info("[devscript] Saved screenshot " + name);
+		} catch (Exception e) {
+			EmiLog.error("[devscript] Screenshot failed", e);
+		}
 	}
 
 	private static void dump(MinecraftClient client) {
