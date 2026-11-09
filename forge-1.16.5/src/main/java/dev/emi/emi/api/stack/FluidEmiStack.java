@@ -13,7 +13,7 @@ import dev.emi.emi.api.render.EmiRender;
 import dev.emi.emi.api.render.EmiTooltipComponents;
 import dev.emi.emi.platform.EmiAgnos;
 import dev.emi.emi.screen.tooltip.EmiTextTooltipWrapper;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.nbt.NbtCompound;

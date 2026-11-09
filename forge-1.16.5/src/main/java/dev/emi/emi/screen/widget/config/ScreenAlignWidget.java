@@ -8,7 +8,7 @@ import java.util.function.Supplier;
 import dev.emi.emi.EmiPort;
 import dev.emi.emi.config.ScreenAlign;
 import dev.emi.emi.screen.ConfigScreen.Mutator;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.text.Text;
 

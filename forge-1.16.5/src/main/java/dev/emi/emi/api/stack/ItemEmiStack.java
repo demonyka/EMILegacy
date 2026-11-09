@@ -1,5 +1,7 @@
 package dev.emi.emi.api.stack;
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import java.util.List;
 
 import net.minecraft.item.Item;
@@ -17,8 +19,8 @@ import dev.emi.emi.runtime.EmiDrawContext;
 import dev.emi.emi.screen.StackBatcher.Batchable;
 import dev.emi.emi.screen.tooltip.EmiTextTooltipWrapper;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.OrderedTextTooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
@@ -100,7 +102,7 @@ public class ItemEmiStack extends EmiStack implements Batchable {
 		ItemStack stack = getItemStack();
 		if ((flags & RENDER_ICON) != 0) {
 			DiffuseLighting.enableGuiDepthLighting();
-			MatrixStack view = RenderSystem.getModelViewStack();
+			ModelViewStack view = ModelViewStack.INSTANCE;
 			view.push();
 			view.multiplyPositionMatrix(matrices.peek().getModel());
 			RenderSystem.applyModelViewMatrix();

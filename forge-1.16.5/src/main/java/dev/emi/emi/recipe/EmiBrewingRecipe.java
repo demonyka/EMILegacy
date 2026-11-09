@@ -13,7 +13,7 @@ import dev.emi.emi.api.recipe.VanillaEmiRecipeCategories;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 

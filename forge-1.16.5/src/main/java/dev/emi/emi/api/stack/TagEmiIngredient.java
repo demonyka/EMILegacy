@@ -1,5 +1,7 @@
 package dev.emi.emi.api.stack;
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import java.util.List;
 
 import org.jetbrains.annotations.ApiStatus;
@@ -22,7 +24,7 @@ import dev.emi.emi.screen.tooltip.EmiTextTooltipWrapper;
 import dev.emi.emi.screen.tooltip.RemainderTooltipComponent;
 import dev.emi.emi.screen.tooltip.TagTooltipComponent;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.render.DiffuseLighting;
 import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.OverlayTexture;
@@ -33,7 +35,7 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.TagKey;
+import dev.emi.emi.backport.TagKey;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.RegistryEntry;
@@ -127,7 +129,7 @@ public class TagEmiIngredient implements EmiIngredient {
 			} else {
 				BakedModel model = EmiAgnos.getBakedTagModel(tagKey.getCustomModel());
 					
-				MatrixStack vs = RenderSystem.getModelViewStack();
+				ModelViewStack vs = ModelViewStack.INSTANCE;
 				vs.push();
 				vs.multiplyPositionMatrix(context.matrices().peek().getModel());
 				vs.translate(x, y, 100.0f);

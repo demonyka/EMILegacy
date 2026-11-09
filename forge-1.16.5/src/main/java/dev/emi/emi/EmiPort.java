@@ -7,7 +7,8 @@ import java.util.Random;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.emi.emi.api.stack.Comparison;
@@ -21,7 +22,7 @@ import net.minecraft.client.gui.widget.ButtonWidget.PressAction;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
-import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.BakedQuad;
 import net.minecraft.client.sound.PositionedSoundInstance;
@@ -36,10 +37,12 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
@@ -47,37 +50,38 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.registry.Registry;
 
 /**
- * Multiversion quarantine, to avoid excessive git pain
+ * Multiversion quarantine, to avoid excessive git pain.
+ * This copy targets Minecraft 1.16.5 (Forge, fixed-function rendering).
  */
 public final class EmiPort {
-	private static final net.minecraft.util.math.random.Random RANDOM = net.minecraft.util.math.random.Random.create();
+	private static final Random RANDOM = new Random();
 
 	public static MutableText literal(String s) {
-		return Text.literal(s);
+		return new LiteralText(s);
 	}
 
 	public static MutableText literal(String s, Formatting formatting) {
-		return Text.literal(s).formatted(formatting);
+		return new LiteralText(s).formatted(formatting);
 	}
 
 	public static MutableText literal(String s, Formatting... formatting) {
-		return Text.literal(s).formatted(formatting);
+		return new LiteralText(s).formatted(formatting);
 	}
 
 	public static MutableText literal(String s, Style style) {
-		return Text.literal(s).setStyle(style);
+		return new LiteralText(s).setStyle(style);
 	}
-	
+
 	public static MutableText translatable(String s) {
-		return Text.translatable(s);
+		return new TranslatableText(s);
 	}
-	
+
 	public static MutableText translatable(String s, Formatting formatting) {
-		return Text.translatable(s).formatted(formatting);
+		return new TranslatableText(s).formatted(formatting);
 	}
-	
+
 	public static MutableText translatable(String s, Object... objects) {
-		return Text.translatable(s, objects);
+		return new TranslatableText(s, objects);
 	}
 
 	public static MutableText append(MutableText text, Text appended) {
@@ -88,8 +92,12 @@ public final class EmiPort {
 		return text.asOrderedText();
 	}
 
+	/**
+	 * 1.16 tests the predicate against the file name, newer versions against the full id.
+	 * EMI only filters by extension, so both behave the same.
+	 */
 	public static Collection<Identifier> findResources(ResourceManager manager, String prefix, Predicate<String> pred) {
-		return manager.findResources(prefix, i -> pred.test(i.toString())).keySet();
+		return manager.findResources(prefix, pred);
 	}
 
 	public static InputStream getInputStream(Resource resource) {
@@ -101,26 +109,31 @@ public final class EmiPort {
 	}
 
 	public static BannerPattern.Patterns addRandomBanner(BannerPattern.Patterns patterns, Random random) {
-		return patterns.add(Registry.BANNER_PATTERN.getEntry(random.nextInt(Registry.BANNER_PATTERN.size())).get(),
-			DyeColor.values()[random.nextInt(DyeColor.values().length)]);
+		BannerPattern[] values = BannerPattern.values();
+		// Skip the base pattern, it is always present
+		BannerPattern pattern = values[1 + random.nextInt(values.length - 1)];
+		return patterns.add(pattern, DyeColor.values()[random.nextInt(DyeColor.values().length)]);
 	}
 
 	public static boolean canTallFlowerDuplicate(TallFlowerBlock tallFlowerBlock) {
 		try {
 			return tallFlowerBlock.isFertilizable(null, null, null, true) && tallFlowerBlock.canGrow(null, null, null, null);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			return false;
 		}
 	}
 
 	public static void upload(VertexBuffer vb, BufferBuilder bldr) {
-		vb.bind();
-		vb.upload(bldr.end());
+		bldr.end();
+		vb.upload(bldr);
 	}
 
-	public static void setShader(VertexBuffer buf, Matrix4f mat) {
+	public static void drawVertexBuffer(VertexBuffer buf, VertexFormat format, Matrix4f mat) {
 		buf.bind();
-		buf.draw(mat, RenderSystem.getProjectionMatrix(), RenderSystem.getShader());
+		format.startDrawing(0L);
+		buf.draw(mat, GL11.GL_QUADS);
+		VertexBuffer.unbind();
+		format.endDrawing();
 	}
 
 	public static List<BakedQuad> getQuads(BakedModel model) {
@@ -128,19 +141,23 @@ public final class EmiPort {
 	}
 
 	public static void draw(BufferBuilder bufferBuilder) {
-		BufferRenderer.drawWithShader(bufferBuilder.end());
+		bufferBuilder.end();
+		BufferRenderer.draw(bufferBuilder);
 	}
 
 	public static int getGuiScale(MinecraftClient client) {
 		return (int) client.getWindow().getScaleFactor();
 	}
 
+	/** Shaders do not exist in 1.16; texturing is toggled with enable/disableTexture. */
 	public static void setPositionTexShader() {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 	}
 
 	public static void setPositionColorTexShader() {
-		RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+	}
+
+	public static void bindTexture(Identifier texture) {
+		MinecraftClient.getInstance().getTextureManager().bindTexture(texture);
 	}
 
 	public static Registry<Item> getItemRegistry() {
@@ -199,8 +216,12 @@ public final class EmiPort {
 		return new Identifier(namespace, path);
 	}
 
+	/** The 1.16 GL matrix stack is applied immediately, see {@link dev.emi.emi.backport.ModelViewStack}. */
 	public static void applyModelViewMatrix() {
-		RenderSystem.applyModelViewMatrix();
+	}
+
+	public static void setShaderColor(float r, float g, float b, float a) {
+		RenderSystem.color4f(r, g, b, a);
 	}
 
 	public static void playClickSound() {

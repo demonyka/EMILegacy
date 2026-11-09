@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import dev.emi.emi.EmiPort;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.util.Formatting;
 

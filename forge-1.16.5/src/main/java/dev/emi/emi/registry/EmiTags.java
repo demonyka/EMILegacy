@@ -29,7 +29,7 @@ import dev.emi.emi.util.InheritanceMap;
 import net.minecraft.block.Block;
 import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.tag.TagKey;
+import dev.emi.emi.backport.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;

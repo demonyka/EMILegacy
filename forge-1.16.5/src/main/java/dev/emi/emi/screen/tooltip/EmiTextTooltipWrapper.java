@@ -1,8 +1,7 @@
 package dev.emi.emi.screen.tooltip;
 
 import dev.emi.emi.api.stack.EmiIngredient;
-import dev.emi.emi.mixin.accessor.OrderedTextTooltipComponentAccessor;
-import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
+import dev.emi.emi.backport.OrderedTextTooltipComponent;
 import net.minecraft.text.OrderedText;
 
 public class EmiTextTooltipWrapper extends OrderedTextTooltipComponent {
@@ -14,7 +13,7 @@ public class EmiTextTooltipWrapper extends OrderedTextTooltipComponent {
 	}
 
 	public EmiTextTooltipWrapper(EmiIngredient stack, OrderedTextTooltipComponent original) {
-		super(((OrderedTextTooltipComponentAccessor) original).getText());
+		super(((OrderedTextTooltipComponent) original).getText());
 		this.stack = stack;
 	}
 }

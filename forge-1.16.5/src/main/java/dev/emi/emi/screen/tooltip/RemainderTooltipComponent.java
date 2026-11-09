@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.tooltip;
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import java.util.List;
 import java.util.Map;
 
@@ -66,7 +68,7 @@ public class RemainderTooltipComponent implements EmiTooltipComponent {
 				context.drawStack(input, 18 * 2, 18 * i, EmiIngredient.RENDER_ICON | EmiIngredient.RENDER_AMOUNT);
 				ItemStack is = input.getEmiStacks().get(0).getItemStack().copy();
 				is.setDamage(is.getDamage() - remainder.damage);
-				MatrixStack view = RenderSystem.getModelViewStack();
+				ModelViewStack view = ModelViewStack.INSTANCE;
 				view.push();
 				view.multiplyPositionMatrix(context.matrices().peek().getModel());
 				RenderSystem.applyModelViewMatrix();

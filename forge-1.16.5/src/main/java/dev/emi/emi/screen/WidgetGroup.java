@@ -26,7 +26,7 @@ import dev.emi.emi.screen.tooltip.EmiTooltip;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import dev.emi.emi.widget.RecipeBackground;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 

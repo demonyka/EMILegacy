@@ -159,7 +159,7 @@ import net.minecraft.screen.FurnaceScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.SmokerScreenHandler;
 import net.minecraft.tag.ItemTags;
-import net.minecraft.tag.TagKey;
+import dev.emi.emi.backport.TagKey;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;

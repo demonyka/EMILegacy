@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.BiFunction;
 
 import dev.emi.emi.runtime.EmiDrawContext;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class DrawableWidget extends Widget implements WidgetTooltipHolder<DrawableWidget> {

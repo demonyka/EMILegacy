@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.text.Text;
 
 public interface WidgetTooltipHolder<T> {

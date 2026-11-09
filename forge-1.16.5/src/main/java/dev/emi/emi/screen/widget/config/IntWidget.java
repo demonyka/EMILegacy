@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import dev.emi.emi.screen.ConfigScreen.Mutator;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.text.Text;
 
 public class IntWidget extends ConfigEntryWidget {

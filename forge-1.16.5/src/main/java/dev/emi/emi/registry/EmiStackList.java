@@ -16,6 +16,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
 import dev.emi.emi.EmiPort;
+import dev.emi.emi.runtime.EmiTagKey;
 import dev.emi.emi.api.stack.Comparison;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiRegistryAdapter;
@@ -42,7 +43,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.tag.TagKey;
+import dev.emi.emi.backport.TagKey;
 import net.minecraft.util.collection.DefaultedList;
 
 public class EmiStackList {
@@ -140,13 +141,13 @@ public class EmiStackList {
 	@SuppressWarnings({"deprecation", "unchecked"})
 	private static <T> boolean isHiddenFromRecipeViewers(T key) {
 		if (key instanceof Item i) {
-			if (i instanceof BlockItem bi && bi.getBlock().getDefaultState().isIn(BLOCK_HIDDEN)) {
+			if (i instanceof BlockItem bi && EmiTagKey.of(BLOCK_HIDDEN).contains(bi.getBlock())) {
 				return true;
-			} else if (i.getRegistryEntry().isIn(ITEM_HIDDEN)) {
+			} else if (EmiTagKey.of(ITEM_HIDDEN).contains(i)) {
 				return true;
 			}
 		} else if (key instanceof Fluid f) {
-			if (f.isIn(FLUID_HIDDEN)) {
+			if (EmiTagKey.of(FLUID_HIDDEN).contains(f)) {
 				return true;
 			}
 		}

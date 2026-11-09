@@ -11,7 +11,7 @@ import dev.emi.emi.EmiPort;
 import dev.emi.emi.config.IntGroup;
 import dev.emi.emi.screen.ConfigScreen.Mutator;
 import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.text.Text;
 
 public class IntGroupWidget extends ConfigEntryWidget {

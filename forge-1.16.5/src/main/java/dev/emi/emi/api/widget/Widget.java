@@ -5,7 +5,7 @@ import com.google.common.collect.ImmutableList;
 import java.util.List;
 
 import net.minecraft.client.gui.Drawable;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 
 public abstract class Widget implements Drawable {

@@ -12,7 +12,7 @@ import dev.emi.emi.screen.tooltip.IngredientTooltipComponent;
 import dev.emi.emi.screen.tooltip.RecipeCostTooltipComponent;
 import dev.emi.emi.screen.tooltip.RecipeTooltipComponent;
 import dev.emi.emi.screen.tooltip.RemainderTooltipComponent;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 

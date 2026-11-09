@@ -1,398 +1,20 @@
 Jabel: initialized
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiStack.java:15: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiIngredient.java:11: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiIngredient.java:17: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\EmiRecipeCategory.java:16: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\EmiRecipeCategory.java:71: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class EmiRecipeCategory
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\DrawableWidget.java:9: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetHolder.java:15: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\Widget.java:8: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetTooltipHolder.java:8: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:27: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TextureWidget.java:9: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetHolder.java:77: error: cannot find symbol
-	default TooltipWidget addTooltip(BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier, int x, int y, int width, int height) {
-	                                                                   ^
-  symbol:   class TooltipComponent
-  location: interface WidgetHolder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TooltipWidget.java:6: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetHolder.java:81: error: cannot find symbol
-	default TooltipWidget addTooltip(List<TooltipComponent> tooltip, int x, int y, int width, int height) {
-	                                      ^
-  symbol:   class TooltipComponent
-  location: interface WidgetHolder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TooltipWidget.java:11: error: cannot find symbol
-	private final BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier;
-	                                                ^
-  symbol:   class TooltipComponent
-  location: class TooltipWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TooltipWidget.java:13: error: cannot find symbol
-	public TooltipWidget(BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier, int x, int y, int width, int height) {
-	                                                       ^
-  symbol:   class TooltipComponent
-  location: class TooltipWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TooltipWidget.java:24: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class TooltipWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TextureWidget.java:20: error: cannot find symbol
-	private BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier = (mouseX, mouseY) -> ImmutableList.of();
-	                                          ^
-  symbol:   class TooltipComponent
-  location: class TextureWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TextureWidget.java:42: error: cannot find symbol
-	public TextureWidget tooltip(BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier) {
-	                                                               ^
-  symbol:   class TooltipComponent
-  location: class TextureWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\TextureWidget.java:53: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class TextureWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:40: error: cannot find symbol
-	protected List<Supplier<TooltipComponent>> tooltipSuppliers = Lists.newArrayList();
-	                        ^
-  symbol:   class TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:91: error: cannot find symbol
-	public SlotWidget appendTooltip(Function<EmiIngredient, TooltipComponent> function) {
-	                                                        ^
-  symbol:   class TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:98: error: cannot find symbol
-	public SlotWidget appendTooltip(Supplier<TooltipComponent> supplier) {
-	                                         ^
-  symbol:   class TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:218: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:228: error: cannot find symbol
-	protected void addSlotTooltip(List<TooltipComponent> list) {
-	                                   ^
-  symbol:   class TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\DrawableWidget.java:16: error: cannot find symbol
-	protected BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier = (mouseX, mouseY) -> ImmutableList.of();
-	                                            ^
-  symbol:   class TooltipComponent
-  location: class DrawableWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\DrawableWidget.java:26: error: cannot find symbol
-	public DrawableWidget tooltip(BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier) {
-	                                                                ^
-  symbol:   class TooltipComponent
-  location: class DrawableWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\DrawableWidget.java:37: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class DrawableWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\Widget.java:17: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class Widget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetTooltipHolder.java:13: error: cannot find symbol
-	T tooltip(BiFunction<Integer, Integer, List<TooltipComponent>> tooltipSupplier);
-	                                            ^
-  symbol:   class TooltipComponent
-  location: interface WidgetTooltipHolder<T>
-  where T is a type-variable:
-    T extends Object declared in interface WidgetTooltipHolder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetTooltipHolder.java:15: error: cannot find symbol
-	default T tooltip(List<TooltipComponent> tooltip) {
-	                       ^
-  symbol:   class TooltipComponent
-  location: interface WidgetTooltipHolder<T>
-  where T is a type-variable:
-    T extends Object declared in interface WidgetTooltipHolder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiStack.java:127: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class EmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiIngredient.java:57: error: cannot find symbol
-	List<TooltipComponent> getTooltip();
-	     ^
-  symbol:   class TooltipComponent
-  location: interface EmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiIngredient.java:73: error: cannot find symbol
-	public static <T> EmiIngredient of(TagKey<T> key) {
-	                                   ^
-  symbol:   class TagKey
-  location: interface EmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiIngredient.java:77: error: cannot find symbol
-	public static <T> EmiIngredient of(TagKey<T> key, long amount) {
-	                                   ^
-  symbol:   class TagKey
-  location: interface EmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\handler\EmiRecipeHandler.java:12: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\handler\EmiRecipeHandler.java:58: error: cannot find symbol
-	default List<TooltipComponent> getTooltip(EmiRecipe recipe, EmiCraftContext<T> context) {
-	             ^
-  symbol:   class TooltipComponent
-  location: interface EmiRecipeHandler<T>
-  where T is a type-variable:
-    T extends ScreenHandler declared in interface EmiRecipeHandler
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:15: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:24: error: cannot find symbol
-	public static TooltipComponent getRecipeTooltipComponent(EmiRecipe recipe) {
-	              ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipComponents
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:31: error: cannot find symbol
-	public static TooltipComponent getRemainderTooltipComponent(EmiIngredient ingredient) {
-	              ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipComponents
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:38: error: cannot find symbol
-	public static TooltipComponent getRecipeCostTooltipComponent(EmiRecipe recipe) {
-	              ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipComponents
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:45: error: cannot find symbol
-	public static TooltipComponent getAmount(EmiIngredient ingredient) {
-	              ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipComponents
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:52: error: cannot find symbol
-	public static TooltipComponent of(Text text) {
-	              ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipComponents
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:61: error: cannot find symbol
-	public static void appendModName(List<TooltipComponent> components, String namespace) {
-	                                      ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipComponents
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipMetadata.java:12: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipMetadata.java:48: error: cannot find symbol
-	public static EmiTooltipMetadata of(List<TooltipComponent> tooltip) {
-	                                         ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipMetadata
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiStackConvertible.java:5: error: package net.fabricmc.api does not exist
 import net.fabricmc.api.EnvType;
                        ^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiStackConvertible.java:6: error: package net.fabricmc.api does not exist
 import net.fabricmc.api.Environment;
                        ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmptyEmiStack.java:10: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmptyEmiStack.java:90: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class EmptyEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\FluidEmiStack.java:16: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\FluidEmiStack.java:87: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class FluidEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:20: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:21: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:168: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class ItemEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ListEmiIngredient.java:15: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ListEmiIngredient.java:103: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class ListEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:25: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:36: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:39: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:41: error: cannot find symbol
 import net.minecraft.util.registry.RegistryEntry;
                                   ^
   symbol:   class RegistryEntry
   location: package net.minecraft.util.registry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:45: error: cannot find symbol
-	public final TagKey<?> key;
-	             ^
-  symbol:   class TagKey
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:20: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:24: error: cannot find symbol
-import net.minecraft.util.registry.RegistryEntry;
-                                  ^
-  symbol:   class RegistryEntry
-  location: package net.minecraft.util.registry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:25: error: package net.minecraft.util.registry.RegistryEntryList does not exist
-import net.minecraft.util.registry.RegistryEntryList.Named;
-                                                    ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:51: error: cannot find symbol
-	public TagEmiIngredient(TagKey<?> key, long amount) {
-	                        ^
-  symbol:   class TagKey
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:56: error: cannot find symbol
-	public TagEmiIngredient(TagKey<?> key, List<EmiStack> stacks, long amount) {
-	                        ^
-  symbol:   class TagKey
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:178: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:29: error: cannot find symbol
-	public static final Map<TagKey<?>, EmiTagKey<?>> CACHE = Maps.newHashMap();
-	                        ^
-  symbol:   class TagKey
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:30: error: cannot find symbol
-	private final TagKey<T> raw;
-	              ^
-  symbol:   class TagKey
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:33: error: cannot find symbol
-	private EmiTagKey(TagKey<T> raw) {
-	                  ^
-  symbol:   class TagKey
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:42: error: cannot find symbol
-	public TagKey<T> raw() {
-	       ^
-  symbol:   class TagKey
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:149: error: cannot find symbol
-	public static <T> EmiTagKey<T> of(TagKey<T> raw) {
-	                                  ^
-  symbol:   class TagKey
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\RecipeFillButtonWidget.java:21: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\RecipeFillButtonWidget.java:25: error: cannot find symbol
-	private List<TooltipComponent> tooltip;
-	             ^
-  symbol:   class TooltipComponent
-  location: class RecipeFillButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\RecipeFillButtonWidget.java:61: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class RecipeFillButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessEmiStack.java:16: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessEmiStack.java:111: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class ChessEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltipComponent.java:6: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltipComponent.java:14: error: cannot find symbol
-public interface EmiTooltipComponent extends TooltipComponent {
-                                             ^
-  symbol: class TooltipComponent
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:53: error: package net.minecraft.util.math.random does not exist
-	private static final net.minecraft.util.math.random.Random RANDOM = net.minecraft.util.math.random.Random.create();
-	                                                   ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:28: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:29: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:32: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:35: error: cannot find symbol
 import net.minecraft.client.render.VertexFormat.DrawMode;
                                                ^
   symbol:   class DrawMode
   location: class VertexFormat
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:153: error: cannot find symbol
-	public static void drawLeftTooltip(Screen screen, EmiDrawContext context, List<TooltipComponent> components, int x, int y) {
-	                                                                               ^
-  symbol:   class TooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:163: error: cannot find symbol
-	public static void drawTooltip(Screen screen, EmiDrawContext context, List<TooltipComponent> components, int x, int y) {
-	                                                                           ^
-  symbol:   class TooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:167: error: cannot find symbol
-	public static void drawTooltip(Screen screen, EmiDrawContext context, List<TooltipComponent> components, int x, int y, int maxWidth) {
-	                                                                           ^
-  symbol:   class TooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiUtil.java:33: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiUtil.java:36: error: cannot find symbol
 import net.minecraft.util.registry.RegistryEntry;
                                   ^
@@ -401,14 +23,6 @@ import net.minecraft.util.registry.RegistryEntry;
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiUtil.java:37: error: package net.minecraft.util.registry.RegistryEntryList does not exist
 import net.minecraft.util.registry.RegistryEntryList.Named;
                                                     ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\handler\InventoryRecipeHandler.java:17: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\handler\InventoryRecipeHandler.java:98: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(EmiRecipe recipe, EmiCraftContext<PlayerScreenHandler> context) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class InventoryRecipeHandler
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\impl\JemiRecipeSlot.java:14: error: cannot find symbol
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
                                   ^
@@ -778,22 +392,12 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipe.java:35: error: package mezz.jei.library.focus does not exist
 import mezz.jei.library.focus.FocusGroup;
                              ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipe.java:36: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipe.java:149: error: type IRecipeLayoutDrawable does not take parameters
 		private final IRecipeLayoutDrawable<T> recipeLayoutDrawable;
 		                                   ^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipe.java:153: error: type IRecipeLayoutDrawable does not take parameters
 		public JemiWidget(int x, int y, int w, int h, IRecipeLayoutDrawable<T> recipeLayoutDrawable) {
 		                                                                   ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipe.java:180: error: cannot find symbol
-		public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-		            ^
-  symbol:   class TooltipComponent
-  location: class JemiRecipe<T>.JemiWidget
-  where T is a type-variable:
-    T extends Object declared in class JemiRecipe
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipeHandler.java:29: error: package mezz.jei.api.gui.builder does not exist
 import mezz.jei.api.gui.builder.IIngredientAcceptor;
                                ^
@@ -847,16 +451,6 @@ import mezz.jei.api.ingredients.IIngredientTypeWithSubtypes;
                                ^
   symbol:   class IIngredientTypeWithSubtypes
   location: package mezz.jei.api.ingredients
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiStack.java:20: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiStack.java:93: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class JemiStack<T>
-  where T is a type-variable:
-    T extends Object declared in class JemiStack
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiUtil.java:17: error: package mezz.jei.api.fabric.ingredients.fluids does not exist
 import mezz.jei.api.fabric.ingredients.fluids.IJeiFluidIngredient;
                                              ^
@@ -920,12 +514,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\j
 	                                                                              ^
   symbol:   class ITypedIngredient
   location: class JemiDragDropHandler
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:79: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\SizedButtonWidget.java:16: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\runtime\JemiIngredientListOverlay.java:18: error: cannot find symbol
 import mezz.jei.api.ingredients.ITypedIngredient;
                                ^
@@ -966,67 +554,19 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
                           ^
   symbol:   class RecipeIngredientRole
   location: package mezz.jei.api.recipe
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiSlotWidget.java:26: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiSlotWidget.java:47: error: cannot find symbol
 	private ITypedIngredient<?> getIngredient() {
 	        ^
   symbol:   class ITypedIngredient
-  location: class JemiSlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiSlotWidget.java:109: error: cannot find symbol
-	public static void addTooltip(List<TooltipComponent> list, JemiRecipeSlot slot, EmiIngredient stack, IIngredientRenderer<?> renderer) {
-	                                   ^
-  symbol:   class TooltipComponent
-  location: class JemiSlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiSlotWidget.java:136: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
   location: class JemiSlotWidget
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiTankWidget.java:11: error: cannot find symbol
 import mezz.jei.api.recipe.RecipeIngredientRole;
                           ^
   symbol:   class RecipeIngredientRole
   location: package mezz.jei.api.recipe
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiTankWidget.java:12: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiTankWidget.java:53: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class JemiTankWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\accessor\OrderedTextTooltipComponentAccessor.java:6: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\accessor\ScreenAccessor.java:9: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\accessor\ScreenAccessor.java:16: error: cannot find symbol
-	void invokeRenderTooltipFromComponents(MatrixStack matrices, List<TooltipComponent> components, int x, int y);
-	                                                                  ^
-  symbol:   class TooltipComponent
-  location: interface ScreenAccessor
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\jei\PluginCallerMixin.java:18: error: package mezz.jei.library.load does not exist
 import mezz.jei.library.load.PluginCaller;
                             ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\EmiAgnos.java:11: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\EmiAgnos.java:96: error: cannot find symbol
-	public static List<TooltipComponent> getItemTooltip(ItemStack stack) {
-	                   ^
-  symbol:   class TooltipComponent
-  location: class EmiAgnos
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\EmiAgnos.java:100: error: cannot find symbol
-	protected abstract List<TooltipComponent> getItemTooltipAgnos(ItemStack stack);
-	                        ^
-  symbol:   class TooltipComponent
-  location: class EmiAgnos
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiAgnosForge.java:35: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiAgnosForge.java:57: error: cannot find symbol
 import net.minecraft.util.registry.RegistryEntry;
                                   ^
@@ -1035,48 +575,43 @@ import net.minecraft.util.registry.RegistryEntry;
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiAgnosForge.java:59: error: package net.minecraftforge.client.extensions.common does not exist
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
                                                   ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiAgnosForge.java:257: error: cannot find symbol
-	protected List<TooltipComponent> getItemTooltipAgnos(ItemStack stack) {
-	               ^
-  symbol:   class TooltipComponent
-  location: class EmiAgnosForge
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:25: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:27: error: cannot find symbol
 import net.minecraftforge.client.ConfigScreenHandler;
                                 ^
   symbol:   class ConfigScreenHandler
   location: package net.minecraftforge.client
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:27: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:29: error: cannot find symbol
 import net.minecraftforge.client.event.ContainerScreenEvent;
                                       ^
   symbol:   class ContainerScreenEvent
   location: package net.minecraftforge.client.event
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:28: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:30: error: cannot find symbol
 import net.minecraftforge.client.event.ModelEvent;
                                       ^
   symbol:   class ModelEvent
   location: package net.minecraftforge.client.event
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:30: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:32: error: cannot find symbol
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
                                       ^
   symbol:   class RegisterClientReloadListenersEvent
   location: package net.minecraftforge.client.event
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:31: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:33: error: cannot find symbol
 import net.minecraftforge.client.event.ScreenEvent;
                                       ^
   symbol:   class ScreenEvent
   location: package net.minecraftforge.client.event
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:56: error: package ModelEvent does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:58: error: package ModelEvent does not exist
 	public static void registerAdditionalModels(ModelEvent.RegisterAdditional event) {
 	                                                      ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:62: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:64: error: cannot find symbol
 	public static void registerResourceReloaders(RegisterClientReloadListenersEvent event) {
 	                                             ^
   symbol:   class RegisterClientReloadListenersEvent
   location: class EmiClientForge
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:74: error: package ContainerScreenEvent.Render does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:76: error: package ContainerScreenEvent.Render does not exist
 	public static void renderScreenForeground(ContainerScreenEvent.Render.Foreground event) {
 	                                                                     ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:91: error: package ScreenEvent.Render does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:93: error: package ScreenEvent.Render does not exist
 	public static void postRenderScreen(ScreenEvent.Render.Post event) {
 	                                                      ^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiForge.java:12: error: cannot find symbol
@@ -1113,298 +648,44 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\p
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiPacketHandler.java:50: error: package NetworkEvent does not exist
 	private static <T> BiConsumer<T, Supplier<NetworkEvent.Context>> clientHandler(BiConsumer<T, PlayerEntity> handler) {
 	                                                      ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiBrewingRecipe.java:16: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiCookingRecipe.java:16: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiTagRecipe.java:15: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiTagRecipe.java:21: error: cannot find symbol
-	public final TagKey<?> key;
-	             ^
-  symbol:   class TagKey
-  location: class EmiTagRecipe
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiTagRecipe.java:23: error: cannot find symbol
-	public EmiTagRecipe(TagKey<?> key) {
-	                    ^
-  symbol:   class TagKey
-  location: class EmiTagRecipe
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:45: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:49: error: cannot find symbol
-	private static final TagKey<Item> ITEM_HIDDEN = TagKey.of(EmiPort.getItemRegistry().getKey(), EmiTags.HIDDEN_FROM_RECIPE_VIEWERS);
-	                     ^
-  symbol:   class TagKey
-  location: class EmiStackList
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:50: error: cannot find symbol
-	private static final TagKey<Block> BLOCK_HIDDEN = TagKey.of(EmiPort.getBlockRegistry().getKey(), EmiTags.HIDDEN_FROM_RECIPE_VIEWERS);
-	                     ^
-  symbol:   class TagKey
-  location: class EmiStackList
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:51: error: cannot find symbol
-	private static final TagKey<Fluid> FLUID_HIDDEN = TagKey.of(EmiPort.getFluidRegistry().getKey(), EmiTags.HIDDEN_FROM_RECIPE_VIEWERS);
-	                     ^
-  symbol:   class TagKey
-  location: class EmiStackList
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiTags.java:32: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiTags.java:36: error: cannot find symbol
 import net.minecraft.util.registry.RegistryEntry;
                                   ^
   symbol:   class RegistryEntry
   location: package net.minecraft.util.registry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiTags.java:43: error: cannot find symbol
-	public static final Map<TagKey<?>, Identifier> MODELED_TAGS = Maps.newHashMap();
-	                        ^
-  symbol:   class TagKey
-  location: class EmiTags
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\dev\RecipeError.java:7: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\dev\RecipeError.java:12: error: cannot find symbol
-public record RecipeError(Severity severity, List<TooltipComponent> tooltip) {
-                                                  ^
-  symbol:   class TooltipComponent
-  location: class RecipeError
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:23: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:89: error: cannot find symbol
-	public List<TooltipComponent> getTooltip() {
-	            ^
-  symbol:   class TooltipComponent
-  location: class EmiFavorite
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:192: error: cannot find symbol
-		public List<TooltipComponent> getTooltip() {
-		            ^
-  symbol:   class TooltipComponent
-  location: class Synthetic
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:12: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:14: error: cannot find symbol
 import net.minecraft.client.gl.SimpleFramebuffer;
                               ^
   symbol:   class SimpleFramebuffer
   location: package net.minecraft.client.gl
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\BoMScreen.java:48: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigEnumScreen.java:20: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigScreen.java:57: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigEnumScreen.java:91: error: cannot find symbol
-	public static record Entry<T>(T value, Text name, List<TooltipComponent> tooltip) {
-	                                                       ^
-  symbol:   class TooltipComponent
-  location: class Entry<T>
-  where T is a type-variable:
-    T extends Object declared in record Entry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:22: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:24: error: cannot find symbol
 import net.minecraft.client.gui.Selectable;
                                ^
   symbol:   class Selectable
   location: package net.minecraft.client.gui
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:23: error: package net.minecraft.client.gui.screen.narration does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:25: error: package net.minecraft.client.gui.screen.narration does not exist
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
                                                 ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:24: error: package net.minecraft.client.gui.screen.narration does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:26: error: package net.minecraft.client.gui.screen.narration does not exist
 import net.minecraft.client.gui.screen.narration.NarrationPart;
                                                 ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:25: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:40: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:42: error: cannot find symbol
 public class ListWidget extends AbstractParentElement implements Drawable, Selectable {
                                                                            ^
   symbol: class Selectable
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:533: error: package Selectable does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:535: error: package Selectable does not exist
 	public Selectable.SelectionType getType() {
 	                 ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:552: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:554: error: cannot find symbol
 	protected void appendNarrations(NarrationMessageBuilder builder, Entry entry) {
 	                                ^
   symbol:   class NarrationMessageBuilder
   location: class ListWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:572: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:574: error: cannot find symbol
 	public void appendNarrations(NarrationMessageBuilder var1) {
 	                             ^
   symbol:   class NarrationMessageBuilder
   location: class ListWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:586: error: cannot find symbol
-		public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-		            ^
-  symbol:   class TooltipComponent
-  location: class Entry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigScreen.java:100: error: cannot find symbol
-	public static List<TooltipComponent> getFieldTooltip(Field field) {
-	                   ^
-  symbol:   class TooltipComponent
-  location: class ConfigScreen
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigEnumScreen.java:96: error: cannot find symbol
-		private final List<TooltipComponent> tooltip;
-		                   ^
-  symbol:   class TooltipComponent
-  location: class SelectionWidget<T>
-  where T is a type-variable:
-    T extends Object declared in class SelectionWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigPresetScreen.java:23: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigPresetScreen.java:127: error: cannot find symbol
-		private final List<TooltipComponent> tooltip;
-		                   ^
-  symbol:   class TooltipComponent
-  location: class ConfigPresetScreen.PresetWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigPresetScreen.java:129: error: cannot find symbol
-		public PresetWidget(Runnable runnable, Text name, List<TooltipComponent> tooltip) {
-		                                                       ^
-  symbol:   class TooltipComponent
-  location: class ConfigPresetScreen.PresetWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\WidgetGroup.java:29: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\RecipeScreen.java:42: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTextTooltipWrapper.java:5: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTextTooltipWrapper.java:8: error: cannot find symbol
-public class EmiTextTooltipWrapper extends OrderedTextTooltipComponent {
-                                           ^
-  symbol: class OrderedTextTooltipComponent
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTextTooltipWrapper.java:16: error: cannot find symbol
-	public EmiTextTooltipWrapper(EmiIngredient stack, OrderedTextTooltipComponent original) {
-	                                                  ^
-  symbol:   class OrderedTextTooltipComponent
-  location: class EmiTextTooltipWrapper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltip.java:10: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltip.java:17: error: cannot find symbol
-	public static TooltipComponent chance(String type, float chance) {
-	              ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltip
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltip.java:24: error: cannot find symbol
-	public static List<TooltipComponent> splitTranslate(String key) {
-	                   ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltip
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltip.java:29: error: cannot find symbol
-	public static List<TooltipComponent> splitTranslate(String key, Object... objects) {
-	                   ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltip
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\BooleanWidget.java:10: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ConfigEntryWidget.java:15: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\BooleanWidget.java:19: error: cannot find symbol
-	public BooleanWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<Boolean> mutator) {
-	                                     ^
-  symbol:   class TooltipComponent
-  location: class BooleanWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ConfigEntryWidget.java:21: error: cannot find symbol
-	private final List<TooltipComponent> tooltip;
-	                   ^
-  symbol:   class TooltipComponent
-  location: class ConfigEntryWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ConfigEntryWidget.java:29: error: cannot find symbol
-	public ConfigEntryWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, int height) {
-	                                         ^
-  symbol:   class TooltipComponent
-  location: class ConfigEntryWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ConfigEntryWidget.java:68: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class ConfigEntryWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\EmiBindWidget.java:12: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\EmiBindWidget.java:24: error: cannot find symbol
-	public EmiBindWidget(ConfigScreen screen, List<TooltipComponent> tooltip, Supplier<String> search, EmiBind bind) {
-	                                               ^
-  symbol:   class TooltipComponent
-  location: class EmiBindWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\EnumWidget.java:19: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\EnumWidget.java:27: error: cannot find symbol
-	public EnumWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<ConfigEnum> mutator, Predicate<ConfigEnum> filter) {
-	                                  ^
-  symbol:   class TooltipComponent
-  location: class EnumWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\IntGroupWidget.java:14: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\IntGroupWidget.java:21: error: cannot find symbol
-	public IntGroupWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<IntGroup> mutator) {
-	                                      ^
-  symbol:   class TooltipComponent
-  location: class IntGroupWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\IntGroupWidget.java:58: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class IntGroupWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\IntWidget.java:9: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\IntWidget.java:15: error: cannot find symbol
-	public IntWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<Integer> mutator) {
-	                                 ^
-  symbol:   class TooltipComponent
-  location: class IntWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ScreenAlignWidget.java:11: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ScreenAlignWidget.java:19: error: cannot find symbol
-	public ScreenAlignWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<ScreenAlign> mutator) {
-	                                         ^
-  symbol:   class TooltipComponent
-  location: class ScreenAlignWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\SidebarPagesWidget.java:12: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\SidebarPagesWidget.java:20: error: cannot find symbol
-	public SidebarPagesWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<SidebarPages> mutator) {
-	                                          ^
-  symbol:   class TooltipComponent
-  location: class SidebarPagesWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\SidebarSubpanelsWidget.java:14: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\SidebarSubpanelsWidget.java:25: error: cannot find symbol
-	public SidebarSubpanelsWidget(Text name, List<TooltipComponent> tooltip, Supplier<String> search, Mutator<SidebarSubpanels> mutator) {
-	                                              ^
-  symbol:   class TooltipComponent
-  location: class SidebarSubpanelsWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\SidebarSubpanelsWidget.java:61: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class SidebarSubpanelsWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\stack\serializer\TagEmiIngredientSerializer.java:15: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\VanillaPlugin.java:107: error: cannot find symbol
 import net.minecraft.block.Oxidizable;
                           ^
@@ -1415,40 +696,11 @@ import net.minecraft.item.HoneycombItem;
                          ^
   symbol:   class HoneycombItem
   location: package net.minecraft.item
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\VanillaPlugin.java:162: error: cannot find symbol
-import net.minecraft.tag.TagKey;
-                        ^
-  symbol:   class TagKey
-  location: package net.minecraft.tag
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\VanillaPlugin.java:166: error: cannot find symbol
 import net.minecraft.util.registry.RegistryEntry;
                                   ^
   symbol:   class RegistryEntry
   location: package net.minecraft.util.registry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:17: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:37: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class RecipeDefaultButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeScreenshotButtonWidget.java:12: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeScreenshotButtonWidget.java:22: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class RecipeScreenshotButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeTreeButtonWidget.java:11: error: package net.minecraft.client.gui.tooltip does not exist
-import net.minecraft.client.gui.tooltip.TooltipComponent;
-                                       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeTreeButtonWidget.java:29: error: cannot find symbol
-	public List<TooltipComponent> getTooltip(int mouseX, int mouseY) {
-	            ^
-  symbol:   class TooltipComponent
-  location: class RecipeTreeButtonWidget
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiStackConvertible.java:19: error: cannot find symbol
 	@Environment(EnvType.CLIENT)
 	 ^
@@ -1469,100 +721,10 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\a
 	             ^
   symbol:   variable EnvType
   location: interface EmiStackConvertible
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\accessor\OrderedTextTooltipComponentAccessor.java:9: error: cannot find symbol
-@Mixin(OrderedTextTooltipComponent.class)
-       ^
-  symbol: class OrderedTextTooltipComponent
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\jei\PluginCallerMixin.java:22: error: cannot find symbol
 @Mixin(PluginCaller.class)
        ^
   symbol: class PluginCaller
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\EmiStack.java:128: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class EmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\EmiRecipeCategory.java:72: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class EmiRecipeCategory
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\EmiRecipeCategory.java:73: error: cannot find symbol
-		list.add(TooltipComponent.of(EmiPort.ordered(getName())));
-		         ^
-  symbol:   variable TooltipComponent
-  location: class EmiRecipeCategory
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\EmiRecipeCategory.java:75: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal(id.toString(), Formatting.DARK_GRAY))));
-			         ^
-  symbol:   variable TooltipComponent
-  location: class EmiRecipeCategory
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\EmiRecipeCategory.java:78: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal(EmiUtil.getModName(getId().getNamespace()),
-			         ^
-  symbol:   variable TooltipComponent
-  location: class EmiRecipeCategory
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetHolder.java:86: error: cannot find symbol
-		return addTooltip(tooltip.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList()), x, y, width, height);
-		                                                                ^
-  symbol:   variable TooltipComponent
-  location: interface WidgetHolder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetTooltipHolder.java:20: error: cannot find symbol
-		return tooltip((x, y) -> tooltipSupplier.apply(x, y).stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList()));
-		                                                                                           ^
-  symbol:   variable TooltipComponent
-  location: interface WidgetTooltipHolder<T>
-  where T is a type-variable:
-    T extends Object declared in interface WidgetTooltipHolder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\WidgetTooltipHolder.java:24: error: cannot find symbol
-		return tooltip(tooltip.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList()));
-		                                                             ^
-  symbol:   variable TooltipComponent
-  location: interface WidgetTooltipHolder<T>
-  where T is a type-variable:
-    T extends Object declared in interface WidgetTooltipHolder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:107: error: cannot find symbol
-		tooltipSuppliers.add(() -> TooltipComponent.of(EmiPort.ordered(text)));
-		                           ^
-  symbol:   variable TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:219: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:229: error: cannot find symbol
-		for (Supplier<TooltipComponent> supplier : tooltipSuppliers) {
-		              ^
-  symbol:   class TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:238: error: cannot find symbol
-				list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal(recipe.getId().toString(), Formatting.GRAY))));
-				         ^
-  symbol:   variable TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:242: error: cannot find symbol
-					list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.resolve.resolve", EmiConfig.viewRecipes.getBindText()))));
-					         ^
-  symbol:   variable TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:245: error: cannot find symbol
-					list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.resolve.default", EmiConfig.defaultStack.getBindText()))));
-					         ^
-  symbol:   variable TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\SlotWidget.java:248: error: cannot find symbol
-				list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.favorite_recipe", EmiConfig.favorite.getBindText()))));
-				         ^
-  symbol:   variable TooltipComponent
-  location: class SlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\handler\EmiRecipeHandler.java:62: error: cannot find symbol
-			return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(NOT_ENOUGH_INGREDIENTS)));
-			                        ^
-  symbol:   variable TooltipComponent
-  location: interface EmiRecipeHandler<T>
-  where T is a type-variable:
-    T extends ScreenHandler declared in interface EmiRecipeHandler
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\recipe\EmiPlayerInventory.java:47: error: cannot find symbol
 			if (screen.getScreenHandler().getCursorStack() != null) {
 			                             ^
@@ -1595,30 +757,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\a
   location: class Collectors
   where CAP#1 is a fresh type-variable:
     CAP#1 extends Object from capture of ?
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipComponents.java:53: error: cannot find symbol
-		return TooltipComponent.of(text.asOrderedText());
-		       ^
-  symbol:   variable TooltipComponent
-  location: class EmiTooltipComponents
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipMetadata.java:50: error: cannot find symbol
-			TooltipComponent title = tooltip.get(0);
-			^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipMetadata
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\render\EmiTooltipMetadata.java:52: error: cannot find symbol
-			for (TooltipComponent comp : tooltip) {
-			     ^
-  symbol:   class TooltipComponent
-  location: class EmiTooltipMetadata
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\FluidEmiStack.java:88: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class FluidEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\FluidEmiStack.java:91: error: reference to EmiTextTooltipWrapper is ambiguous
-			list.add(new EmiTextTooltipWrapper(this, EmiPort.ordered(text.get(0))));
-			         ^
-  both constructor EmiTextTooltipWrapper(EmiIngredient,OrderedText) in EmiTextTooltipWrapper and constructor EmiTextTooltipWrapper(EmiIngredient,OrderedTextTooltipComponent) in EmiTextTooltipWrapper match
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\FluidEmiStack.java:93: error: cannot find symbol
 		list.addAll(text.stream().skip(1).map(EmiTooltipComponents::of).collect(Collectors.collect(Collectors.toList())));
 		                                                                                  ^
@@ -1641,6 +779,11 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
 		   ^
   symbol:   method multiplyByTranslation(int,int,int)
   location: variable mat of type Matrix4f
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\StackBatcher.java:222: error: cannot find symbol
+			EmiPort.setShader(en.getValue(), mat);
+			       ^
+  symbol:   method setShader(VertexBuffer,Matrix4f)
+  location: class EmiPort
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\StackBatcher.java:225: error: cannot find symbol
 		BufferRenderer.unbindAll();
 		              ^
@@ -1668,178 +811,54 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
 				        ^
   symbol:   method fixedColor(int,int,int,int)
   location: variable delegate of type VertexConsumer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:103: error: cannot find symbol
-			MatrixStack view = RenderSystem.getModelViewStack();
-			                               ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:105: error: cannot find symbol
-			view.multiplyPositionMatrix(matrices.peek().getModel());
-			    ^
-  symbol:   method multiplyPositionMatrix(Matrix4f)
-  location: variable view of type MatrixStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:106: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:108: error: cannot find symbol
 			RenderSystem.applyModelViewMatrix();
 			            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:114: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:116: error: cannot find symbol
 			RenderSystem.applyModelViewMatrix();
 			            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:130: error: method getHeldItemModel in class ItemRenderer cannot be applied to given types;
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:132: error: method getHeldItemModel in class ItemRenderer cannot be applied to given types;
 		return client.getItemRenderer().getHeldItemModel(getItemStack(), null, null, 0).isSideLit();
 		                               ^
   required: ItemStack,World,LivingEntity
   found:    ItemStack,<null>,<null>,int
   reason: actual and formal argument lists differ in length
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:137: error: method getHeldItemModel in class ItemRenderer cannot be applied to given types;
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:139: error: method getHeldItemModel in class ItemRenderer cannot be applied to given types;
 			|| client.getItemRenderer().getHeldItemModel(getItemStack(), null, null, 0).isBuiltin();
 			                           ^
   required: ItemStack,World,LivingEntity
   found:    ItemStack,<null>,<null>,int
   reason: actual and formal argument lists differ in length
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:150: error: method getHeldItemModel in class ItemRenderer cannot be applied to given types;
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:152: error: method getHeldItemModel in class ItemRenderer cannot be applied to given types;
 		BakedModel model = ir.getHeldItemModel(stack, null, null, 0);
 		                     ^
   required: ItemStack,World,LivingEntity
   found:    ItemStack,<null>,<null>,int
   reason: actual and formal argument lists differ in length
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:156: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:158: error: cannot find symbol
 			ir.renderItem(stack, ModelTransformation.Mode.GUI, false, context.raw(), vcp, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, model);
 			                                                                                                    ^
   symbol:   variable MAX_LIGHT_COORDINATE
   location: class LightmapTextureManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:170: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class ItemEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ItemEmiStack.java:173: error: cannot find symbol
-			if (!list.isEmpty() && list.get(0) instanceof OrderedTextTooltipComponent ottc) {
-			                                              ^
-  symbol:   class OrderedTextTooltipComponent
-  location: class ItemEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ListEmiIngredient.java:104: error: cannot find symbol
-		List<TooltipComponent> tooltip = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class ListEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\ListEmiIngredient.java:105: error: reference to EmiTextTooltipWrapper is ambiguous
-		tooltip.add(new EmiTextTooltipWrapper(this, EmiPort.ordered(EmiPort.translatable("tooltip.emi.accepts"))));
-		            ^
-  both constructor EmiTextTooltipWrapper(EmiIngredient,OrderedText) in EmiTextTooltipWrapper and constructor EmiTextTooltipWrapper(EmiIngredient,OrderedTextTooltipComponent) in EmiTextTooltipWrapper match
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:130: error: cannot find symbol
-				MatrixStack vs = RenderSystem.getModelViewStack();
-				                             ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:132: error: cannot find symbol
-				vs.multiplyPositionMatrix(context.matrices().peek().getModel());
-				  ^
-  symbol:   method multiplyPositionMatrix(Matrix4f)
-  location: variable vs of type MatrixStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:137: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:139: error: cannot find symbol
 				RenderSystem.applyModelViewMatrix();
 				            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:149: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:151: error: cannot find symbol
 						ItemStack.EMPTY, LightmapTextureManager.MAX_LIGHT_COORDINATE, OverlayTexture.DEFAULT_UV, ms, 
 						                                       ^
   symbol:   variable MAX_LIGHT_COORDINATE
   location: class LightmapTextureManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:159: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:161: error: cannot find symbol
 				RenderSystem.applyModelViewMatrix();
 				            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:179: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:180: error: reference to EmiTextTooltipWrapper is ambiguous
-		list.add(new EmiTextTooltipWrapper(this, EmiPort.ordered(tagKey.getTagName())));
-		         ^
-  both constructor EmiTextTooltipWrapper(EmiIngredient,OrderedText) in EmiTextTooltipWrapper and constructor EmiTextTooltipWrapper(EmiIngredient,OrderedTextTooltipComponent) in EmiTextTooltipWrapper match
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:182: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal("#" + id, Formatting.DARK_GRAY))));
-			         ^
-  symbol:   variable TooltipComponent
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:185: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiRenderHelper.getAmountText(this, amount))));
-			         ^
-  symbol:   variable TooltipComponent
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:189: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal(mod, Formatting.BLUE, Formatting.ITALIC))));
-			         ^
-  symbol:   variable TooltipComponent
-  location: class TagEmiIngredient
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:51: error: recursive constructor invocation
-	public TagEmiIngredient(TagKey<?> key, long amount) {
-	       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\stack\TagEmiIngredient.java:56: error: recursive constructor invocation
-	public TagEmiIngredient(TagKey<?> key, List<EmiStack> stacks, long amount) {
-	       ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:61: error: cannot find symbol
-		Optional<Named<T>> opt = registry.getEntryList(raw);
-		         ^
-  symbol:   class Named
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:69: error: cannot find symbol
-				}).map(RegistryEntry::value);
-				       ^
-  symbol:   variable RegistryEntry
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:71: error: cannot find symbol
-			return opt.get().stream().map(RegistryEntry::value);
-			                              ^
-  symbol:   variable RegistryEntry
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:154: error: cannot find symbol
-		return of(TagKey.of(registry.getKey(), id));
-		          ^
-  symbol:   variable TagKey
-  location: class EmiTagKey<T>
-  where T is a type-variable:
-    T extends Object declared in class EmiTagKey
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiTagKey.java:158: error: cannot find symbol
-		return registry.streamTags().map(EmiTagKey::of);
-		               ^
-  symbol:   method streamTags()
-  location: variable registry of type Registry<T>
-  where T is a type-variable:
-    T extends Object declared in method <T>fromRegistry(Registry<T>)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\RecipeFillButtonWidget.java:33: error: cannot find symbol
-		tooltip = ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.inapplicable"))));
-		                           ^
-  symbol:   variable TooltipComponent
-  location: class RecipeFillButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\RecipeFillButtonWidget.java:47: error: cannot find symbol
-				tooltip = ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.error.recipe.initialize"))));
-				                           ^
-  symbol:   variable TooltipComponent
-  location: class RecipeFillButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\RecipeFillButtonWidget.java:62: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class RecipeFillButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\api\widget\RecipeFillButtonWidget.java:64: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.fill_recipe"))));
-			         ^
-  symbol:   variable TooltipComponent
-  location: class RecipeFillButtonWidget
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\bom\BoM.java:70: error: cannot find symbol
 					if (!arr.isEmpty()) {
 					        ^
@@ -1855,63 +874,16 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\b
 		                           ^
   symbol:   method keySet()
   location: variable addedTags of type JsonObject
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessEmiStack.java:114: error: cannot find symbol
-			List<TooltipComponent> list = Lists.newArrayList();
-			     ^
-  symbol:   class TooltipComponent
-  location: class ChessEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessEmiStack.java:115: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.chess.piece."
-			         ^
-  symbol:   variable TooltipComponent
-  location: class ChessEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessEmiStack.java:131: error: cannot find symbol
-							list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.chess.tooltip.decline", player.getName()))));
-							         ^
-  symbol:   variable TooltipComponent
-  location: class ChessEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessEmiStack.java:137: error: cannot find symbol
-					list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.chess.tooltip.restart"))));
-					         ^
-  symbol:   variable TooltipComponent
-  location: class ChessEmiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessTooltipComponent.java:19: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\chess\ChessTooltipComponent.java:24: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltipComponent.java:22: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltipComponent.java:31: error: method does not override or implement a method from a supertype
-	@Override
-	^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltipComponent.java:55: error: cannot find symbol
 			renderer.draw(text, x + this.x, y + this.y, color, shadow, matrix, vertexConsumers, false, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
 			                                                                                                                    ^
   symbol:   variable MAX_LIGHT_COORDINATE
   location: class LightmapTextureManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiDrawContext.java:56: error: cannot find symbol
-		RenderSystem.setShaderTexture(0, texture);
-		            ^
-  symbol:   method setShaderTexture(int,Identifier)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiDrawContext.java:62: error: cannot find symbol
-		RenderSystem.setShaderTexture(0, texture);
-		            ^
-  symbol:   method setShaderTexture(int,Identifier)
-  location: class RenderSystem
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiDrawContext.java:107: error: cannot find symbol
 		DrawableHelper.drawCenteredTextWithShadow(matrices, client.textRenderer, text.asOrderedText(), x, y, color);
 		              ^
   symbol:   method drawCenteredTextWithShadow(MatrixStack,TextRenderer,OrderedText,int,int,int)
   location: class DrawableHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiDrawContext.java:135: error: cannot find symbol
-		RenderSystem.setShaderColor(r, g, b, a);
-		            ^
-  symbol:   method setShaderColor(float,float,float,float)
-  location: class RenderSystem
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\config\EmiConfig.java:218: error: cannot find symbol
 		IntList.of(12, 100)
 		       ^
@@ -1982,178 +954,33 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\d
 		                           ^
   symbol:   method keySet()
   location: variable addedTags of type JsonObject
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:53: error: package net.minecraft.util.math.random does not exist
-	private static final net.minecraft.util.math.random.Random RANDOM = net.minecraft.util.math.random.Random.create();
-	                                                                                                  ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:56: error: cannot find symbol
-		return Text.literal(s);
-		           ^
-  symbol:   method literal(String)
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:60: error: cannot find symbol
-		return Text.literal(s).formatted(formatting);
-		           ^
-  symbol:   method literal(String)
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:64: error: cannot find symbol
-		return Text.literal(s).formatted(formatting);
-		           ^
-  symbol:   method literal(String)
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:68: error: cannot find symbol
-		return Text.literal(s).setStyle(style);
-		           ^
-  symbol:   method literal(String)
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:72: error: cannot find symbol
-		return Text.translatable(s);
-		           ^
-  symbol:   method translatable(String)
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:76: error: cannot find symbol
-		return Text.translatable(s).formatted(formatting);
-		           ^
-  symbol:   method translatable(String)
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:80: error: cannot find symbol
-		return Text.translatable(s, objects);
-		           ^
-  symbol:   method translatable(String,Object[])
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:92: error: cannot find symbol
-		return manager.findResources(prefix, i -> pred.test(i.toString())).keySet();
-		                                                                  ^
-  symbol:   method keySet()
-  location: interface Collection<Identifier>
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:104: error: cannot find symbol
-		return patterns.add(Registry.BANNER_PATTERN.getEntry(random.nextInt(Registry.BANNER_PATTERN.size())).get(),
-		                            ^
-  symbol:   variable BANNER_PATTERN
-  location: class Registry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:104: error: cannot find symbol
-		return patterns.add(Registry.BANNER_PATTERN.getEntry(random.nextInt(Registry.BANNER_PATTERN.size())).get(),
-		                                                                            ^
-  symbol:   variable BANNER_PATTERN
-  location: class Registry
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:118: error: 'void' type not allowed here
-		vb.upload(bldr.end());
-		                  ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:123: error: cannot find symbol
-		buf.draw(mat, RenderSystem.getProjectionMatrix(), RenderSystem.getShader());
-		                                                              ^
-  symbol:   method getShader()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:123: error: cannot find symbol
-		buf.draw(mat, RenderSystem.getProjectionMatrix(), RenderSystem.getShader());
-		                          ^
-  symbol:   method getProjectionMatrix()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:131: error: 'void' type not allowed here
-		BufferRenderer.drawWithShader(bufferBuilder.end());
-		                                               ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:139: error: invalid method reference
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		                       ^
-  cannot find symbol
-    symbol:   method getPositionTexShader()
-    location: class GameRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:143: error: invalid method reference
-		RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
-		                       ^
-  cannot find symbol
-    symbol:   method getPositionColorTexShader()
-    location: class GameRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiPort.java:203: error: cannot find symbol
-		RenderSystem.applyModelViewMatrix();
-		            ^
-  symbol:   method applyModelViewMatrix()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:89: error: cannot find symbol
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		            ^
-  symbol:   method setShaderColor(float,float,float,float)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:90: error: cannot find symbol
-		RenderSystem.setShaderTexture(0, sprite.getAtlas().getId());
-		            ^
-  symbol:   method setShaderTexture(int,Identifier)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:98: error: cannot find symbol
-		bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
-		                    ^
-  symbol:   variable DrawMode
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:134: error: no suitable method found for withColor(int)
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:137: error: no suitable method found for withColor(int)
 					EmiPort.literal("E", Style.EMPTY.withColor(0xeb7bfc)),
 					                                ^
     method Style.withColor(TextColor) is not applicable
       (argument mismatch; int cannot be converted to TextColor)
     method Style.withColor(Formatting) is not applicable
       (argument mismatch; int cannot be converted to Formatting)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:135: error: no suitable method found for withColor(int)
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:138: error: no suitable method found for withColor(int)
 					EmiPort.literal("M", Style.EMPTY.withColor(0x7bfca2))),
 					                                ^
     method Style.withColor(TextColor) is not applicable
       (argument mismatch; int cannot be converted to TextColor)
     method Style.withColor(Formatting) is not applicable
       (argument mismatch; int cannot be converted to Formatting)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:136: error: no suitable method found for withColor(int)
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:139: error: no suitable method found for withColor(int)
 				EmiPort.literal("I", Style.EMPTY.withColor(0x7bebfc)));
 				                                ^
     method Style.withColor(TextColor) is not applicable
       (argument mismatch; int cannot be converted to TextColor)
     method Style.withColor(Formatting) is not applicable
       (argument mismatch; int cannot be converted to Formatting)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:173: error: cannot find symbol
-		List<TooltipComponent> mutable = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:176: error: incompatible types: invalid method reference
-			.max(Integer::compare).orElse(0), maxWidth);
-			     ^
-    incompatible types: Object cannot be converted to int
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:175: error: cannot find symbol
-			.map(c -> c instanceof OrderedTextTooltipComponent ? 0 : c.getWidth(CLIENT.textRenderer))
-			                       ^
-  symbol:   class OrderedTextTooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:177: error: cannot find symbol
-		for (TooltipComponent comp : components) {
-		     ^
-  symbol:   class TooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:178: error: cannot find symbol
-			if (comp instanceof OrderedTextTooltipComponent ottc && ottc.getWidth(CLIENT.textRenderer) > wrapWidth) {
-			                    ^
-  symbol:   class OrderedTextTooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:181: error: cannot find symbol
-					MutableText text = Text.empty();
-					                       ^
-  symbol:   method empty()
-  location: interface Text
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:188: error: cannot find symbol
-						mutable.add(TooltipComponent.of(o));
-						            ^
-  symbol:   variable TooltipComponent
-  location: class EmiRenderHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:259: error: cannot find symbol
-		RenderSystem.setShaderTexture(0, EmiRenderHelper.WIDGETS);
-		            ^
-  symbol:   method setShaderTexture(int,Identifier)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:337: error: cannot find symbol
-			MatrixStack view = RenderSystem.getModelViewStack();
-			                               ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:340: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:343: error: cannot find symbol
 			RenderSystem.applyModelViewMatrix();
 			            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:362: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\EmiRenderHelper.java:365: error: cannot find symbol
 			RenderSystem.applyModelViewMatrix();
 			            ^
   symbol:   method applyModelViewMatrix()
@@ -2173,11 +1000,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\h
 				                ^
   symbol:   method getIndex()
   location: variable slot of type Slot
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\handler\InventoryRecipeHandler.java:104: error: cannot find symbol
-						return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(TOO_SMALL)));
-						                        ^
-  symbol:   variable TooltipComponent
-  location: class InventoryRecipeHandler
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\impl\JemiRecipeSlot.java:64: error: method does not override or implement a method from a supertype
 	@Override
 	^
@@ -2688,13 +1510,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\j
 				                                                                                                       ^
   symbol:   method isEmpty()
   location: class Object
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipe.java:183: error: cannot find symbol
-				.map(t -> TooltipComponent.of(t.asOrderedText()))
-				          ^
-  symbol:   variable TooltipComponent
-  location: class JemiRecipe<T>.JemiWidget
-  where T is a type-variable:
-    T extends Object declared in class JemiRecipe
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiRecipe.java:189: error: cannot find symbol
 			return category.handleInput(recipe, mouseX, mouseY, InputUtil.Type.MOUSE.createFromCode(button));
 			               ^
@@ -2910,27 +1725,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\j
   location: variable helper of type IIngredientHelper<T>
   where T is a type-variable:
     T extends Object declared in class JemiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiStack.java:94: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class JemiStack<T>
-  where T is a type-variable:
-    T extends Object declared in class JemiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiStack.java:97: error: cannot find symbol
-			.stream().map(EmiPort::ordered).map(TooltipComponent::of).collect(Collectors.toList()));
-			                                    ^
-  symbol:   variable TooltipComponent
-  location: class JemiStack<T>
-  where T is a type-variable:
-    T extends Object declared in class JemiStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiStack.java:102: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.literal(mod, Formatting.BLUE, Formatting.ITALIC))));
-			         ^
-  symbol:   variable TooltipComponent
-  location: class JemiStack<T>
-  where T is a type-variable:
-    T extends Object declared in class JemiStack
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\JemiStackSerializer.java:31: error: cannot find symbol
 			if (type == VanillaTypes.ITEM_STACK || type == JemiUtil.getFluidType()) {
 			                        ^
@@ -3005,84 +1799,44 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\j
 		                                                                       ^
   symbol:   method getScreenHelper()
   location: variable runtime of type IJeiRuntime
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:694: error: cannot find symbol
-					MatrixStack view = RenderSystem.getModelViewStack();
-					                               ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:747: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:749: error: cannot find symbol
 				cursor = handled.getScreenHandler().getCursorStack();
 				                                   ^
   symbol:   method getCursorStack()
   location: class ScreenHandler
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:751: error: cannot find symbol
-				List<TooltipComponent> list = ImmutableList.of(
-				     ^
-  symbol:   class TooltipComponent
-  location: class EmiScreenManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:752: error: cannot find symbol
-					TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.delete_stack"))),
-					^
-  symbol:   variable TooltipComponent
-  location: class EmiScreenManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:753: error: cannot find symbol
-					TooltipComponent.of(EmiPort.ordered(EmiConfig.deleteCursorStack.getBindText()))
-					^
-  symbol:   variable TooltipComponent
-  location: class EmiScreenManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:770: error: cannot find symbol
-					List<TooltipComponent> list = Lists.newArrayList();
-					     ^
-  symbol:   class TooltipComponent
-  location: class EmiScreenManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:779: error: cannot find symbol
-						list.add(TooltipComponent.of(EmiPort.translatable("emi.edit_mode.hide_one", EmiConfig.hideStack.getBindText()).asOrderedText()));
-						         ^
-  symbol:   variable TooltipComponent
-  location: class EmiScreenManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:780: error: cannot find symbol
-						list.add(TooltipComponent.of(EmiPort.translatable("emi.edit_mode.hide_all", EmiConfig.hideStackById.getBindText()).asOrderedText()));
-						         ^
-  symbol:   variable TooltipComponent
-  location: class EmiScreenManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:794: error: cannot find symbol
-				List<TooltipComponent> list = ImmutableList.of(
-				     ^
-  symbol:   class TooltipComponent
-  location: class EmiScreenManager
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:829: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:831: error: cannot find symbol
 							.collect(Collectors.collect(Collectors.toList())), 0, 20);
 							                   ^
   symbol:   method collect(Collector<Object,CAP#1,List<Object>>)
   location: class Collectors
   where CAP#1 is a fresh type-variable:
     CAP#1 extends Object from capture of ?
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1096: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1098: error: cannot find symbol
 				if (!handled.getScreenHandler().getCursorStack().isEmpty()) {
 				                               ^
   symbol:   method getCursorStack()
   location: class ScreenHandler
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1352: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1354: error: cannot find symbol
 		if (mode == 1 && client.player.getAbilities().creativeMode && client.currentScreen instanceof CreativeInventoryScreen) {
 		                              ^
   symbol:   method getAbilities()
   location: variable player of type ClientPlayerEntity
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1353: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1355: error: cannot find symbol
 			client.player.currentScreenHandler.setCursorStack(is);
 			                                  ^
   symbol:   method setCursorStack(ItemStack)
   location: variable currentScreenHandler of type ScreenHandler
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1368: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1370: error: cannot find symbol
 					client.player.sendCommand(command);
 					             ^
   symbol:   method sendCommand(String)
   location: variable player of type ClientPlayerEntity
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1378: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1380: error: cannot find symbol
 			ItemStack cursor = handled.getScreenHandler().getCursorStack();
 			                                             ^
   symbol:   method getCursorStack()
   location: class ScreenHandler
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1381: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\EmiScreenManager.java:1383: error: cannot find symbol
 				handled.getScreenHandler().setCursorStack(ItemStack.EMPTY);
 				                          ^
   symbol:   method setCursorStack(ItemStack)
@@ -3102,7 +1856,7 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\j
       reason: actual and formal argument lists differ in length
   where T is a type-variable:
     T extends Object declared in class Optional
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\EmiSearchWidget.java:155: error: invalid method reference
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\EmiSearchWidget.java:157: error: invalid method reference
 				searchHistory.removeIf(String::isBlank);
 				                       ^
   cannot find symbol
@@ -3110,16 +1864,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
     location: class String
   where E is a type-variable:
     E extends Object declared in interface Collection
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\EmiSearchWidget.java:238: error: cannot find symbol
-		MatrixStack view = RenderSystem.getModelViewStack();
-		                               ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\SizedButtonWidget.java:77: error: cannot find symbol
-			EmiRenderHelper.drawTooltip(client.currentScreen, context, text.get().stream().map(EmiPort::ordered).map(TooltipComponent::of).collect(Collectors.toList()), mouseX, mouseY);
-			                                                                                                         ^
-  symbol:   variable TooltipComponent
-  location: class SizedButtonWidget
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\runtime\JemiIngredientListOverlay.java:21: error: JemiIngredientListOverlay is not abstract and does not override abstract method getVisibleIngredients() in IIngredientListOverlay
 public class JemiIngredientListOverlay implements IIngredientListOverlay {
        ^
@@ -3235,16 +1979,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\j
 			                                                                   ^
   symbol:   method getHeight()
   location: variable renderer of type IIngredientRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiSlotWidget.java:127: error: cannot find symbol
-					list.addAll(index, event.stream().filter(t -> !toRemove.contains(t) && !JemiIngredientAcceptor.FLUID_END.matcher(t.getString()).find()).map(t -> TooltipComponent.of(t.asOrderedText())).collect(Collectors.toList()));
-					                                                                                                                                                 ^
-  symbol:   variable TooltipComponent
-  location: class JemiSlotWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiSlotWidget.java:137: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class JemiSlotWidget
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\jemi\widget\JemiTankWidget.java:23: error: cannot find symbol
 		if (slot.getRole() == RecipeIngredientRole.OUTPUT) {
 		                      ^
@@ -3259,17 +1993,12 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\m
       (actual and formal argument lists differ in length)
     method Screen.renderTooltip(MatrixStack,List<Text>,int,int) is not applicable
       (actual and formal argument lists differ in length)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\HandledScreenMixin.java:57: error: cannot find symbol
-		MatrixStack viewStack = RenderSystem.getModelViewStack();
-		                                    ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\HandledScreenMixin.java:60: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\HandledScreenMixin.java:62: error: cannot find symbol
 		RenderSystem.applyModelViewMatrix();
 		            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\HandledScreenMixin.java:65: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\mixin\HandledScreenMixin.java:67: error: cannot find symbol
 		RenderSystem.applyModelViewMatrix();
 		            ^
   symbol:   method applyModelViewMatrix()
@@ -3438,23 +2167,18 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\p
   required: ItemStack,World,LivingEntity
   found:    ItemStack,ClientWorld,<null>,int
   reason: actual and formal argument lists differ in length
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:51: error: package ConfigScreenHandler does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:53: error: package ConfigScreenHandler does not exist
 		ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class,
 		                                                                  ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:52: error: package ConfigScreenHandler does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:54: error: package ConfigScreenHandler does not exist
 			() -> new ConfigScreenHandler.ConfigScreenFactory((client, last) -> new ConfigScreen(last)));
 			                             ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:80: error: cannot find symbol
-			MatrixStack viewStack = RenderSystem.getModelViewStack();
-			                                    ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:83: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:85: error: cannot find symbol
 			RenderSystem.applyModelViewMatrix();
 			            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:87: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\platform\forge\EmiClientForge.java:89: error: cannot find symbol
 			RenderSystem.applyModelViewMatrix();
 			            ^
   symbol:   method applyModelViewMatrix()
@@ -3507,21 +2231,11 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\p
 			                                                      ^
   symbol:   variable NetworkDirection
   location: class EmiPacketHandler
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiBrewingRecipe.java:70: error: cannot find symbol
-			return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.cooking.time", 20))));
-			                        ^
-  symbol:   variable TooltipComponent
-  location: class EmiBrewingRecipe
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiCookingRecipe.java:36: error: cannot find symbol
 		if (input.getEmiStacks().get(0).getItemStack().isOf(Items.WET_SPONGE)) {
 		                                              ^
   symbol:   method isOf(Item)
   location: class ItemStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\EmiCookingRecipe.java:77: error: cannot find symbol
-			return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("emi.cooking.time", recipe.getCookTime() / 20f))));
-			                        ^
-  symbol:   variable TooltipComponent
-  location: class EmiCookingRecipe
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\recipe\special\EmiAnvilEnchantRecipe.java:92: error: cannot find symbol
 		String id = getTool().getTag().getList("Enchantments", NbtElement.COMPOUND_TYPE).getCompound(0).getString("id");
 		                                                                 ^
@@ -3656,36 +2370,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\r
   location: class Collectors
   where CAP#1 is a fresh type-variable:
     CAP#1 extends Object from capture of ?
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:49: error: cannot find symbol
-	private static final TagKey<Item> ITEM_HIDDEN = TagKey.of(EmiPort.getItemRegistry().getKey(), EmiTags.HIDDEN_FROM_RECIPE_VIEWERS);
-	                                                ^
-  symbol:   variable TagKey
-  location: class EmiStackList
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:50: error: cannot find symbol
-	private static final TagKey<Block> BLOCK_HIDDEN = TagKey.of(EmiPort.getBlockRegistry().getKey(), EmiTags.HIDDEN_FROM_RECIPE_VIEWERS);
-	                                                  ^
-  symbol:   variable TagKey
-  location: class EmiStackList
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:51: error: cannot find symbol
-	private static final TagKey<Fluid> FLUID_HIDDEN = TagKey.of(EmiPort.getFluidRegistry().getKey(), EmiTags.HIDDEN_FROM_RECIPE_VIEWERS);
-	                                                  ^
-  symbol:   variable TagKey
-  location: class EmiStackList
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiStackList.java:145: error: cannot find symbol
-			} else if (i.getRegistryEntry().isIn(ITEM_HIDDEN)) {
-			            ^
-  symbol:   method getRegistryEntry()
-  location: variable i of type Item
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiTags.java:160: error: cannot find symbol
-				TagKey<?> key = TagKey.of(RegistryKey.ofRegistry(EmiPort.id("minecraft", parts[0])), EmiPort.id(id.getNamespace(), path.substring(1 + parts[0].length())));
-				^
-  symbol:   class TagKey
-  location: class EmiTags
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiTags.java:160: error: cannot find symbol
-				TagKey<?> key = TagKey.of(RegistryKey.ofRegistry(EmiPort.id("minecraft", parts[0])), EmiPort.id(id.getNamespace(), path.substring(1 + parts[0].length())));
-				                ^
-  symbol:   variable TagKey
-  location: class EmiTags
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiTags.java:171: error: no suitable constructor found for ModelIdentifier(String,String,String)
 				Identifier mid = new ModelIdentifier(id.getNamespace(), path.substring(12), "inventory");
 				                 ^
@@ -3697,46 +2381,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\r
       (actual and formal argument lists differ in length)
     constructor ModelIdentifier.ModelIdentifier(String,String) is not applicable
       (actual and formal argument lists differ in length)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\registry\EmiTags.java:172: error: cannot find symbol
-				EmiTags.MODELED_TAGS.put(TagKey.of(EmiPort.getItemRegistry().getKey(), EmiPort.id(parts[0], path.substring(18 + parts[0].length()))), mid);
-				                         ^
-  symbol:   variable TagKey
-  location: class EmiTags
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:90: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class EmiFavorite
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:193: error: cannot find symbol
-			List<TooltipComponent> list = Lists.newArrayList();
-			     ^
-  symbol:   class TooltipComponent
-  location: class Synthetic
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:217: error: cannot find symbol
-				list.add(TooltipComponent.of(EmiPort.translatable("tooltip.emi.synfav.uncraftable").asOrderedText()));
-				         ^
-  symbol:   variable TooltipComponent
-  location: class Synthetic
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:219: error: cannot find symbol
-				list.add(TooltipComponent.of(EmiPort.translatable("tooltip.emi.synfav.partially_craftable").asOrderedText()));
-				         ^
-  symbol:   variable TooltipComponent
-  location: class Synthetic
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:221: error: cannot find symbol
-					list.add(TooltipComponent.of(EmiPort.translatable("tooltip.emi.synfav.craft_some", craftKey).asOrderedText()));
-					         ^
-  symbol:   variable TooltipComponent
-  location: class Synthetic
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:224: error: cannot find symbol
-				list.add(TooltipComponent.of(EmiPort.translatable("tooltip.emi.synfav.fully_craftable", batches).asOrderedText()));
-				         ^
-  symbol:   variable TooltipComponent
-  location: class Synthetic
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiFavorite.java:226: error: cannot find symbol
-					list.add(TooltipComponent.of(EmiPort.translatable("tooltip.emi.synfav.craft_all", craftKey, batches).asOrderedText()));
-					         ^
-  symbol:   variable TooltipComponent
-  location: class Synthetic
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiPersistentData.java:15: error: cannot find symbol
 	public static final Gson GSON = new Gson().newBuilder().setPrettyPrinting().create();
 	                                          ^
@@ -3747,61 +2391,31 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\r
 			              ^
   symbol:   method hasJsonObject(JsonObject,String)
   location: class JsonHelper
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:59: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:61: error: cannot find symbol
 		Framebuffer framebuffer = new SimpleFramebuffer(width * scale, height * scale, true, MinecraftClient.IS_SYSTEM_MAC);
 		                              ^
   symbol:   class SimpleFramebuffer
   location: class EmiScreenshotRecorder
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:65: error: cannot find symbol
-		MatrixStack view = RenderSystem.getModelViewStack();
-		                               ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:67: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:69: error: cannot find symbol
 		view.loadIdentity();
 		    ^
   symbol:   method loadIdentity()
-  location: variable view of type MatrixStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:73: error: cannot find symbol
+  location: variable view of type ModelViewStack
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:75: error: cannot find symbol
 		Matrix4f backupProj = RenderSystem.getProjectionMatrix();
 		                                  ^
   symbol:   method getProjectionMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:74: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:76: error: cannot find symbol
 		RenderSystem.setProjectionMatrix(Util.make(new Matrix4f(), Matrix4f::loadIdentity));
 		            ^
   symbol:   method setProjectionMatrix(Matrix4f)
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:78: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\runtime\EmiScreenshotRecorder.java:80: error: cannot find symbol
 		RenderSystem.setProjectionMatrix(backupProj);
 		            ^
   symbol:   method setProjectionMatrix(Matrix4f)
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\BoMScreen.java:208: error: cannot find symbol
-		MatrixStack view = RenderSystem.getModelViewStack();
-		                               ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\BoMScreen.java:260: error: cannot find symbol
-			List<TooltipComponent> list = Lists.newArrayList();
-			     ^
-  symbol:   class TooltipComponent
-  location: class BoMScreen
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\BoMScreen.java:266: error: cannot find symbol
-			List<TooltipComponent> list = EmiTooltip.splitTranslate(key, BoM.tree.batches);
-			     ^
-  symbol:   class TooltipComponent
-  location: class BoMScreen
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\BoMScreen.java:269: error: cannot find symbol
-			List<TooltipComponent> list =  EmiTooltip.splitTranslate("tooltip.emi.bom.help");
-			     ^
-  symbol:   class TooltipComponent
-  location: class BoMScreen
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\BoMScreen.java:612: error: cannot find symbol
-				List<TooltipComponent> list = Lists.newArrayList();
-				     ^
-  symbol:   class TooltipComponent
-  location: class BoMScreen.Hover
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigEnumScreen.java:41: error: cannot find symbol
 		this.addDrawable(new EmiNameWidget(width / 2, 16));
 		    ^
@@ -3810,126 +2424,56 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
 		this.addDrawableChild(EmiPort.newButton(x, height - 30, w, 20, EmiPort.translatable("gui.done"), button -> {
 		    ^
   symbol: method addDrawableChild(ButtonWidget)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:165: error: invalid method reference
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:167: error: invalid method reference
 		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 		                       ^
   cannot find symbol
     symbol:   method getPositionTexColorShader()
     location: class GameRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:169: error: cannot find symbol
-			RenderSystem.setShaderTexture(0, DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-			            ^
-  symbol:   method setShaderTexture(int,Identifier)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:170: error: cannot find symbol
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			            ^
-  symbol:   method setShaderColor(float,float,float,float)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:171: error: cannot find symbol
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-			                                ^
-  symbol:   variable DrawMode
-  location: class VertexFormat
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:197: error: invalid method reference
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:199: error: invalid method reference
 			RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 			                       ^
   cannot find symbol
     symbol:   method getPositionTexColorShader()
     location: class GameRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:198: error: cannot find symbol
-			RenderSystem.setShaderTexture(0, DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-			            ^
-  symbol:   method setShaderTexture(int,Identifier)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:201: error: cannot find symbol
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
-			                                ^
-  symbol:   variable DrawMode
-  location: class VertexFormat
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:226: error: invalid method reference
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:228: error: invalid method reference
 			RenderSystem.setShader(GameRenderer::getPositionColorShader);
 			                       ^
   cannot find symbol
     symbol:   method getPositionColorShader()
     location: class GameRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:228: error: cannot find symbol
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-			                                ^
-  symbol:   variable DrawMode
-  location: class VertexFormat
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:241: error: invalid method reference
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:243: error: invalid method reference
 			RenderSystem.setShader(GameRenderer::getPositionColorShader);
 			                       ^
   cannot find symbol
     symbol:   method getPositionColorShader()
     location: class GameRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:248: error: cannot find symbol
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-			                                ^
-  symbol:   variable DrawMode
-  location: class VertexFormat
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:474: error: invalid method reference
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:476: error: invalid method reference
 				RenderSystem.setShader(GameRenderer::getPositionShader);
 				                       ^
   cannot find symbol
     symbol:   method getPositionShader()
     location: class GameRenderer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:476: error: cannot find symbol
-				RenderSystem.setShaderColor(f, f, f, 1.0f);
-				            ^
-  symbol:   method setShaderColor(float,float,float,float)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:477: error: cannot find symbol
-				bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
-				                                ^
-  symbol:   variable DrawMode
-  location: class VertexFormat
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:483: error: cannot find symbol
-				RenderSystem.setShaderColor(0.0f, 0.0f, 0.0f, 1.0f);
-				            ^
-  symbol:   method setShaderColor(float,float,float,float)
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:484: error: cannot find symbol
-				bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
-				                                ^
-  symbol:   variable DrawMode
-  location: class VertexFormat
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:532: error: method does not override or implement a method from a supertype
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:534: error: method does not override or implement a method from a supertype
 	@Override
 	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:535: error: package Selectable does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:537: error: package Selectable does not exist
 			return Selectable.SelectionType.FOCUSED;
 			                 ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:538: error: package Selectable does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:540: error: package Selectable does not exist
 			return Selectable.SelectionType.HOVERED;
 			                 ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:540: error: package Selectable does not exist
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:542: error: package Selectable does not exist
 		return Selectable.SelectionType.NONE;
 		                 ^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:556: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:558: error: cannot find symbol
 			builder.put(NarrationPart.POSITION, (Text)EmiPort.translatable("narrator.position.list", i + 1, list.size()));
 			            ^
   symbol:   variable NarrationPart
   location: class ListWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:571: error: method does not override or implement a method from a supertype
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\ListWidget.java:573: error: method does not override or implement a method from a supertype
 	@Override
 	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigScreen.java:101: error: cannot find symbol
-		List<TooltipComponent> text;
-		     ^
-  symbol:   class TooltipComponent
-  location: class ConfigScreen
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigScreen.java:106: error: cannot find symbol
-			text = (List<TooltipComponent>) (Object) Arrays.stream(I18n.translate(key).split("\n"))
-			             ^
-  symbol:   class TooltipComponent
-  location: class ConfigScreen
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigScreen.java:109: error: cannot find symbol
-			text = (List<TooltipComponent>) (Object) Arrays.stream(comment.value().split("\n"))
-			             ^
-  symbol:   class TooltipComponent
-  location: class ConfigScreen
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\ConfigScreen.java:142: error: cannot find symbol
 		this.addDrawable(new EmiNameWidget(width / 2, 16));
 		    ^
@@ -3970,26 +2514,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
 		this.addDrawableChild(EmiPort.newButton(x + w / 2 + 2, height - 30, w / 2 - 2, 20, EmiPort.translatable("gui.done"), button -> {
 		    ^
   symbol: method addDrawableChild(ButtonWidget)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\WidgetGroup.java:56: error: cannot find symbol
-				.map(EmiPort::literal).map(EmiPort::ordered).map(TooltipComponent::of).collect(Collectors.toList())));
-				                                                 ^
-  symbol:   variable TooltipComponent
-  location: class WidgetGroup
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\WidgetGroup.java:67: error: cannot find symbol
-			List<TooltipComponent> tooltip = Lists.newArrayList();
-			     ^
-  symbol:   class TooltipComponent
-  location: class WidgetGroup
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\WidgetGroup.java:85: error: cannot find symbol
-			List<TooltipComponent> tooltip = Lists.newArrayList();
-			     ^
-  symbol:   class TooltipComponent
-  location: class WidgetGroup
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\WidgetGroup.java:130: error: cannot find symbol
-			List<TooltipComponent> tooltip = Lists.newArrayList();
-			     ^
-  symbol:   class TooltipComponent
-  location: class WidgetGroup
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\RecipeScreen.java:101: error: cannot find symbol
 			addDrawableChild(widget);
 			^
@@ -3999,76 +2523,16 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
 			this.addDrawableChild(resolutionButton);
 			    ^
   symbol: method addDrawableChild(ResolutionButtonWidget)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\RecipeScreen.java:271: error: cannot find symbol
-						List<TooltipComponent> tooltip = widget.getTooltip(mx, my);
-						     ^
-  symbol:   class TooltipComponent
-  location: class RecipeScreen
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltip.java:18: error: cannot find symbol
-		return TooltipComponent.of(EmiPort.ordered(
-		       ^
-  symbol:   variable TooltipComponent
-  location: class EmiTooltip
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltip.java:26: error: cannot find symbol
-			.map(s -> TooltipComponent.of(EmiPort.ordered(EmiPort.literal(s)))).collect(Collectors.toList());
-			          ^
-  symbol:   variable TooltipComponent
-  location: class EmiTooltip
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\EmiTooltip.java:31: error: cannot find symbol
-			.map(s -> TooltipComponent.of(EmiPort.ordered(EmiPort.literal(s)))).collect(Collectors.toList());
-			          ^
-  symbol:   variable TooltipComponent
-  location: class EmiTooltip
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\IngredientTooltipComponent.java:30: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\IngredientTooltipComponent.java:39: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RecipeCostTooltipComponent.java:83: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RecipeCostTooltipComponent.java:91: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RecipeTooltipComponent.java:37: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RecipeTooltipComponent.java:42: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:47: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:52: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:69: error: cannot find symbol
-				MatrixStack view = RenderSystem.getModelViewStack();
-				                               ^
-  symbol:   method getModelViewStack()
-  location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:71: error: cannot find symbol
-				view.multiplyPositionMatrix(context.matrices().peek().getModel());
-				    ^
-  symbol:   method multiplyPositionMatrix(Matrix4f)
-  location: variable view of type MatrixStack
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:72: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:74: error: cannot find symbol
 				RenderSystem.applyModelViewMatrix();
 				            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:75: error: cannot find symbol
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\RemainderTooltipComponent.java:77: error: cannot find symbol
 				RenderSystem.applyModelViewMatrix();
 				            ^
   symbol:   method applyModelViewMatrix()
   location: class RenderSystem
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\TagTooltipComponent.java:31: error: method does not override or implement a method from a supertype
-	@Override
-	^
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\tooltip\TagTooltipComponent.java:40: error: method does not override or implement a method from a supertype
-	@Override
-	^
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\EmiNameWidget.java:127: error: no suitable method found for withColor(int)
 			EmiPort.literal(parts[0], Style.EMPTY.withColor(0xeb7bfc))
 			                                     ^
@@ -4090,16 +2554,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
       (argument mismatch; int cannot be converted to TextColor)
     method Style.withColor(Formatting) is not applicable
       (argument mismatch; int cannot be converted to Formatting)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\IntGroupWidget.java:62: error: cannot find symbol
-				return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(group.getValueTranslation(i))));
-				                        ^
-  symbol:   variable TooltipComponent
-  location: class IntGroupWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\screen\widget\config\SidebarSubpanelsWidget.java:64: error: cannot find symbol
-				return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(
-				                        ^
-  symbol:   variable TooltipComponent
-  location: class SidebarSubpanelsWidget
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\search\QueryType.java:21: error: no suitable method found for withColor(int)
 		this.color = Style.EMPTY.withColor(color);
 		                        ^
@@ -4128,16 +2582,6 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\s
       (argument mismatch; int cannot be converted to TextColor)
     method Style.withColor(Formatting) is not applicable
       (argument mismatch; int cannot be converted to Formatting)
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\stack\serializer\TagEmiIngredientSerializer.java:36: error: cannot find symbol
-				return EmiIngredient.of(TagKey.of(RegistryKey.ofRegistry(registry), id), 1);
-				                        ^
-  symbol:   variable TagKey
-  location: class TagEmiIngredientSerializer
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\stack\serializer\TagEmiIngredientSerializer.java:44: error: cannot find symbol
-			EmiIngredient stack = EmiIngredient.of(TagKey.of(RegistryKey.ofRegistry(registry), id), amount);
-			                                       ^
-  symbol:   variable TagKey
-  location: class TagEmiIngredientSerializer
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\VanillaPlugin.java:338: error: cannot find symbol
 		List<Item> dyeableItems = EmiPort.getItemRegistry().stream().filter(i -> i instanceof DyeableItem).collect(Collectors.collect(Collectors.toList()));
 		                                                                                                                     ^
@@ -4150,6 +2594,22 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\V
 				                           ^
   symbol:   method streamEntries()
   location: class Registry<Potion>
+C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\VanillaPlugin.java:541: error: no suitable method found for of(Identified<Item>)
+		addRecipeSafe(registry, () -> new EmiAnvilRecipe(EmiStack.of(Items.SHIELD), EmiIngredient.of(ItemTags.PLANKS),
+		                                                                                         ^
+    method EmiIngredient.<T#1>of(TagKey<T#1>) is not applicable
+      (cannot infer type-variable(s) T#1
+        (argument mismatch; Identified<Item> cannot be converted to TagKey<T#1>))
+    method EmiIngredient.<T#2>of(TagKey<T#2>,long) is not applicable
+      (cannot infer type-variable(s) T#2
+        (actual and formal argument lists differ in length))
+    method EmiIngredient.of(Ingredient) is not applicable
+      (argument mismatch; Identified<Item> cannot be converted to Ingredient)
+    method EmiIngredient.of(List<? extends EmiIngredient>) is not applicable
+      (argument mismatch; Identified<Item> cannot be converted to List<? extends EmiIngredient>)
+  where T#1,T#2 are type-variables:
+    T#1 extends Object declared in method <T#1>of(TagKey<T#1>)
+    T#2 extends Object declared in method <T#2>of(TagKey<T#2>,long)
 C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\VanillaPlugin.java:585: error: package Oxidizable does not exist
 		for (Map.Entry<Block, Block> entry : Oxidizable.OXIDATION_LEVEL_DECREASES.get().entrySet()) {
 		                                               ^
@@ -4169,55 +2629,10 @@ C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\V
 		                                ^
   symbol:   variable MUD
   location: class Items
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\VanillaPlugin.java:739: error: cannot find symbol
-			EmiIngredient potential = EmiIngredient.of(TagKey.of(EmiPort.getItemRegistry().getKey(), EmiPort.id(id)));
-			                                           ^
-  symbol:   variable TagKey
-  location: class VanillaPlugin
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:38: error: cannot find symbol
-		List<TooltipComponent> list = Lists.newArrayList();
-		     ^
-  symbol:   class TooltipComponent
-  location: class RecipeDefaultButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:48: error: cannot find symbol
-					list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.set_default"))));
-					         ^
-  symbol:   variable TooltipComponent
-  location: class RecipeDefaultButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:49: error: cannot find symbol
-					list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.current_defaults"))));
-					         ^
-  symbol:   variable TooltipComponent
-  location: class RecipeDefaultButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:54: error: cannot find symbol
-				list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.set_default"))));
-				         ^
-  symbol:   variable TooltipComponent
-  location: class RecipeDefaultButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:57: error: cannot find symbol
-				list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.unset_default"))));
-				         ^
-  symbol:   variable TooltipComponent
-  location: class RecipeDefaultButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeDefaultButtonWidget.java:61: error: cannot find symbol
-			list.add(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.set_default_stack", EmiConfig.defaultStack.getBindText()))));
-			         ^
-  symbol:   variable TooltipComponent
-  location: class RecipeDefaultButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeScreenshotButtonWidget.java:23: error: cannot find symbol
-		return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.recipe_screenshot"))));
-		                        ^
-  symbol:   variable TooltipComponent
-  location: class RecipeScreenshotButtonWidget
-C:\Users\disaev\Projects\Mods\EMILegacy\forge-1.16.5\src\main\java\dev\emi\emi\widget\RecipeTreeButtonWidget.java:30: error: cannot find symbol
-		return ImmutableList.of(TooltipComponent.of(EmiPort.ordered(EmiPort.translatable("tooltip.emi.view_tree"))));
-		                        ^
-  symbol:   variable TooltipComponent
-  location: class RecipeTreeButtonWidget
 Note: Some input files use or override a deprecated API.
 Note: Recompile with -Xlint:deprecation for details.
 Note: Some messages have been simplified; recompile with -Xdiags:verbose to get full output
-875 errors
+532 errors
 
 FAILURE: Build failed with an exception.
 
@@ -4229,4 +2644,4 @@ Execution failed for task ':compileJava'.
 > Run with --info option to get more log output.
 > Run with --scan to get full insights.
 
-BUILD FAILED in 12s
+BUILD FAILED in 11s

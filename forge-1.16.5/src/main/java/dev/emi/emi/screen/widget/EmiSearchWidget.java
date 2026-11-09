@@ -1,5 +1,7 @@
 package dev.emi.emi.screen.widget;
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -235,7 +237,7 @@ public class EmiSearchWidget extends TextFieldWidget {
 		}
 		lastRender = System.currentTimeMillis();
 		long deg = accumulatedSpin * -180 / 500;
-		MatrixStack view = RenderSystem.getModelViewStack();
+		ModelViewStack view = ModelViewStack.INSTANCE;
 		view.push();
 		if (deg != 0) {
 			view.translate(this.x + this.width / 2, this.y + this.height / 2, 0);

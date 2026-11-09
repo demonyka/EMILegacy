@@ -17,12 +17,14 @@ import dev.emi.emi.registry.EmiTags;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.resource.language.I18n;
 import net.minecraft.fluid.Fluid;
-import net.minecraft.tag.TagKey;
+import dev.emi.emi.backport.TagKey;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryEntryList.Named;
+import net.minecraft.tag.ServerTagManagerHolder;
+import net.minecraft.tag.Tag;
+import net.minecraft.tag.TagGroup;
+import net.minecraft.tag.TagManager;
 
 // Wrapper around TagKeys
 public class EmiTagKey<T> {
@@ -51,25 +53,47 @@ public class EmiTagKey<T> {
 		return raw.id();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Registry<T> registry() {
-		MinecraftClient client = MinecraftClient.getInstance();
-		return client.world.getRegistryManager().getOptional(raw.registry()).orElse(null);
+		return (Registry<T>) Registry.REGISTRIES.get(raw.registry().getValue());
 	}
 
 	public Stream<T> stream() {
-		Registry<T> registry = registry();
-		Optional<Named<T>> opt = registry.getEntryList(raw);
-		if (opt.isEmpty()) {
-			return Stream.of();
-		} else {
-			if (registry == EmiPort.getFluidRegistry()) {
-				return opt.get().stream().filter(o -> {
-					Fluid f = (Fluid) o.value();
-					return f.isStill(f.getDefaultState());
-				}).map(RegistryEntry::value);
-			}
-			return opt.get().stream().map(RegistryEntry::value);
+		TagGroup<T> group = getGroup(raw.registry().getValue());
+		Tag<T> tag = group == null ? null : group.getTag(raw.id());
+		if (tag == null) {
+			return Stream.empty();
 		}
+		if (raw.registry().getValue().equals(Registry.FLUID_KEY.getValue())) {
+			return tag.values().stream().filter(o -> {
+				Fluid f = (Fluid) o;
+				return f.isStill(f.getDefaultState());
+			});
+		}
+		return tag.values().stream();
+	}
+
+	public boolean contains(T t) {
+		TagGroup<T> group = getGroup(raw.registry().getValue());
+		Tag<T> tag = group == null ? null : group.getTag(raw.id());
+		return tag != null && tag.contains(t);
+	}
+
+	/** 1.16 keeps tags per known registry in the tag manager instead of in the registry itself. */
+	@SuppressWarnings("unchecked")
+	private static <T> @Nullable TagGroup<T> getGroup(Identifier registry) {
+		MinecraftClient client = MinecraftClient.getInstance();
+		TagManager manager = client.getNetworkHandler() != null ? client.getNetworkHandler().getTagManager() : ServerTagManagerHolder.getTagManager();
+		if (registry.equals(Registry.ITEM_KEY.getValue())) {
+			return (TagGroup<T>) manager.getItems();
+		} else if (registry.equals(Registry.BLOCK_KEY.getValue())) {
+			return (TagGroup<T>) manager.getBlocks();
+		} else if (registry.equals(Registry.FLUID_KEY.getValue())) {
+			return (TagGroup<T>) manager.getFluids();
+		} else if (registry.equals(Registry.ENTITY_TYPE_KEY.getValue())) {
+			return (TagGroup<T>) manager.getEntityTypes();
+		}
+		return null;
 	}
 
 	public List<T> getList() {
@@ -155,7 +179,11 @@ public class EmiTagKey<T> {
 	}
 
 	public static <T> Stream<EmiTagKey<T>> fromRegistry(Registry<T> registry) {
-		return registry.streamTags().map(EmiTagKey::of);
+		TagGroup<T> group = getGroup(registry.getKey().getValue());
+		if (group == null) {
+			return Stream.empty();
+		}
+		return group.getTagIds().stream().map(id -> of(registry, id));
 	}
 
 	public static void reload() {

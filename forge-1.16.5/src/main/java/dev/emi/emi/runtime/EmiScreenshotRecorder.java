@@ -1,5 +1,7 @@
 package dev.emi.emi.runtime;
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import java.io.File;
 import java.util.function.Consumer;
 
@@ -62,7 +64,7 @@ public class EmiScreenshotRecorder {
 
 		framebuffer.beginWrite(true);
 
-		MatrixStack view = RenderSystem.getModelViewStack();
+		ModelViewStack view = ModelViewStack.INSTANCE;
 		view.push();
 		view.loadIdentity();
 		view.translate(-1.0, 1.0, 0.0);

@@ -7,7 +7,7 @@ import java.util.List;
 import org.jetbrains.annotations.ApiStatus;
 
 import dev.emi.emi.EmiPort;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

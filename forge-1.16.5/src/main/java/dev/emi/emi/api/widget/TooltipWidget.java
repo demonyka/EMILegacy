@@ -3,7 +3,7 @@ package dev.emi.emi.api.widget;
 import java.util.List;
 import java.util.function.BiFunction;
 
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class TooltipWidget extends Widget {

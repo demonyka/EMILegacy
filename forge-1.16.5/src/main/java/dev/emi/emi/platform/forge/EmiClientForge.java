@@ -1,6 +1,8 @@
 package dev.emi.emi.platform.forge;
 
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import java.util.stream.Collectors;
 import java.util.Arrays;
 
@@ -77,7 +79,7 @@ public class EmiClientForge {
 		EmiScreenBase base = EmiScreenBase.of(screen);
 		if (base != null) {
 			MinecraftClient client = MinecraftClient.getInstance();
-			MatrixStack viewStack = RenderSystem.getModelViewStack();
+			ModelViewStack viewStack = ModelViewStack.INSTANCE;
 			viewStack.push();
 			viewStack.translate(-screen.getGuiLeft(), -screen.getGuiTop(), 0.0);
 			RenderSystem.applyModelViewMatrix();

@@ -14,7 +14,7 @@ import dev.emi.emi.config.HelpLevel;
 import dev.emi.emi.runtime.EmiHistory;
 import dev.emi.emi.screen.RecipeScreen;
 import dev.emi.emi.screen.tooltip.IngredientTooltipComponent;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 
 public class RecipeDefaultButtonWidget extends RecipeButtonWidget {
 

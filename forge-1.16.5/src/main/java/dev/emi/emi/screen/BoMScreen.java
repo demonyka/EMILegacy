@@ -1,5 +1,7 @@
 package dev.emi.emi.screen;
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -45,7 +47,7 @@ import dev.emi.emi.screen.tooltip.RecipeTooltipComponent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
@@ -205,7 +207,7 @@ public class BoMScreen extends Screen {
 		int mx = (int) ((mouseX - width / 2) / scale - offX);
 		int my = (int) ((mouseY - height / 2) / scale - offY);
 
-		MatrixStack view = RenderSystem.getModelViewStack();
+		ModelViewStack view = ModelViewStack.INSTANCE;
 		view.push();
 		view.translate(width / 2, height / 2, 0);
 		view.scale(scale, scale, 1);

@@ -1,6 +1,8 @@
 package dev.emi.emi.screen;
 
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Set;
@@ -76,7 +78,7 @@ import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.command.argument.ItemStackArgument;
@@ -691,7 +693,7 @@ public class EmiScreenManager {
 			if (cur.getRecipeContext() != lastHoveredCraftable.getRecipeContext()) {
 				ScreenSpace space = getHoveredSpace(mouseX, mouseY);
 				if (space != null && (space.getType() == SidebarType.CRAFTABLES || space.getType() == SidebarType.CRAFT_HISTORY)) {
-					MatrixStack view = RenderSystem.getModelViewStack();
+					ModelViewStack view = ModelViewStack.INSTANCE;
 					view.push();
 					view.translate(0, 0, 200);
 					EmiPort.applyModelViewMatrix();

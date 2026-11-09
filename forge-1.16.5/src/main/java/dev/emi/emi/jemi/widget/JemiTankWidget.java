@@ -9,7 +9,7 @@ import dev.emi.emi.api.widget.TankWidget;
 import dev.emi.emi.jemi.impl.JemiRecipeSlot;
 import dev.emi.emi.runtime.EmiDrawContext;
 import mezz.jei.api.recipe.RecipeIngredientRole;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.util.math.MatrixStack;
 
 public class JemiTankWidget extends TankWidget {

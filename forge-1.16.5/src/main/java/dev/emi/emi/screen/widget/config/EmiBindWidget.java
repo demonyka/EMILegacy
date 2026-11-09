@@ -9,7 +9,7 @@ import dev.emi.emi.EmiPort;
 import dev.emi.emi.input.EmiBind;
 import dev.emi.emi.input.EmiBind.ModifiedKey;
 import dev.emi.emi.screen.ConfigScreen;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;

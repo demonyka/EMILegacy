@@ -53,13 +53,13 @@ public class EmiDrawContext {
 
 	public void drawTexture(Identifier texture, int x, int y, int z, float u, float v, int width, int height, int textureWidth, int textureHeight) {
 		EmiPort.setPositionTexShader();
-		RenderSystem.setShaderTexture(0, texture);
+		EmiPort.bindTexture(texture);
 		DrawableHelper.drawTexture(matrices, x, y, z, u, v, width, height, textureWidth, textureHeight);
 	}
 
 	public void drawTexture(Identifier texture, int x, int y, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
 		EmiPort.setPositionTexShader();
-		RenderSystem.setShaderTexture(0, texture);
+		EmiPort.bindTexture(texture);
 		DrawableHelper.drawTexture(matrices, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
 	}
 
@@ -132,7 +132,7 @@ public class EmiDrawContext {
 	}
 
 	public void setColor(float r, float g, float b, float a) {
-		RenderSystem.setShaderColor(r, g, b, a);
+		RenderSystem.color4f(r, g, b, a);
 	}
 
 	public void drawStack(EmiIngredient stack, int x, int y) {

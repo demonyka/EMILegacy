@@ -18,7 +18,7 @@ import dev.emi.emi.input.EmiInput;
 import dev.emi.emi.registry.EmiRecipeFiller;
 import dev.emi.emi.widget.RecipeButtonWidget;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 
 public class RecipeFillButtonWidget extends RecipeButtonWidget {
 	private boolean canFill;

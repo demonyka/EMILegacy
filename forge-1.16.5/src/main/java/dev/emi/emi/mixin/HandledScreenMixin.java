@@ -1,5 +1,7 @@
 package dev.emi.emi.mixin;
 
+
+import dev.emi.emi.backport.ModelViewStack;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
@@ -54,7 +56,7 @@ public abstract class HandledScreenMixin extends Screen {
 			return;
 		}
 		EmiDrawContext context = EmiDrawContext.wrap(raw);
-		MatrixStack viewStack = RenderSystem.getModelViewStack();
+		ModelViewStack viewStack = ModelViewStack.INSTANCE;
 		viewStack.push();
 		viewStack.translate(-x, -y, 0.0);
 		RenderSystem.applyModelViewMatrix();

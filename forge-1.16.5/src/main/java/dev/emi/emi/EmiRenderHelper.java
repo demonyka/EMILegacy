@@ -1,5 +1,9 @@
 package dev.emi.emi;
 
+
+
+import org.lwjgl.opengl.GL11;
+import dev.emi.emi.backport.ModelViewStack;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -16,8 +20,7 @@ import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.Widget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import dev.emi.emi.config.EmiConfig;
-import dev.emi.emi.mixin.accessor.OrderedTextTooltipComponentAccessor;
-import dev.emi.emi.mixin.accessor.ScreenAccessor;
+import dev.emi.emi.backport.TooltipRenderer;
 import dev.emi.emi.registry.EmiRecipeFiller;
 import dev.emi.emi.runtime.EmiDrawContext;
 import dev.emi.emi.runtime.EmiLog;
@@ -25,8 +28,8 @@ import dev.emi.emi.screen.EmiScreenManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.tooltip.OrderedTextTooltipComponent;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.OrderedTextTooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.render.VertexFormat.DrawMode;
@@ -86,8 +89,8 @@ public class EmiRenderHelper {
 			return;
 		}
 		EmiPort.setPositionColorTexShader();
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		RenderSystem.setShaderTexture(0, sprite.getAtlas().getId());
+		RenderSystem.color4f(1.0f, 1.0f, 1.0f, 1.0f);
+		EmiPort.bindTexture(sprite.getAtlas().getId());
 		RenderSystem.enableBlend();
 		
 		float r = ((color >> 16) & 255) / 256f;
@@ -95,7 +98,7 @@ public class EmiRenderHelper {
 		float b = (color & 255) / 256f;
 		
 		BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-		bufferBuilder.begin(DrawMode.QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
+		bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR_TEXTURE);
 		float xMin = (float) x;
 		float yMin = (float) y;
 		float xMax = xMin + width;
@@ -177,8 +180,8 @@ public class EmiRenderHelper {
 		for (TooltipComponent comp : components) {
 			if (comp instanceof OrderedTextTooltipComponent ottc && ottc.getWidth(CLIENT.textRenderer) > wrapWidth) {
 				try {
-					OrderedText ordered = ((OrderedTextTooltipComponentAccessor) ottc).getText();
-					MutableText text = Text.empty();
+					OrderedText ordered = ((OrderedTextTooltipComponent) ottc).getText();
+					MutableText text = EmiPort.literal("");
 					// Mojang, what is this??? Please give me some other way to wrap
 					ordered.accept(((var1, style, codepoint) -> {
 						text.append(EmiPort.literal(String.valueOf(Character.toChars(codepoint)), style));
@@ -195,7 +198,7 @@ public class EmiRenderHelper {
 				mutable.add(comp);
 			}
 		}
-		((ScreenAccessor) screen).invokeRenderTooltipFromComponents(context.raw(), mutable, x, y);
+		TooltipRenderer.render(context.raw(), mutable, x, y, screen.width, screen.height);
 	}
 
 	public static void drawSlotHightlight(EmiDrawContext context, int x, int y, int w, int h, int z) {
@@ -256,7 +259,7 @@ public class EmiRenderHelper {
 		context.enableDepthTest();
 		context.push();
 		context.matrices().translate(0, 0, 200);
-		RenderSystem.setShaderTexture(0, EmiRenderHelper.WIDGETS);
+		EmiPort.bindTexture(EmiRenderHelper.WIDGETS);
 		context.drawTexture(WIDGETS, x, y, 8, 252, 4, 4);
 		context.pop();
 	}
@@ -334,7 +337,7 @@ public class EmiRenderHelper {
 				}
 			};
 
-			MatrixStack view = RenderSystem.getModelViewStack();
+			ModelViewStack view = ModelViewStack.INSTANCE;
 			view.push();
 			view.translate(x + 4, y + 4, 0);
 			RenderSystem.applyModelViewMatrix();

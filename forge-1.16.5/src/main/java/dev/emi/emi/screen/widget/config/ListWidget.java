@@ -1,6 +1,8 @@
 package dev.emi.emi.screen.widget.config;
 
 
+
+import org.lwjgl.opengl.GL11;
 import com.google.common.collect.ImmutableList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +24,7 @@ import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.screen.narration.NarrationPart;
-import net.minecraft.client.gui.tooltip.TooltipComponent;
+import dev.emi.emi.backport.TooltipComponent;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
@@ -166,9 +168,9 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 		this.hoveredEntry = this.isMouseOver(mouseX, mouseY) ? this.getEntryAtPosition(mouseX, mouseY) : null;
 
 		{	// Render background
-			RenderSystem.setShaderTexture(0, DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
-			RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+			EmiPort.bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+			RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+			bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 			bufferBuilder.vertex((double)this.left, (double)this.bottom, 0.0)
 				.texture((float)this.left / 32.0F, (float)(this.bottom + (int)this.getScrollAmount()) / 32.0F)
 				.color(32, 32, 32, 255)
@@ -195,10 +197,10 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 
 		{	// Render horizontal shadows
 			RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-			RenderSystem.setShaderTexture(0, DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
+			EmiPort.bindTexture(DrawableHelper.OPTIONS_BACKGROUND_TEXTURE);
 			RenderSystem.enableDepthTest();
 			RenderSystem.depthFunc(519);
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+			bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
 			bufferBuilder.vertex((double)this.left, (double)this.top, -100.0).texture(0.0F, (float)this.top / 32.0F).color(64, 64, 64, 255).next();
 			bufferBuilder.vertex((double)(this.left + this.width), (double)this.top, -100.0)
 				.texture((float)this.width / 32.0F, (float)this.top / 32.0F)
@@ -225,7 +227,7 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 			);
 			RenderSystem.setShader(GameRenderer::getPositionColorShader);
 			n = 4;
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+			bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
 			bufferBuilder.vertex((double)this.left, (double)(this.top + 4), 0.0).color(0, 0, 0, 0).next();
 			bufferBuilder.vertex((double)this.right, (double)(this.top + 4), 0.0).color(0, 0, 0, 0).next();
 			bufferBuilder.vertex((double)this.right, (double)this.top, 0.0).color(0, 0, 0, 255).next();
@@ -245,7 +247,7 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 			if (n < this.top) {
 				n = this.top;
 			}
-			bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+			bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION_COLOR);
 			bufferBuilder.vertex(i, this.bottom, 0.0).color(0, 0, 0, 255).next();
 			bufferBuilder.vertex(j, this.bottom, 0.0).color(0, 0, 0, 255).next();
 			bufferBuilder.vertex(j, this.top, 0.0).color(0, 0, 0, 255).next();
@@ -473,15 +475,15 @@ public class ListWidget extends AbstractParentElement implements Drawable, Selec
 				int q = this.left + this.width / 2 + o / 2;
 				RenderSystem.setShader(GameRenderer::getPositionShader);
 				float f = this.isFocused() ? 1.0f : 0.5f;
-				RenderSystem.setShaderColor(f, f, f, 1.0f);
-				bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+				RenderSystem.color4f(f, f, f, 1.0f);
+				bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION);
 				bufferBuilder.vertex(p, m + n + 2, 0.0).next();
 				bufferBuilder.vertex(q, m + n + 2, 0.0).next();
 				bufferBuilder.vertex(q, m - 2, 0.0).next();
 				bufferBuilder.vertex(p, m - 2, 0.0).next();
 				tessellator.draw();
-				RenderSystem.setShaderColor(0.0f, 0.0f, 0.0f, 1.0f);
-				bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION);
+				RenderSystem.color4f(0.0f, 0.0f, 0.0f, 1.0f);
+				bufferBuilder.begin(GL11.GL_QUADS, VertexFormats.POSITION);
 				bufferBuilder.vertex(p + 1, m + n + 1, 0.0).next();
 				bufferBuilder.vertex(q - 1, m + n + 1, 0.0).next();
 				bufferBuilder.vertex(q - 1, m - 1, 0.0).next();
