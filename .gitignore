@@ -13,3 +13,6 @@ core-errors.txt
 run-log*.txt
 prod-result.txt
 logs/
+
+# Local secrets
+.env

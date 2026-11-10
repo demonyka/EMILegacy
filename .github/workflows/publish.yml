@@ -1,0 +1,60 @@
+name: publish
+
+# Builds the mod and uploads it to Modrinth and CurseForge when a GitHub release is published.
+# Needs repository variables MODRINTH_ID and CURSEFORGE_ID, and secrets MODRINTH_TOKEN and CURSEFORGE_TOKEN.
+# A platform without its token is skipped.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check release tag
+        if: github.event_name == 'release'
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version=$(grep '^mod_version=' forge-1.16.5/gradle.properties | cut -d= -f2)
+          test "$TAG" = "v$version" || { echo "Release tag $TAG does not match mod_version $version in forge-1.16.5/gradle.properties, expected v$version"; exit 1; }
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            17
+          cache: gradle
+      - name: Build
+        working-directory: forge-1.16.5
+        run: ./gradlew build packetTest --no-daemon
+      - name: Read version and changelog
+        id: meta
+        run: |
+          version=$(grep '^mod_version=' forge-1.16.5/gradle.properties | cut -d= -f2)
+          minecraft=$(grep '^minecraft_version=' forge-1.16.5/gradle.properties | cut -d= -f2)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "minecraft=$minecraft" >> "$GITHUB_OUTPUT"
+          awk -v v="$version" 'index($0, "## " v " ") == 1 {f=1; next} /^## /{f=0} f' CHANGELOG.md > release-changelog.md
+          test -s release-changelog.md || { echo "No CHANGELOG.md section for $version"; exit 1; }
+      - uses: Kir-Antipov/mc-publish@c23376546a97f5ba7984e94445da359459b14419 # v3.3.2
+        with:
+          modrinth-id: ${{ vars.MODRINTH_ID }}
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          curseforge-id: ${{ vars.CURSEFORGE_ID }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          files: forge-1.16.5/build/libs/emi-*.jar
+          name: EMI Legacy ${{ steps.meta.outputs.version }} (Forge ${{ steps.meta.outputs.minecraft }})
+          version: ${{ steps.meta.outputs.version }}+${{ steps.meta.outputs.minecraft }}+forge
+          version-type: release
+          changelog-file: release-changelog.md
+          loaders: forge
+          game-versions: ${{ steps.meta.outputs.minecraft }}
+          java: 8
+          dependencies: |
+            jei(optional){modrinth:jei}{curseforge:jei}

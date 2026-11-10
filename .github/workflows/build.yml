@@ -1,0 +1,29 @@
+name: build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: forge-1.16.5
+    steps:
+      - uses: actions/checkout@v4
+      # Compiled with 17 (Jabel emits Java 8 bytecode), the packet test runs on 8 like the game
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            17
+          cache: gradle
+      - name: Build
+        run: ./gradlew build packetTest --no-daemon
+      - uses: actions/upload-artifact@v4
+        with:
+          name: emi-legacy
+          path: forge-1.16.5/build/libs/*.jar

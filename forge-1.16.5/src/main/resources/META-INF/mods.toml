@@ -1,6 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[36,)"
 license = "MIT"
+issueTrackerURL = "https://github.com/demonyka/EMILegacy/issues"
 
 [[mods]]
 modId = "emi"
@@ -8,7 +9,7 @@ version = "${version}"
 displayName = "EMI"
 authors = "Emi (original mod), EMI Legacy contributors (1.16.5 port)"
 credits = "Port of EMI by Emi: https://github.com/emilyploszaj/emi"
-displayURL = "https://github.com/emilyploszaj/emi"
+displayURL = "https://github.com/demonyka/EMILegacy"
 description = '''
 A featureful and accessible item and recipe viewer.
 
