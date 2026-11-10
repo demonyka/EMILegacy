@@ -17,6 +17,9 @@ Compatibility (tested with a 37-mod production pack, see docs/COMPATIBILITY.md):
 - The mod name is not added twice when another mod (Jade, ...) already adds it.
 - Roughly Enough Items replaces JEI with a stub and draws its own item list: use EMI + JEI or REI alone. EMI logs a warning and skips the JEI bridge when REI is present.
 
+New compared to EMI 1.1.24:
+- Recipe tree: an "expand the whole tree" button (bottom right, next to help). It picks a recipe for every ingredient that can only be made one way, level by level; ingredients with several recipes (ingots, gems, tags) are left to choose by hand. Shift-click goes back to the default recipes.
+
 Hardening compared to EMI 1.1.24:
 - The recipe fill packet bounds every list it reads (one packet from any player could exhaust server memory or stall the server tick), is ignored for spectators and for containers the player may not use, skips slots that do not give up their items (ghost slots of mods), takes partial stacks through the slot so modded inventories are told, and returns items to the player when a slot of a mod throws.
 - Chess invites are rate limited per player, creative item requests are clamped to the maximum stack size.

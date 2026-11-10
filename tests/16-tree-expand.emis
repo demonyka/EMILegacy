@@ -1,0 +1,21 @@
+# Recipe tree "expand all" button (needs Applied Energistics 2): the ME controller tree before and after
+world survival
+waitloaded
+wait 40
+recipes appliedenergistics2:controller
+wait 10
+click 283 107
+wait 10
+tree
+wait 10
+shot g01_tree_before
+move 399 230
+wait 5
+shot g02_button_tooltip
+click 399 230
+wait 10
+move 200 200
+wait 5
+shot g03_tree_expanded
+dump
+quit

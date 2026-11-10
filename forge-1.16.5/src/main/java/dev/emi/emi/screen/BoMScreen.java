@@ -64,6 +64,7 @@ public class BoMScreen extends Screen {
 	private Bounds batches = new Bounds(-24, -50, 48, 26);
 	private Bounds mode = new Bounds(-24, -50, 16, 16);
 	private Bounds help = new Bounds(0, 0, 16, 16);
+	private Bounds expand = new Bounds(0, 0, 16, 16);
 	private double offX, offY;
 	private List<Node> nodes = Lists.newArrayList();
 	private List<Cost> costs = Lists.newArrayList();
@@ -91,6 +92,7 @@ public class BoMScreen extends Screen {
 
 	public void recalculateTree() {
 		help = new Bounds(width - 18, height - 18, 16, 16);
+		expand = new Bounds(width - 36, height - 18, 16, 16);
 		if (BoM.tree != null) {
 			TreeVolume volume = addNewNodes(BoM.tree.goal, BoM.tree.batches, 1, 0, ChanceState.DEFAULT);
 			nodes = volume.nodes;
@@ -253,6 +255,21 @@ public class BoMScreen extends Screen {
 		context.drawTexture(EmiRenderHelper.WIDGETS, help.x(), help.y(), 0, 200, help.width(), help.height());
 		context.setColor(1f, 1f, 1f, 1f);
 
+		if (BoM.tree != null) {
+			// "Expand the whole tree": a boxed plus, drawn in the style of the help button
+			if (expand.contains(mouseX, mouseY)) {
+				context.setColor(0.5f, 0.6f, 1f, 1f);
+			}
+			int ex = expand.x(), ey = expand.y();
+			context.fill(ex + 1, ey + 1, 14, 2, 0xFFFFFFFF);
+			context.fill(ex + 1, ey + 13, 14, 2, 0xFFFFFFFF);
+			context.fill(ex + 1, ey + 3, 2, 10, 0xFFFFFFFF);
+			context.fill(ex + 13, ey + 3, 2, 10, 0xFFFFFFFF);
+			context.fill(ex + 5, ey + 7, 6, 2, 0xFFFFFFFF);
+			context.fill(ex + 7, ey + 5, 2, 6, 0xFFFFFFFF);
+			context.setColor(1f, 1f, 1f, 1f);
+		}
+
 		Hover hover = getHoveredStack(mouseX, mouseY);
 		if (hover != null) {
 			hover.drawTooltip(this, context, mouseX, mouseY);
@@ -268,6 +285,9 @@ public class BoMScreen extends Screen {
 		} else if (help.contains(mouseX, mouseY)) {
 			List<TooltipComponent> list =  EmiTooltip.splitTranslate("tooltip.emi.bom.help");
 			EmiRenderHelper.drawTooltip(this, context, list, width - 18, height - 18, width);
+		} else if (BoM.tree != null && expand.contains(mouseX, mouseY)) {
+			List<TooltipComponent> list = EmiTooltip.splitTranslate("tooltip.emi.bom.expand_all");
+			EmiRenderHelper.drawTooltip(this, context, list, width - 36, height - 18, width);
 		}
 	}
 
@@ -469,6 +489,15 @@ public class BoMScreen extends Screen {
 					}
 				}
 			}
+		} else if (BoM.tree != null && button == 0 && expand.contains((int) mouseX, (int) mouseY)) {
+			EmiPort.playClickSound();
+			if (EmiInput.isShiftDown()) {
+				BoM.tree.resetResolutions();
+			} else {
+				BoM.tree.expandAll();
+			}
+			recalculateTree();
+			return true;
 		} else if (mode.contains(mx, my)) {
 			EmiPort.playClickSound();
 			BoM.craftingMode = !BoM.craftingMode;
