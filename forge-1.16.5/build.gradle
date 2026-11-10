@@ -163,6 +163,18 @@ if (project.hasProperty("coreOnly")) {
 	}
 }
 
+// Decoder checks for packets from untrusted clients, without the game: ./gradlew packetTest
+dependencies {
+	testAnnotationProcessor "com.github.bsideup.jabel:jabel-javac-plugin:1.0.0"
+	testCompileOnly "com.github.bsideup.jabel:jabel-javac-plugin:1.0.0"
+}
+
+tasks.register("packetTest", JavaExec) {
+	classpath = sourceSets.test.runtimeClasspath
+	mainClass = "dev.emi.emi.test.PacketTest"
+	javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(8) }
+}
+
 // Forge 1.16.5 runs on Java 8; compile with 17 (+Jabel), launch the game with 8
 tasks.withType(net.fabricmc.loom.task.AbstractRunTask).configureEach {
 	javaLauncher = javaToolchains.launcherFor { languageVersion = JavaLanguageVersion.of(8) }

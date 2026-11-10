@@ -55,7 +55,8 @@ import net.minecraftforge.fml.common.Mod;
  * recipes ID | uses ID | tree  open EMI recipe screen for an item / uses / recipe tree
  * move X Y | click X Y [B]     move the mouse / click at GUI coordinates (button 0=left, 1=right)
  * key NAME | type TEXT         press a key (e.g. key.keyboard.r) / type text
- * dump                         log current screen, cursor stack and container slots
+ * dump | state                 log current screen, cursor stack and container slots / EMI tag, recipe and stack counts
+ * leave | reloadresources      leave to the title screen and join again / reload resource packs (F3+T)
  * shot NAME                    save run/screenshots/NAME.png
  * log TEXT | quit
  * </pre>
@@ -223,10 +224,21 @@ public final class EmiDevScript {
 					((KeyboardAccessor) client.keyboard).emi$onChar(window, c, 0);
 				}
 			}
+			case "leave" -> {
+				// Back to the title screen; the world (or server) is joined again from there
+				worldStarted = false;
+				client.world.disconnect();
+				client.disconnect(new net.minecraft.client.gui.screen.SaveLevelScreen(new net.minecraft.text.LiteralText("Leaving")));
+				client.openScreen(new TitleScreen());
+			}
+			case "reloadresources" -> client.reloadResources();
 			case "dump" -> dump(client);
 			case "state" -> EmiLog.info("[devscript] STATE tags=" + dev.emi.emi.registry.EmiTags.TAGS.size()
 				+ " recipes=" + dev.emi.emi.api.EmiApi.getRecipeManager().getRecipes().size()
-				+ " stacks=" + dev.emi.emi.registry.EmiStackList.stacks.size());
+				+ " stacks=" + dev.emi.emi.registry.EmiStackList.stacks.size()
+				+ ("full".equals(rest) ? " categories=" + dev.emi.emi.api.EmiApi.getRecipeManager().getCategories().stream()
+					.map(c -> c.getId() + "=" + dev.emi.emi.api.EmiApi.getRecipeManager().getRecipes(c).size())
+					.sorted().collect(java.util.stream.Collectors.joining(",")) : ""));
 			case "shot" -> pendingShot = p[1];
 			case "log" -> EmiLog.info("[devscript] LOG " + rest);
 			case "quit" -> client.scheduleStop();

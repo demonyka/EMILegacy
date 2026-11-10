@@ -177,6 +177,11 @@ public class JemiRecipe<T> implements EmiRecipe {
 		return layout;
 	}
 
+	public static void clearLayoutCache() {
+		lastLayoutRecipe = null;
+		lastLayout = null;
+	}
+
 	private <V> void addSlots(GuiIngredientGroup<V> group, List<GuiIngredient<?>> slots, List<JemiSlotWidget<?>> slotWidgets) {
 		for (Map.Entry<Integer, GuiIngredient<V>> entry : group.getGuiIngredients().entrySet()) {
 			GuiIngredient<V> ingredient = entry.getValue();

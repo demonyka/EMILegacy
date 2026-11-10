@@ -18,7 +18,16 @@ Compatibility (tested with a 37-mod production pack, see docs/COMPATIBILITY.md):
 - Roughly Enough Items replaces JEI with a stub and draws its own item list: use EMI + JEI or REI alone. EMI logs a warning and skips the JEI bridge when REI is present.
 
 Hardening compared to EMI 1.1.24:
-- The recipe fill packet rejects oversized slot ranges (a client could exhaust server memory), is ignored for spectators, and skips slots that do not give up their items (ghost slots of mods).
+- The recipe fill packet bounds every list it reads (one packet from any player could exhaust server memory or stall the server tick), is ignored for spectators and for containers the player may not use, skips slots that do not give up their items (ghost slots of mods), takes partial stacks through the slot so modded inventories are told, and returns items to the player when a slot of a mod throws.
+- Chess invites are rate limited per player, creative item requests are clamped to the maximum stack size.
+- A reload requested right after leaving a world is no longer lost (EMI could stay empty or stuck on "Loading" after a quick rejoin).
+- Errors while drawing EMI over a container screen are logged instead of crashing the game.
+
+Adapted to 1.16.5:
+- The item on the cursor is kept when an EMI screen opens over a container.
+- Status effects stay where vanilla 1.16 draws them (left of the inventory) and EMI sidebars move out of their way; there is no "effect location" option.
+- Stripping, tilling and path recipes list every axe, hoe and shovel (1.16 has no tool tags).
+- Recipe tree line colors, button tint.
 
 Differences from EMI on modern versions:
 - The batched item renderer is not available (uses the regular renderer; the config option is hidden).

@@ -124,7 +124,7 @@ public class EmiScreenManager {
 
 	public static EmiSearchWidget search = new EmiSearchWidget(client.textRenderer, 0, 0, 160, 18);
 	public static SizedButtonWidget emi = new SizedButtonWidget(0, 0, 20, 20, 204, 0,
-			() -> true, (w) -> client.openScreen(new ConfigScreen(client.currentScreen)),
+			() -> true, (w) -> EmiPort.openScreenOverContainer(new ConfigScreen(client.currentScreen)),
 			ImmutableList.of(EmiPort.translatable("tooltip.emi.config", EmiRenderHelper.getEmiText())));
 	public static SizedButtonWidget tree = new SizedButtonWidget(0, 0, 20, 20, 184, 0,
 			() -> true, (w) -> EmiApi.viewRecipeTree(),

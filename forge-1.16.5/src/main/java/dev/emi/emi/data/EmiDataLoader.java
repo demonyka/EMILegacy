@@ -42,8 +42,7 @@ public class EmiDataLoader<T> extends SinglePreparationResourceReloader<T>
 				continue;
 			}
 			for (Resource resource : EmiPort.getAllResources(manager, id)) {
-				try {
-					InputStreamReader reader = new InputStreamReader(EmiPort.getInputStream(resource));
+				try (InputStreamReader reader = new InputStreamReader(EmiPort.getInputStream(resource), java.nio.charset.StandardCharsets.UTF_8)) {
 					JsonObject json = JsonHelper.deserialize(GSON, reader, JsonObject.class);
 					prepare.accept(t, json, id);
 				} catch (Exception e) {

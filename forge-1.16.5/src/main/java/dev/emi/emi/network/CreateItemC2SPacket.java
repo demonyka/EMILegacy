@@ -35,6 +35,9 @@ public class CreateItemC2SPacket implements EmiPacket {
 					player.inventory.setCursorStack(stack);
 				}
 			} else {
+				if (stack.getCount() > stack.getMaxCount()) {
+					stack.setCount(stack.getMaxCount());
+				}
 				EmiLog.info(player.getEntityName() + " cheated in " + stack);
 				if (mode == 0) {
 					player.inventory.offerOrDrop(player.world, stack);

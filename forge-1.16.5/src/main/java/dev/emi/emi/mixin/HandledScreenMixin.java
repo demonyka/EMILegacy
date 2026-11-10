@@ -1,6 +1,7 @@
 package dev.emi.emi.mixin;
 
 
+import dev.emi.emi.runtime.EmiLog;
 import dev.emi.emi.backport.ModelViewStack;
 import org.spongepowered.asm.mixin.Dynamic;
 import org.spongepowered.asm.mixin.Intrinsic;
@@ -40,11 +41,22 @@ public abstract class HandledScreenMixin extends Screen {
 	@Dynamic
 	@Inject(at = @At("RETURN"), method = "renderBackground(Lnet/minecraft/client/util/math/MatrixStack;)V")
 	private void renderBackground(MatrixStack raw, CallbackInfo info) {
-		EmiDrawContext context = EmiDrawContext.wrap(raw);
-		Window window = client.getWindow();
-		int mouseX = (int) (client.mouse.getX() * window.getScaledWidth() / window.getWidth());
-		int mouseY = (int) (client.mouse.getY() * window.getScaledHeight() / window.getHeight());
-		EmiScreenManager.drawBackground(context, mouseX, mouseY, client.getTickDelta());
+		try {
+			EmiDrawContext context = EmiDrawContext.wrap(raw);
+			Window window = client.getWindow();
+			int mouseX = (int) (client.mouse.getX() * window.getScaledWidth() / window.getWidth());
+			int mouseY = (int) (client.mouse.getY() * window.getScaledHeight() / window.getHeight());
+			EmiScreenManager.drawBackground(context, mouseX, mouseY, client.getTickDelta());
+		} catch (Throwable t) {
+			EmiLog.errorThrottled("Error rendering EMI background", t);
+		}
+	}
+
+	@Inject(at = @At("HEAD"), method = "removed()V", cancellable = true)
+	private void emi$keepScreenHandler(CallbackInfo info) {
+		if (EmiPort.keepScreenHandler) {
+			info.cancel();
+		}
 	}
 
 	@Inject(at = @At(value = "INVOKE",

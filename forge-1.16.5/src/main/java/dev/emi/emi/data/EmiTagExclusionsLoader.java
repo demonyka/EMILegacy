@@ -31,7 +31,7 @@ public class EmiTagExclusionsLoader extends SinglePreparationResourceReloader<Ta
 			}
 			try {
 				for (Resource resource : EmiPort.getAllResources(manager, id)) {
-					InputStreamReader reader = new InputStreamReader(EmiPort.getInputStream(resource));
+					try (InputStreamReader reader = new InputStreamReader(EmiPort.getInputStream(resource), java.nio.charset.StandardCharsets.UTF_8)) {
 					JsonObject json = JsonHelper.deserialize(GSON, reader, JsonObject.class);
 					try {
 						if (JsonHelper.getBoolean(json, "replace", false)) {
@@ -59,6 +59,7 @@ public class EmiTagExclusionsLoader extends SinglePreparationResourceReloader<Ta
 						}
 					} catch (Exception e) {
 						EmiLog.error("Error loading tag exclusions", e);
+					}
 					}
 				}
 			} catch (Exception e) {

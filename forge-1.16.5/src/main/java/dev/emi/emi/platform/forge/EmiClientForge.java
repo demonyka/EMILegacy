@@ -1,5 +1,6 @@
 package dev.emi.emi.platform.forge;
 
+import dev.emi.emi.runtime.EmiLog;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -72,10 +73,11 @@ public class EmiClientForge {
 		EmiReloadManager.reloadRecipes();
 	}
 
-	public static void tagsReloaded(TagsUpdatedEvent event) {
+	public static void tagsReloaded(TagsUpdatedEvent.VanillaTagTypes event) {
 		EmiReloadManager.reloadTags();
 	}
 
+	// An exception escaping a render event crashes the game: EMI's overlay must never do that to a container screen
 	public static void renderScreenForeground(GuiContainerEvent.DrawForeground event) {
 		EmiDrawContext context = EmiDrawContext.wrap(event.getMatrixStack());
 		HandledScreen<?> screen = event.getGuiContainer();
@@ -85,9 +87,15 @@ public class EmiClientForge {
 			// The container screen translates the GL model-view matrix by (guiLeft, guiTop) before this event
 			ModelViewStack viewStack = ModelViewStack.INSTANCE;
 			viewStack.push();
-			viewStack.translate(-screen.getGuiLeft(), -screen.getGuiTop(), 0.0);
-			EmiScreenManager.render(context, event.getMouseX(), event.getMouseY(), client.getTickDelta());
-			viewStack.pop();
+			context.resetColor();
+			try {
+				viewStack.translate(-screen.getGuiLeft(), -screen.getGuiTop(), 0.0);
+				EmiScreenManager.render(context, event.getMouseX(), event.getMouseY(), client.getTickDelta());
+			} catch (Throwable t) {
+				EmiLog.errorThrottled("Error rendering EMI", t);
+			} finally {
+				viewStack.pop();
+			}
 		}
 	}
 
@@ -101,8 +109,13 @@ public class EmiClientForge {
 		if (base != null) {
 			MinecraftClient client = MinecraftClient.getInstance();
 			context.push();
-			EmiScreenManager.drawForeground(context, event.getMouseX(), event.getMouseY(), client.getTickDelta());
-			context.pop();
+			try {
+				EmiScreenManager.drawForeground(context, event.getMouseX(), event.getMouseY(), client.getTickDelta());
+			} catch (Throwable t) {
+				EmiLog.errorThrottled("Error rendering EMI foreground", t);
+			} finally {
+				context.pop();
+			}
 		}
 	}
 }

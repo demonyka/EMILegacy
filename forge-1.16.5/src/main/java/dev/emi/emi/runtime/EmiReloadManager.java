@@ -40,7 +40,7 @@ public class EmiReloadManager {
 	private static volatile boolean clear = false, restart = false;
 	// 0 - empty, 1 - reloading, 2 - loaded, -1 - error
 	private static volatile int status = 0;
-	private static Thread thread;
+	private static volatile Thread thread;
 	public static volatile Text reloadStep = EmiPort.literal("");
 	public static volatile long reloadWorry = Long.MAX_VALUE;
 
@@ -91,10 +91,11 @@ public class EmiReloadManager {
 		synchronized (EmiReloadManager.class) {
 			step(EmiPort.literal("Starting Reload"));
 			status = 1;
+			// A clear requested by an earlier disconnect must not swallow this reload
+			clear = false;
 			if (thread != null && thread.isAlive()) {
 				restart = true;
 			} else {
-				clear = false;
 				thread = new Thread(new ReloadWorker());
 				thread.setDaemon(false);
 				thread.start();
@@ -113,7 +114,25 @@ public class EmiReloadManager {
 	}
 
 	public static boolean isLoaded() {
+		Thread thread = EmiReloadManager.thread;
 		return status == 2 && (thread == null || !thread.isAlive());
+	}
+
+	/** For long running plugin code on the reload thread: the current reload is obsolete and should be abandoned. */
+	public static boolean isRestartRequested() {
+		return restart;
+	}
+
+	// The worker only exits under the lock, so a reload requested at the same moment either
+	// sees a live worker that will loop again, or no worker at all
+	private static boolean shouldContinue() {
+		synchronized (EmiReloadManager.class) {
+			if (restart) {
+				return true;
+			}
+			thread = null;
+			return false;
+		}
 	}
 
 	public static int getStatus() {
@@ -150,12 +169,15 @@ public class EmiReloadManager {
 						continue;
 					}
 					MinecraftClient client = MinecraftClient.getInstance();
-					if (client.world == null) {
-						EmiReloadLog.warn("World is null");
-						break;
-					} else if (!ProxyRecipeManager.isAvailable()) {
-						EmiReloadLog.warn("Recipe Manager is null");
-						break;
+					if (client.world == null || !ProxyRecipeManager.isAvailable()) {
+						EmiReloadLog.warn(client.world == null ? "World is null" : "Recipe Manager is null");
+						synchronized (EmiReloadManager.class) {
+							// Nothing to load from: not loading any more, unless a new reload was requested meanwhile
+							if (!restart) {
+								status = 0;
+							}
+						}
+						continue;
 					}
 					List<EmiPluginContainer> plugins = Lists.newArrayList();
 					plugins.addAll(EmiAgnos.getPlugins().stream()
@@ -224,6 +246,9 @@ public class EmiReloadManager {
 					}
 					step(EmiPort.literal("Baking index"));
 					EmiStackList.bake();
+					if (restart) {
+						continue;
+					}
 					step(EmiPort.literal("Registering late recipes"), 10_000);
 					Consumer<EmiRecipe> registerLateRecipe = registry::addRecipe;
 					for (Consumer<Consumer<EmiRecipe>> consumer : EmiRecipes.lateRecipes) {
@@ -236,18 +261,35 @@ public class EmiReloadManager {
 							}
 						}
 					}
+					if (restart) {
+						continue;
+					}
 					step(EmiPort.literal("Baking recipes"), 15_000);
 					EmiRecipes.bake();
 					BoM.reload();
 					EmiPersistentData.load();
+					if (restart) {
+						continue;
+					}
 					step(EmiPort.literal("Baking search"), 15_000);
 					EmiSearch.bake();
+					if (restart) {
+						continue;
+					}
 					step(EmiPort.literal("Finishing up"));
-					EmiScreenManager.search.update();
-					EmiScreenManager.forceRecalculate();
+					// Widgets and sidebars belong to the render thread
+					MinecraftClient.getInstance().execute(() -> {
+						EmiScreenManager.search.update();
+						EmiScreenManager.forceRecalculate();
+					});
 					EmiReloadLog.bake();
-					EmiLog.info("Reloaded EMI in " + (System.currentTimeMillis() - reloadStart) + "ms");
-					status = 2;
+					synchronized (EmiReloadManager.class) {
+						// A disconnect or a new reload in the meantime has reset the status
+						if (!restart) {
+							EmiLog.info("Reloaded EMI in " + (System.currentTimeMillis() - reloadStart) + "ms");
+							status = 2;
+						}
+					}
 				} catch (Throwable e) {
 					EmiReloadLog.warn("Critical error occured during reload:", e);
 					status = -1;
@@ -255,8 +297,7 @@ public class EmiReloadManager {
 						restart = true;
 					}
 				}
-			} while (restart);
-			thread = null;
+			} while (shouldContinue());
 		}
 
 		private final static int entrypointPriority(EmiPluginContainer container) {

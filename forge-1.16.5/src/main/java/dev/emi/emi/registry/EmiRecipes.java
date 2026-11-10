@@ -118,6 +118,12 @@ public class EmiRecipes {
 		recipes.add(recipe);
 	}
 
+	private static synchronized void finishWorker(Worker worker) {
+		if (activeWorker == worker) {
+			activeWorker = null;
+		}
+	}
+
 	private static synchronized void setWorker(Worker worker) {
 		activeWorker = worker;
 		if (worker != null) {
@@ -300,14 +306,19 @@ public class EmiRecipes {
 
 		@Override
 		public void run() {
-			long startTime = System.currentTimeMillis();
-			Manager manager = new Manager(categories, workstations, recipes, true);
-			if (activeWorker == this) {
-				long endTime = System.currentTimeMillis();
-				EmiLog.info("Baked recipes after reload in " + (endTime - startTime) + "ms");
-				EmiRecipes.manager = manager;
+			try {
+				long startTime = System.currentTimeMillis();
+				Manager manager = new Manager(categories, workstations, recipes, true);
+				if (activeWorker == this) {
+					long endTime = System.currentTimeMillis();
+					EmiLog.info("Baked recipes after reload in " + (endTime - startTime) + "ms");
+					EmiRecipes.manager = manager;
+				}
+			} catch (Throwable t) {
+				EmiLog.error("Error baking recipes in the background", t);
+			} finally {
+				finishWorker(this);
 			}
-			setWorker(null);
 		}
 	}
 }

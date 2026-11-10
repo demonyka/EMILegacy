@@ -3,11 +3,13 @@ package dev.emi.emi.network;
 
 import java.util.stream.Collectors;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 import dev.emi.emi.runtime.EmiLog;
 import net.minecraft.entity.player.PlayerEntity;
@@ -38,23 +40,40 @@ public class FillRecipeC2SPacket implements EmiPacket {
 	public FillRecipeC2SPacket(PacketByteBuf buf) {
 		syncId = buf.readInt();
 		action = buf.readByte();
-		slots = parseCompressedSlots(buf);
-		crafting = Lists.newArrayList();
-		int craftingSize = buf.readVarInt();
-		for (int i = 0; i < craftingSize; i++) {
-			int s = buf.readVarInt();
-			crafting.add(s);
+		// Untrusted input: every list is bounded, an invalid packet leaves slots as null and is dropped in apply
+		List<Integer> slots = parseCompressedSlots(buf);
+		List<Integer> crafting = Lists.newArrayList();
+		List<ItemStack> stacks = Lists.newArrayList();
+		int output = -1;
+		if (slots != null) {
+			int craftingSize = buf.readVarInt();
+			if (craftingSize < 0 || craftingSize > MAX_CRAFTING) {
+				slots = null;
+			} else {
+				for (int i = 0; i < craftingSize; i++) {
+					crafting.add(buf.readVarInt());
+				}
+				if (buf.readBoolean()) {
+					output = buf.readVarInt();
+				}
+				int size = buf.readVarInt();
+				if (size < 0 || size > craftingSize) {
+					slots = null;
+				} else {
+					for (int i = 0; i < size; i++) {
+						stacks.add(buf.readItemStack());
+					}
+				}
+			}
 		}
-		if (buf.readBoolean()) {
-			output = buf.readVarInt();
-		} else {
-			output = -1;
+		if (slots == null) {
+			// The rest of an invalid packet is not parsed
+			buf.readerIndex(buf.writerIndex());
 		}
-		int size = buf.readVarInt();
-		stacks = Lists.newArrayList();
-		for (int i = 0; i < size; i++) {
-			stacks.add(buf.readItemStack());
-		}
+		this.slots = slots;
+		this.crafting = crafting;
+		this.output = output;
+		this.stacks = stacks;
 	}
 
 	@Override
@@ -92,7 +111,11 @@ public class FillRecipeC2SPacket implements EmiPacket {
 			EmiLog.warn("Client requested fill but screen handler has changed, aborting");
 			return;
 		}
-		List<Slot> slots = Lists.newArrayList();
+		if (!handler.canUse(player)) {
+			return;
+		}
+		// A set: repeated slots would only multiply the work
+		Set<Slot> slots = Sets.newLinkedHashSet();
 		List<Slot> crafting = Lists.newArrayList();
 		Slot output = null;
 		for (int i : this.slots) {
@@ -115,24 +138,29 @@ public class FillRecipeC2SPacket implements EmiPacket {
 			}
 		}
 		if (crafting.size() >= stacks.size()) {
-			List<ItemStack> rubble = Lists.newArrayList();
-			for (int i = 0; i < crafting.size(); i++) {
-				Slot s = crafting.get(i);
-				if (s != null && s.canTakeItems(player) && !s.getStack().isEmpty()) {
-					ItemStack taken = s.getStack();
-					ItemStack copy = taken.copy();
-					if (takeAll(s, player, taken)) {
-						rubble.add(copy);
-					}
+			Set<Slot> craftingSet = Sets.newIdentityHashSet();
+			for (Slot s : crafting) {
+				if (s != null) {
+					craftingSet.add(s);
 				}
 			}
-			try {	
+			List<ItemStack> rubble = Lists.newArrayList();
+			try {
+				for (Slot s : craftingSet) {
+					if (s.canTakeItems(player) && !s.getStack().isEmpty()) {
+						ItemStack taken = s.getStack();
+						ItemStack copy = taken.copy();
+						if (takeAll(s, player, taken)) {
+							rubble.add(copy);
+						}
+					}
+				}
 				for (int i = 0; i < stacks.size(); i++) {
 					ItemStack stack = stacks.get(i);
 					if (stack.isEmpty()) {
 						continue;
 					}
-					int gotten = grabMatching(player, slots, rubble, crafting, stack);
+					int gotten = grabMatching(player, slots, rubble, craftingSet, stack);
 					if (gotten != stack.getCount()) {
 						if (gotten > 0) {
 							stack.setCount(gotten);
@@ -152,7 +180,12 @@ public class FillRecipeC2SPacket implements EmiPacket {
 									continue;
 								}
 							}
-							s.setStack(stack);
+							try {
+								s.setStack(stack);
+							} catch (RuntimeException e) {
+								rubble.add(stack);
+								throw e;
+							}
 						} else {
 							player.inventory.offerOrDrop(player.world, stack);
 						}
@@ -179,6 +212,7 @@ public class FillRecipeC2SPacket implements EmiPacket {
 	}
 
 	private static final int MAX_SLOTS = 4096;
+	private static final int MAX_CRAFTING = 512;
 
 	/** Empties a slot, returns false for slots that keep their stack (ghost and display slots of mods). */
 	private static boolean takeAll(Slot s, PlayerEntity player, ItemStack taken) {
@@ -234,54 +268,71 @@ public class FillRecipeC2SPacket implements EmiPacket {
 		return a.getItem() == b.getItem() && ItemStack.areTagsEqual(a, b);
 	}
 
-	private static int grabMatching(PlayerEntity player, List<Slot> slots, List<ItemStack> rubble, List<Slot> crafting, ItemStack stack) {
+	private static int grabMatching(PlayerEntity player, Set<Slot> slots, List<ItemStack> rubble, Set<Slot> crafting, ItemStack stack) {
+		int[] grabbed = new int[1];
+		try {
+			grabMatching(player, slots, rubble, crafting, stack, grabbed);
+		} catch (RuntimeException e) {
+			if (grabbed[0] > 0) {
+				ItemStack inFlight = stack.copy();
+				inFlight.setCount(grabbed[0]);
+				rubble.add(inFlight);
+			}
+			throw e;
+		}
+		return grabbed[0];
+	}
+
+	private static void grabMatching(PlayerEntity player, Set<Slot> slots, List<ItemStack> rubble, Set<Slot> crafting, ItemStack stack, int[] total) {
 		int amount = stack.getCount();
-		int grabbed = 0;
-		for (int i = 0; i < rubble.size(); i++) {
-			if (grabbed >= amount) {
-				return grabbed;
+				for (int i = 0; i < rubble.size(); i++) {
+			if (total[0] >= amount) {
+				return;
 			}
 			ItemStack r = rubble.get(i);
 			if (canCombine(stack, r)) {
-				int wanted = amount - grabbed;
+				int wanted = amount - total[0];
 				if (r.getCount() <= wanted) {
-					grabbed += r.getCount();
+					total[0] += r.getCount();
 					rubble.remove(i);
 					i--;
 				} else {
-					grabbed = amount;
+					total[0] = amount;
 					r.setCount(r.getCount() - wanted);
 				}
 			}
 		}
 		for (Slot s : slots) {
-			if (grabbed >= amount) {
-				return grabbed;
+			if (total[0] >= amount) {
+				return;
 			}
 			if (crafting.contains(s) || !s.canTakeItems(player)) {
 				continue;
 			}
 			ItemStack st = s.getStack();
 			if (canCombine(stack, st)) {
-				int wanted = amount - grabbed;
+				int wanted = amount - total[0];
 				ItemStack taken = st.copy();
 				if (st.getCount() <= wanted) {
 					int count = st.getCount();
 					if (takeAll(s, player, taken)) {
-						grabbed += count;
+						total[0] += count;
 					}
 				} else {
-					int left = st.getCount() - wanted;
-					st.setCount(left);
+					// Through the slot, so that the backing inventory or item handler is told about the change
+					int before = st.getCount();
+					ItemStack removed = s.takeStack(wanted);
 					// Slots that hand out copies do not actually lose items
-					if (s.getStack().getCount() == left) {
-						grabbed = amount;
-						s.onTakeItem(player, taken);
+					int lost = before - s.getStack().getCount();
+					int got = Math.min(removed.getCount(), Math.max(0, lost));
+					if (got > 0) {
+						total[0] += got;
+						s.onTakeItem(player, removed);
 					}
 				}
 			}
 		}
-		return grabbed;
+		return;
 	}
 
 	@Override

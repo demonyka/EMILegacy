@@ -2,6 +2,7 @@ package dev.emi.emi.search;
 
 
 
+import dev.emi.emi.runtime.EmiReloadManager;
 import java.util.stream.Collectors;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
@@ -64,7 +65,11 @@ public class EmiSearch {
 		Set<EmiStack> bakedStacks = Sets.newIdentityHashSet();
 		boolean old = EmiConfig.appendItemModId;
 		EmiConfig.appendItemModId = false;
+		try {
 		for (EmiStack stack : EmiStackList.stacks) {
+			if (EmiReloadManager.isRestartRequested()) {
+				return;
+			}
 			try {
 				SearchStack searchStack = new SearchStack(stack);
 				bakedStacks.add(stack);
@@ -122,7 +127,9 @@ public class EmiSearch {
 				}
 			}
 		}
-		EmiConfig.appendItemModId = old;
+		} finally {
+			EmiConfig.appendItemModId = old;
+		}
 		names.build();
 		tooltips.build();
 		mods.build();

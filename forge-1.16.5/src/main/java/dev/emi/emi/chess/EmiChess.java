@@ -221,7 +221,9 @@ public class EmiChess {
 			if (uuid.equals(chess.opponent)) {
 				client.player.sendMessage(EmiPort.translatable("emi.chess.multiplayer.unavailable", player.getDisplayName()), false);
 			}
-		} else if (chess.generator instanceof NetworkedMoveGenerator nmg && chess.opponent.equals(uuid)) {
+		} else if (start < 0 || start > 63 || end < 0 || end > 63) {
+			return;
+		} else if (chess.generator instanceof NetworkedMoveGenerator nmg && uuid.equals(chess.opponent)) {
 			ChessMove desired = ChessMove.of(start, end, type);
 			if (chess.turn == chess.generator.color) {
 				ChessBoard board = getBoard();

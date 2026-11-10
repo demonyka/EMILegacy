@@ -179,8 +179,8 @@ public class EmiSearchWidget extends TextFieldWidget {
 	}
 
 	@Override
-	protected void onFocusedChanged(boolean focused) {
-		setFocused(focused);
+	public boolean changeFocus(boolean lookForwards) {
+		return false;
 	}
 	
 	@Override

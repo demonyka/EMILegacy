@@ -40,7 +40,15 @@ public class EmiForge {
 	}
 
 	public void playerConnect(PlayerEvent.PlayerLoggedInEvent event) {
-		if (event.getPlayer() instanceof ServerPlayerEntity spe && EmiPacketHandler.CHANNEL.isRemotePresent(spe.networkHandler.connection)) {
+		if (event.getPlayer() instanceof ServerPlayerEntity spe) {
+			try {
+				if (spe.networkHandler == null || !EmiPacketHandler.CHANNEL.isRemotePresent(spe.networkHandler.connection)) {
+					return;
+				}
+			} catch (Throwable t) {
+				// Fake players without a real connection
+				return;
+			}
 			EmiNetwork.sendToClient(spe, new PingS2CPacket());
 		}
 	}

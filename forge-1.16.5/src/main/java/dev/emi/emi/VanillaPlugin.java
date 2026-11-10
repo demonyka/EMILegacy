@@ -1,6 +1,9 @@
 package dev.emi.emi;
 
 
+import net.minecraft.item.ShovelItem;
+import net.minecraft.item.HoeItem;
+import net.minecraft.item.AxeItem;
 import com.google.common.collect.ImmutableList;
 import static dev.emi.emi.api.recipe.VanillaEmiRecipeCategories.ANVIL_REPAIRING;
 import static dev.emi.emi.api.recipe.VanillaEmiRecipeCategories.BLASTING;
@@ -53,13 +56,13 @@ import dev.emi.emi.api.stack.ListEmiIngredient;
 import dev.emi.emi.api.stack.TagEmiIngredient;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.GeneratedSlotWidget;
-import dev.emi.emi.config.EffectLocation;
 import dev.emi.emi.config.EmiConfig;
 import dev.emi.emi.config.FluidUnit;
 import dev.emi.emi.handler.CookingRecipeHandler;
 import dev.emi.emi.handler.CraftingRecipeHandler;
 import dev.emi.emi.handler.InventoryRecipeHandler;
 import dev.emi.emi.handler.StonecuttingRecipeHandler;
+import dev.emi.emi.mixin.accessor.AbstractInventoryScreenAccessor;
 import dev.emi.emi.mixin.accessor.AxeItemAccessor;
 import dev.emi.emi.mixin.accessor.HandledScreenAccessor;
 import dev.emi.emi.mixin.accessor.HoeItemAccessor;
@@ -270,51 +273,23 @@ public class VanillaPlugin implements EmiPlugin {
 		});
 
 		registry.addGenericExclusionArea((screen, consumer) -> {
-			if (EmiConfig.effectLocation != EffectLocation.HIDDEN && screen instanceof AbstractInventoryScreen<?> inv) {
+			// 1.16 always draws status effects in a 120 wide column left of the inventory (EMI does not move them)
+			if (screen instanceof AbstractInventoryScreen<?> inv && ((AbstractInventoryScreenAccessor) inv).isEmiDrawingStatusEffects()) {
 				MinecraftClient client = MinecraftClient.getInstance();
+				if (client.player == null) {
+					return;
+				}
 				Collection<StatusEffectInstance> collection = client.player.getStatusEffects();
 				if (!collection.isEmpty()) {
 					int k = 33;
 					if (collection.size() > 5) {
 						k = 132 / (collection.size() - 1);
 					}
-					int right = ((HandledScreenAccessor) inv).getX() + ((HandledScreenAccessor) inv).getBackgroundWidth() + 2;
-					int rightWidth = inv.width - right;
-					if (rightWidth >= 32) {
-						int top = ((HandledScreenAccessor) inv).getY();
-						int height = (collection.size() - 1) * k + 32;
-						int left, width;
-						if (EmiConfig.effectLocation == EffectLocation.TOP) {
-							int size = collection.size();
-							top = ((HandledScreenAccessor) inv).getY() - 34;
-							if (((Object) screen) instanceof CreativeInventoryScreen) {
-								top -= 28;
-								if (EmiAgnos.isForge()) {
-									top -= 22;
-								}
-							}
-							int xOff = 34;
-							if (size == 1) {
-								xOff = 122;
-							} else if (size > 5) {
-								xOff = (((HandledScreenAccessor) inv).getBackgroundWidth() - 32) / (size - 1);
-							}
-							width = Math.max(122, (size - 1) * xOff + 32);
-							left = ((HandledScreenAccessor) inv).getX() + (((HandledScreenAccessor) inv).getBackgroundWidth() - width) / 2;
-							height = 32;
-						} else {
-							left = switch (EmiConfig.effectLocation) {
-								case LEFT_COMPRESSED -> ((HandledScreenAccessor) inv).getX() - 2 - 32;
-								case LEFT -> ((HandledScreenAccessor) inv).getX() - 2 - 120;
-								default -> right;
-							};
-							width = switch (EmiConfig.effectLocation) {
-								case LEFT, RIGHT -> 120;
-								case LEFT_COMPRESSED, RIGHT_COMPRESSED -> 32;
-								default -> 32;
-							};
-						}
-						consumer.accept(new Bounds(left, top, width, height));
+					int left = ((HandledScreenAccessor) inv).getX() - 124;
+					int top = ((HandledScreenAccessor) inv).getY();
+					// One area per effect: the sidebar layout then settles below the column instead of above it
+					for (int i = 0; i < collection.size(); i++) {
+						consumer.accept(new Bounds(left, top + i * k, 120, 32));
 					}
 				}
 			}
@@ -575,7 +550,7 @@ public class VanillaPlugin implements EmiPlugin {
 
 		EmiIngredient axes = damagedTool(getPreferredTag(ImmutableList.of(
 				"minecraft:axes", "c:axes", "c:tools/axes", "fabric:axes", "forge:tools/axes"
-			), EmiStack.of(Items.IRON_AXE)), 1);
+			), allTools(AxeItem.class, Items.IRON_AXE)), 1);
 		for (Map.Entry<Block, Block> entry : AxeItemAccessor.getStrippedBlocks().entrySet()) {
 			Identifier id = synthetic("world/stripping", EmiUtil.subId(entry.getKey()));
 			addRecipeSafe(registry, () -> basicWorld(EmiStack.of(entry.getKey()), axes, EmiStack.of(entry.getValue()), id));
@@ -590,7 +565,7 @@ public class VanillaPlugin implements EmiPlugin {
 			.build());
 		EmiIngredient hoes = damagedTool(getPreferredTag(ImmutableList.of(
 				"minecraft:hoes", "c:hoes", "c:tools/hoes", "fabric:hoes", "forge:tools/hoes"
-			), EmiStack.of(Items.IRON_HOE)), 1);
+			), allTools(HoeItem.class, Items.IRON_HOE)), 1);
 		for (Map.Entry<Block, BlockState> entry : HoeItemAccessor.getTilledBlocks().entrySet()) {
 			Block b = entry.getKey();
 			Block result = entry.getValue().getBlock();
@@ -600,7 +575,7 @@ public class VanillaPlugin implements EmiPlugin {
 
 		EmiIngredient shovels = damagedTool(getPreferredTag(ImmutableList.of(
 				"minecraft:shovels", "c:shovels", "c:tools/shovels", "fabric:shovels", "forge:tools/shovels"
-			), EmiStack.of(Items.IRON_SHOVEL)), 1);
+			), allTools(ShovelItem.class, Items.IRON_SHOVEL)), 1);
 		for (Map.Entry<Block, BlockState> entry : ShovelItemAccessor.getPathStates().entrySet()) {
 			Block result = entry.getValue().getBlock();
 			Identifier id = synthetic("world/flattening", EmiUtil.subId(entry.getKey()));
@@ -694,6 +669,17 @@ public class VanillaPlugin implements EmiPlugin {
 			stack.setRemainder(EmiStack.of(is));
 		}
 		return tool;
+	}
+
+	/** 1.16 has no item tags for tools: every registered item of the tool class instead. */
+	private static EmiIngredient allTools(Class<? extends Item> clazz, Item fallback) {
+		List<EmiStack> tools = Lists.newArrayList();
+		for (Item item : EmiPort.getItemRegistry()) {
+			if (clazz.isInstance(item)) {
+				tools.add(EmiStack.of(item));
+			}
+		}
+		return tools.isEmpty() ? EmiStack.of(fallback) : EmiIngredient.of(tools);
 	}
 
 	private static EmiIngredient getPreferredTag(List<String> candidates, EmiIngredient fallback) {

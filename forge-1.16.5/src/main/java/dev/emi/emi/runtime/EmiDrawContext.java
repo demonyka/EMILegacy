@@ -53,15 +53,24 @@ public class EmiDrawContext {
 
 	public void drawTexture(Identifier texture, int x, int y, int z, float u, float v, int width, int height, int textureWidth, int textureHeight) {
 		EmiPort.bindTexture(texture);
+		RenderSystem.color4f(tintR, tintG, tintB, tintA);
 		DrawableHelper.drawTexture(matrices, x, y, z, u, v, width, height, textureWidth, textureHeight);
 	}
 
 	public void drawTexture(Identifier texture, int x, int y, int width, int height, float u, float v, int regionWidth, int regionHeight, int textureWidth, int textureHeight) {
 		EmiPort.bindTexture(texture);
+		RenderSystem.color4f(tintR, tintG, tintB, tintA);
 		DrawableHelper.drawTexture(matrices, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight);
 	}
 
 	public void fill(int x, int y, int width, int height, int color) {
+		if (tintR != 1f || tintG != 1f || tintB != 1f || tintA != 1f) {
+			int a = (int) ((color >>> 24) * tintA);
+			int r = (int) ((color >> 16 & 0xFF) * tintR);
+			int g = (int) ((color >> 8 & 0xFF) * tintG);
+			int b = (int) ((color & 0xFF) * tintB);
+			color = a << 24 | r << 16 | g << 8 | b;
+		}
 		DrawableHelper.fill(matrices, x, y, x + width, y + height, color);
 	}
 
@@ -121,6 +130,9 @@ public class EmiDrawContext {
 		RenderSystem.disableBlend();
 	}
 
+	// Shared by all contexts, like the shader color of newer versions
+	private static float tintR = 1f, tintG = 1f, tintB = 1f, tintA = 1f;
+
 	public void resetColor() {
 		setColor(1f, 1f, 1f, 1f);
 	}
@@ -130,6 +142,10 @@ public class EmiDrawContext {
 	}
 
 	public void setColor(float r, float g, float b, float a) {
+		tintR = r;
+		tintG = g;
+		tintB = b;
+		tintA = a;
 		RenderSystem.color4f(r, g, b, a);
 	}
 

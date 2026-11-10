@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "plugin": "dev.emi.emi.mixinsupport.EmiMixinPlugin",
   "client": [
+    "accessor.AbstractInventoryScreenAccessor",
     "accessor.AxeItemAccessor",
     "accessor.BakedModelManagerAccessor",
     "accessor.CraftingResultSlotAccessor",

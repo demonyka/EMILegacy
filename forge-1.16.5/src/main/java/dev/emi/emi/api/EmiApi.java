@@ -2,6 +2,7 @@ package dev.emi.emi.api;
 
 
 
+import dev.emi.emi.EmiPort;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableList;
 import java.util.List;
@@ -181,7 +182,7 @@ public class EmiApi {
 		Screen s = client.currentScreen;
 		if (s instanceof HandledScreen<?> hs) {
 			push();
-			client.openScreen(new BoMScreen(hs));
+			EmiPort.openScreenOverContainer(new BoMScreen(hs));
 		} else if (s instanceof RecipeScreen rs) {
 			push();
 			client.openScreen(new BoMScreen(rs.old));
@@ -263,7 +264,7 @@ public class EmiApi {
 			}
 			if (client.currentScreen instanceof HandledScreen<?> hs) {
 				push();
-				client.openScreen(new RecipeScreen(hs, recipes));
+				EmiPort.openScreenOverContainer(new RecipeScreen(hs, recipes));
 			} else if (client.currentScreen instanceof BoMScreen bs) {
 				push();
 				client.openScreen(new RecipeScreen(bs.old, recipes));

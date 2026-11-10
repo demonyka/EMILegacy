@@ -1,0 +1,30 @@
+# Reload state machine: join, leave and join again (also while a reload is running), F3+T, repeated /reload.
+# Every "state" line must show the same non-zero tag, recipe and stack counts.
+world survival
+waitloaded
+wait 40
+state
+leave
+wait 20
+waitloaded
+wait 20
+state
+cmd reload
+wait 30
+leave
+wait 20
+waitloaded
+wait 20
+state
+reloadresources
+wait 100
+waitloaded
+wait 20
+state
+cmd reload
+cmd reload
+wait 100
+waitloaded
+wait 20
+state
+quit

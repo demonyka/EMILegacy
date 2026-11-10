@@ -1,5 +1,9 @@
 package dev.emi.emi.jemi;
 
+import dev.emi.emi.screen.BoMScreen;
+import dev.emi.emi.screen.RecipeScreen;
+import net.minecraft.client.gui.screen.Screen;
+import dev.emi.emi.config.EmiConfig;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -98,7 +102,10 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 	static {
 		// JEI 7 has no "runtime unavailable" callback, drop the runtime when leaving the world
 		try {
-			MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ClientPlayerNetworkEvent.LoggedOutEvent.class, event -> runtime = null);
+			MinecraftForge.EVENT_BUS.addListener(EventPriority.NORMAL, false, ClientPlayerNetworkEvent.LoggedOutEvent.class, event -> {
+				runtime = null;
+				JemiRecipe.clearLayoutCache();
+			});
 		} catch (Throwable t) {
 			EmiLog.error("[JEMI] Could not register logout listener", t);
 		}
@@ -131,7 +138,16 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 		EmiLog.info("[JEMI] Waiting for JEI to finish reloading...");
 		EmiReloadManager.step(EmiPort.literal("Waiting for JEI to finish..."), 20_000);
 		try {
+			long deadline = System.currentTimeMillis() + 300_000;
 			while (runtime == null) {
+				if (EmiReloadManager.isRestartRequested()) {
+					// Disconnected or reloading again: this reload is obsolete
+					return;
+				}
+				if (System.currentTimeMillis() > deadline) {
+					EmiLog.warn("[JEMI] JEI did not start, continuing without recipes from JEI");
+					return;
+				}
 				Thread.sleep(100);
 			}
 			// The runtime is handed out while JEI is still starting on the main thread (later plugins,
@@ -461,23 +477,36 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 	 */
 	public static boolean showFocus(IFocus<?> focus) {
 		try {
-			if (focus == null || runtime == null || !EmiReloadManager.isLoaded()) {
+			if (focus == null || !canTakeOverJeiScreen()) {
 				return false;
 			}
 			EmiStack stack = JemiUtil.getStack(focus.getValue());
 			if (stack.isEmpty()) {
 				return false;
 			}
+			Screen before = MinecraftClient.getInstance().currentScreen;
 			if (focus.getMode() == IFocus.Mode.INPUT) {
 				EmiApi.displayUses(stack);
 			} else {
 				EmiApi.displayRecipes(stack);
 			}
-			return true;
+			// Nothing to show in EMI: JEI may still know something
+			Screen after = MinecraftClient.getInstance().currentScreen;
+			return after != before && after instanceof RecipeScreen;
 		} catch (Throwable t) {
 			EmiLog.error("[JEMI] Could not show recipes requested through JEI", t);
 			return false;
 		}
+	}
+
+	private static boolean canTakeOverJeiScreen() {
+		if (runtime == null || !EmiConfig.enabled || !EmiReloadManager.isLoaded()) {
+			return false;
+		}
+		// Only from the game or a container screen. From JEI's own recipe screen (open as a fallback)
+		// EMI would have to replace the container screen underneath
+		Screen screen = MinecraftClient.getInstance().currentScreen;
+		return screen == null || screen instanceof HandledScreen || screen instanceof RecipeScreen || screen instanceof BoMScreen;
 	}
 
 	/**
@@ -486,14 +515,16 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 	 */
 	public static boolean showCategories(List<Identifier> uids) {
 		try {
-			if (uids == null || runtime == null || !EmiReloadManager.isLoaded()) {
+			if (uids == null || !canTakeOverJeiScreen()) {
 				return false;
 			}
 			for (Identifier uid : uids) {
 				EmiRecipeCategory category = CATEGORIES_BY_UID.get(uid);
 				if (category != null && !EmiApi.getRecipeManager().getRecipes(category).isEmpty()) {
+					Screen before = MinecraftClient.getInstance().currentScreen;
 					EmiApi.displayRecipeCategory(category);
-					return true;
+					Screen after = MinecraftClient.getInstance().currentScreen;
+					return after != before && after instanceof RecipeScreen;
 				}
 			}
 		} catch (Throwable t) {
@@ -503,6 +534,9 @@ public class JemiPlugin implements IModPlugin, EmiPlugin {
 	}
 
 	private static EmiRecipeHandler<?> getRecipeHandler(ScreenHandler handler, EmiRecipe recipe) {
+		if (recipe.getCategory() == null) {
+			return null;
+		}
 		IRecipeCategory<?> category = CATEGORY_MAP.get(recipe.getCategory());
 		if (category == null) {
 			return null;

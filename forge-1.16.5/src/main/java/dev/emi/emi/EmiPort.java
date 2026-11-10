@@ -1,5 +1,6 @@
 package dev.emi.emi;
 
+import net.minecraft.client.gui.screen.Screen;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -243,6 +244,22 @@ public final class EmiPort {
 	}
 
 	/** The cursor stack lives in the player inventory in 1.16, not in the screen handler. */
+	/** Set while an EMI screen replaces a container screen that stays open on the server, see HandledScreenMixin. */
+	public static boolean keepScreenHandler = false;
+
+	/**
+	 * Opens an EMI screen over the current container screen. In 1.16 a removed container screen closes its
+	 * screen handler on the client (cursor stack deleted, result slots cleared) although the server keeps it open.
+	 */
+	public static void openScreenOverContainer(Screen screen) {
+		keepScreenHandler = true;
+		try {
+			MinecraftClient.getInstance().openScreen(screen);
+		} finally {
+			keepScreenHandler = false;
+		}
+	}
+
 	public static ItemStack getCursorStack() {
 		MinecraftClient client = MinecraftClient.getInstance();
 		return client.player == null ? ItemStack.EMPTY : client.player.inventory.getCursorStack();

@@ -1,5 +1,6 @@
 package dev.emi.emi.runtime;
 
+import dev.emi.emi.EmiPort;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -61,7 +62,11 @@ public class EmiHistory {
 		if (i >= 0 && client.currentScreen != null) {
 			Screen popped = FORWARD_HISTORIES.remove(i);
 			HISTORIES.add(client.currentScreen);
-			client.openScreen(popped);
+			if (client.currentScreen instanceof HandledScreen) {
+				EmiPort.openScreenOverContainer(popped);
+			} else {
+				client.openScreen(popped);
+			}
 		}
 	}
 

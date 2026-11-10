@@ -10,9 +10,8 @@ public class EmiComparisonDefaults {
 	public static Map<Object, Comparison> comparisons = ImmutableMap.of();
 
 	public static Comparison get(Object obj) {
-		if (comparisons.containsKey(obj)) {
-			return comparisons.get(obj);
-		}
-		return Comparison.DEFAULT_COMPARISON;
+		// One read: the reload thread swaps the map
+		Comparison comparison = comparisons.get(obj);
+		return comparison == null ? Comparison.DEFAULT_COMPARISON : comparison;
 	}
 }

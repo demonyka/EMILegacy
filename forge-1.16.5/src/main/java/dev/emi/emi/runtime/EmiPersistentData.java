@@ -2,6 +2,13 @@ package dev.emi.emi.runtime;
 
 
 
+import java.nio.charset.StandardCharsets;
+import java.io.Writer;
+import java.io.Reader;
+import java.io.OutputStreamWriter;
+import java.io.InputStreamReader;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import dev.emi.emi.EmiPort;
 import com.google.gson.GsonBuilder;
 import java.io.File;
@@ -25,9 +32,9 @@ public class EmiPersistentData {
 			EmiSidebars.save(json);
 			json.add("recipe_defaults", BoM.saveAdded());
 			json.add("hidden_stacks", EmiHidden.save());
-			FileWriter writer = new FileWriter(FILE);
-			GSON.toJson(json, writer);
-			writer.close();
+			try (Writer writer = new OutputStreamWriter(new FileOutputStream(FILE), StandardCharsets.UTF_8)) {
+				GSON.toJson(json, writer);
+			}
 		} catch (Exception e) {
 			EmiLog.error("Failed to write persistent data", e);
 		}
@@ -38,7 +45,13 @@ public class EmiPersistentData {
 			return;
 		}
 		try {
-			JsonObject json = GSON.fromJson(new FileReader(FILE), JsonObject.class);
+			JsonObject json;
+			try (Reader reader = new InputStreamReader(new FileInputStream(FILE), StandardCharsets.UTF_8)) {
+				json = GSON.fromJson(reader, JsonObject.class);
+			}
+			if (json == null) {
+				return;
+			}
 			if (JsonHelper.hasArray(json, "favorites")) {
 				EmiFavorites.load(JsonHelper.getArray(json, "favorites"));
 			}

@@ -1,0 +1,50 @@
+# UI checks: the cursor stack survives opening and closing a recipe screen, tool recipes list every tool,
+# status effects do not overlap the favorites sidebar, recipe tree colors
+world survival
+waitloaded
+wait 40
+cmd gamemode survival
+cmd clear @p
+cmd give @p minecraft:oak_log 3
+cmd effect give @p minecraft:speed 1000
+cmd effect give @p minecraft:haste 1000
+wait 20
+inventory
+wait 5
+move 328 31
+wait 2
+key key.keyboard.a
+wait 2
+move 346 31
+wait 2
+key key.keyboard.a
+wait 5
+shot c01_effects_favorites
+click 141 186
+wait 5
+dump
+recipes minecraft:oak_planks
+wait 10
+dump
+shot c02_recipe_with_cursor
+close
+wait 5
+dump
+click 141 186
+wait 5
+dump
+uses minecraft:diamond_axe
+wait 10
+dump
+shot c03_diamond_axe_uses
+close
+wait 5
+recipes minecraft:chest
+wait 10
+click 283 107
+wait 10
+tree
+wait 10
+dump
+shot c04_tree
+quit

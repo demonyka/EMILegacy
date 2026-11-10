@@ -87,9 +87,8 @@ public class EmiConfig {
 	@ConfigValue("ui.recipe-book-action")
 	public static RecipeBookAction recipeBookAction = RecipeBookAction.TOGGLE_CRAFTABLES;
 
-	@Comment("Where to display status effects in the inventory.")
-	@ConfigValue("ui.effect-location")
-	public static EffectLocation effectLocation = EffectLocation.TOP;
+	// 1.16.5: status effects stay where vanilla draws them, there is no "ui.effect-location" option
+	public static EffectLocation effectLocation = EffectLocation.LEFT;
 
 	@Comment("Whether to display a gray overlay when hovering over a stack.")
 	@ConfigValue("ui.show-hover-overlay")

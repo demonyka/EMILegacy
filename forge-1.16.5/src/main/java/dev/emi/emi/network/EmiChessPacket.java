@@ -1,6 +1,8 @@
 package dev.emi.emi.network;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.WeakHashMap;
 
 import dev.emi.emi.chess.EmiChess;
 import net.minecraft.entity.player.PlayerEntity;
@@ -62,8 +64,19 @@ public abstract class EmiChessPacket implements EmiPacket {
 			super(buf);
 		}
 
+		private static final Map<PlayerEntity, Long> LAST_INVITE = new WeakHashMap<>();
+
 		@Override
 		public void apply(PlayerEntity player) {
+			if (type == -1) {
+				// An invite prints a chat line for the receiver
+				long now = System.currentTimeMillis();
+				Long last = LAST_INVITE.get(player);
+				if (last != null && now - last < 3_000) {
+					return;
+				}
+				LAST_INVITE.put(player, now);
+			}
 			PlayerEntity opponent = player.world.getPlayerByUuid(uuid);
 			if (opponent instanceof ServerPlayerEntity spe) {
 				EmiNetwork.sendToClient(spe, new EmiChessPacket.S2C(player.getUuid(), type, start, end));
