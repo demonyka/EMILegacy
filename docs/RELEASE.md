@@ -94,3 +94,21 @@ Workflow **publish** соберёт jar и загрузит его так:
 
 1. Поменять `mod_version` в `forge-1.16.5/gradle.properties` и добавить раздел `## <версия> (...)` в `CHANGELOG.md`.
 2. Закоммитить, создать тег и опубликовать релиз на GitHub. Остальное сделает workflow.
+
+## Галерея
+
+Скриншоты лежат в `docs/screenshots/`, сняты в сборке из 37 модов (1708×960, английский язык). Подписи для обеих площадок:
+
+| Файл | Title | Description |
+| --- | --- | --- |
+| `01-item-list.png` | Item list and favorites | The item list on the right, favorites on the left |
+| `02-search.png` | Search | `@create` shows the items of one mod; `#tag`, `$tooltip` and regex work too |
+| `03-create-recipes.png` | Recipes of other mods | Create's own animated JEI category, shown in EMI |
+| `04-ae2-inscriber.png` | Applied Energistics 2 | Inscriber recipes read from JEI |
+| `05-mekanism-infuser.png` | Mekanism | Machine recipes with gauges and energy bars |
+| `06-recipe-fill.png` | Recipe filling | The "+" button moves the ingredients into the grid |
+| `07-recipe-tree.png` | Recipe tree | Materials for a craft and the total cost |
+| `08-recipe-tree-expanded.png` | Expand the whole tree | One click resolves the tree down to base resources |
+| `09-config.png` | Configuration | Everything is configurable in game |
+
+На Modrinth первой (featured) стоит поставить `03-create-recipes.png` или `08-recipe-tree-expanded.png`.
