@@ -18,7 +18,9 @@ Compatibility (tested with a 37-mod production pack, see docs/COMPATIBILITY.md):
 - Roughly Enough Items replaces JEI with a stub and draws its own item list: use EMI + JEI or REI alone. EMI logs a warning and skips the JEI bridge when REI is present.
 
 New compared to EMI 1.1.24:
-- Recipe tree: an "expand the whole tree" button (bottom right, next to help). It picks a recipe for every ingredient that can only be made one way, level by level; ingredients with several recipes (ingots, gems, tags) are left to choose by hand. Shift-click goes back to the default recipes.
+- Recipe tree: an "expand the whole tree" button (bottom right, next to help). It resolves the tree down to base resources, level by level. It follows the recipes of the mod an item comes from, prefers the crafting table, and does not follow loops, ore processing or unpacking of storage blocks; a tag is resolved only when all of its items have to be crafted. Shift-click goes back to the default recipes.
+- Applied Energistics 2: inscriber presses are not used up, the recipe tree counts them once.
+- Tags without a translation get a readable name ("Quartz Dusts") instead of the raw id.
 
 Hardening compared to EMI 1.1.24:
 - The recipe fill packet bounds every list it reads (one packet from any player could exhaust server memory or stall the server tick), is ignored for spectators and for containers the player may not use, skips slots that do not give up their items (ghost slots of mods), takes partial stacks through the slot so modded inventories are told, and returns items to the player when a slot of a mod throws.

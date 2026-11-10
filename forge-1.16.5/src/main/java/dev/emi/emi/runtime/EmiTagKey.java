@@ -112,10 +112,28 @@ public class EmiTagKey<T> {
 	public Text getTagName() {
 		String s = getTagTranslationKey();
 		if (s == null) {
-			return EmiPort.literal("#" + this.id());
+			return EmiPort.literal(getReadableName(this.id()));
 		} else {
 			return EmiPort.translatable(s);
 		}
+	}
+
+	/** "forge:dusts/quartz" becomes "Quartz Dusts": mods rarely ship names for their tags. */
+	private static String getReadableName(Identifier id) {
+		String[] parts = id.getPath().split("/");
+		StringBuilder sb = new StringBuilder();
+		for (int i = parts.length - 1; i >= 0; i--) {
+			for (String word : parts[i].split("_")) {
+				if (word.isEmpty()) {
+					continue;
+				}
+				if (sb.length() > 0) {
+					sb.append(' ');
+				}
+				sb.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1));
+			}
+		}
+		return sb.length() == 0 ? "#" + id : sb.toString();
 	}
 
 	public boolean hasTranslation() {

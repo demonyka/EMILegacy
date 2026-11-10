@@ -1,4 +1,5 @@
-# Recipe tree "expand all" button (needs Applied Energistics 2): the ME controller tree before and after
+# Recipe tree "expand all" button (needs Applied Energistics 2): the ME controller tree before and after,
+# then more batches: the inscriber presses must stay at 1 in the total cost (they are not used up)
 world survival
 waitloaded
 wait 40
@@ -14,8 +15,18 @@ wait 5
 shot g02_button_tooltip
 click 399 230
 wait 10
-move 200 200
+move 200 20
+scroll -1
+wait 5
+scroll -1
 wait 5
 shot g03_tree_expanded
+move 221 80
+wait 5
+scroll 7
+wait 10
+move 200 20
+wait 5
+shot g04_batches
 dump
 quit

@@ -78,6 +78,7 @@ public class JemiRecipe<T> implements EmiRecipe {
 				}
 			}
 		}
+		JemiCompat.markTools(recipe, inputs);
 		for (Map.Entry<IIngredientType<?>, List<List<?>>> entry : ingredients.outputs.entrySet()) {
 			for (List<?> slot : entry.getValue()) {
 				EmiIngredient ing = JemiUtil.getIngredient(entry.getKey(), slot);

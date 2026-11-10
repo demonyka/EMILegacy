@@ -56,6 +56,7 @@ import net.minecraftforge.fml.common.Mod;
  * move X Y | click X Y [B]     move the mouse / click at GUI coordinates (button 0=left, 1=right)
  * key NAME | type TEXT         press a key (e.g. key.keyboard.r) / type text
  * dump | state                 log current screen, cursor stack and container slots / EMI tag, recipe and stack counts
+ * scroll N                     turn the mouse wheel by N notches
  * leave | reloadresources      leave to the title screen and join again / reload resource packs (F3+T)
  * shot NAME                    save run/screenshots/NAME.png
  * log TEXT | quit
@@ -232,6 +233,14 @@ public final class EmiDevScript {
 				client.openScreen(new TitleScreen());
 			}
 			case "reloadresources" -> client.reloadResources();
+			case "scroll" -> {
+				// Mouse wheel at the current mouse position (zooms the recipe tree, pages the sidebars)
+				if (client.currentScreen != null) {
+					double sx = client.mouse.getX() * client.getWindow().getScaledWidth() / client.getWindow().getWidth();
+					double sy = client.mouse.getY() * client.getWindow().getScaledHeight() / client.getWindow().getHeight();
+					client.currentScreen.mouseScrolled(sx, sy, Double.parseDouble(p[1]));
+				}
+			}
 			case "dump" -> dump(client);
 			case "state" -> EmiLog.info("[devscript] STATE tags=" + dev.emi.emi.registry.EmiTags.TAGS.size()
 				+ " recipes=" + dev.emi.emi.api.EmiApi.getRecipeManager().getRecipes().size()
